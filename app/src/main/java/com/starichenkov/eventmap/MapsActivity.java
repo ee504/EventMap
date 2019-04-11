@@ -8,10 +8,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.view.View.OnClickListener;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,13 +31,15 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.starichenkov.customClasses.SomeEvet;
 
-public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener {
 
     private GoogleMap mMap;
     private static final String TAG = "MyLog";
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private SomeEvet someEvent = new SomeEvet();
-
+    private Button btnDrawerOpener;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +51,51 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        btnDrawerOpener = (Button) findViewById(R.id.btnDrawerOpener);
+        btnDrawerOpener.setOnClickListener(this);
 
-        //ActionBar actionbar = getSupportActionBar();
-        //actionbar.setDisplayHomeAsUpEnabled(true);
-        //actionbar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24px);
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, navigationView, false);
+        navigationView.addHeaderView(header);
+
+        //NavigationView navigationView = findViewById(R.id.nav_view);
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        // Handle navigation view item clicks here.
+                        int id = item.getItemId();
+
+                        if (id == R.id.nav_search) {
+                            Log.d(TAG, "Click nav_search");
+                        }
+                        return true;
+                    }
+                }
+        );
+
+        Log.d(TAG, "Hello");
+
     }
+
+    @Override
+    public void onClick(View v) {
+        // по id определяем кнопку, вызвавшую этот обработчик
+        Log.d(TAG, "по id определяем кнопку, вызвавшую этот обработчик");
+        switch (v.getId()) {
+            case R.id.btnDrawerOpener:
+                drawerLayout.openDrawer(GravityCompat.START);
+                Log.d(TAG, "Click");
+                break;
+        }
+    }
+
+
+
 
     /**
      * Manipulates the map once available.
@@ -62,6 +108,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
