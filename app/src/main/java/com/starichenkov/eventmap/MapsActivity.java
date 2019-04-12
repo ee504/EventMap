@@ -30,8 +30,10 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.starichenkov.customClasses.SomeEvet;
+import com.starichenkov.dataBase.DB;
+import com.starichenkov.presenter.Presenter;
 
-public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener {
+public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener{
 
     private GoogleMap mMap;
     private static final String TAG = "MyLog";
@@ -40,6 +42,11 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private Button btnDrawerOpener;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private Presenter presenter;
+    private DB db;
+
+    private Button btnRegistration;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +68,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         View header = LayoutInflater.from(this).inflate(R.layout.nav_header, navigationView, false);
         navigationView.addHeaderView(header);
 
-        //NavigationView navigationView = findViewById(R.id.nav_view);
+        btnRegistration = (Button) header.findViewById(R.id.btnRegistration);
+        btnRegistration.setOnClickListener(this);
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -80,6 +88,10 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         Log.d(TAG, "Hello");
 
+        // открываем подключение к БД
+        //db = new DB(this);
+        //db.open();
+
     }
 
     @Override
@@ -90,6 +102,10 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             case R.id.btnDrawerOpener:
                 drawerLayout.openDrawer(GravityCompat.START);
                 Log.d(TAG, "Click");
+                break;
+
+            case R.id.btnRegistration:
+                Log.d(TAG, "Registration");
                 break;
         }
     }
