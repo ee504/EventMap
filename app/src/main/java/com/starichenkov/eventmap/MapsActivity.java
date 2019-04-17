@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -31,7 +29,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.starichenkov.customClasses.SomeEvet;
-import com.starichenkov.dataBase.DB;
+import com.starichenkov.Model.DB;
 import com.starichenkov.presenter.Presenter;
 
 public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener{

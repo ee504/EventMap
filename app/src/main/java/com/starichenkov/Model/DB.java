@@ -1,4 +1,4 @@
-package com.starichenkov.dataBase;
+package com.starichenkov.Model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -25,8 +25,8 @@ public class DB {
                     COLUMN_ID + " integer primary key autoincrement, " +
                     COLUMN_FIO + " text, " +
                     COLUMN_MAIL + " text, " +
-                    COLUMN_BIRDTH + " numeric, " +
                     COLUMN_PASSWORD + " text, " +
+                    COLUMN_BIRDTH + " numeric, " +
                     COLUMN_PHOTO + " text" +
                     ");";
 
@@ -55,13 +55,18 @@ public class DB {
         return mDB.query(DB_TABLE_USERS, null, null, null, null, null, null);
     }
 
+    // 12223424234
+    public Cursor getUserData() {
+        return mDB.query(DB_TABLE_USERS, null, null, null, null, null, null);
+    }
+
     // добавить запись в DB_CREATE_USERS
-    public void addRec(String fio, String mail, String date_birdth, String password) {
+    public void addUser(String fio, String mail, String date_birdth, String password) {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_FIO, fio);
         cv.put(COLUMN_MAIL, mail);
-        cv.put(COLUMN_BIRDTH, date_birdth);
         cv.put(COLUMN_BIRDTH, password);
+        cv.put(COLUMN_BIRDTH, date_birdth);
         mDB.insert(DB_CREATE_USERS, null, cv);
     }
 

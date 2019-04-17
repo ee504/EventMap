@@ -51,7 +51,9 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
 
             case R.id.buttonCreateAcc:
                 Log.d(TAG, "Create account");
-
+                iPresenter.createUser(editFIO.getText().toString(), editMail.getText().toString(), editPassword.getText().toString(), editDateBirth.getText().toString());
+                Intent intent = new Intent(this, MapsActivity.class);
+                startActivity(intent);
                 break;
         }
     }

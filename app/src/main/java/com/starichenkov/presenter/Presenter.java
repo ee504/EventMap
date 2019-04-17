@@ -18,8 +18,9 @@ public class Presenter implements IPresenter{
 
 
     @Override
-    public void createUser(String fio, String mail, String date_birdth, String password){
+    public void createUser(String fio, String mail, String password, String date_birdth){
 
+        iModel.createUser(fio, mail, password, date_birdth);
 
     };
 }
