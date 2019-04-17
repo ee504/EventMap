@@ -52,6 +52,10 @@
             android:label="Registration">
         </activity>
 
+        <activity android:name=".UsersDataActivity"
+            android:label="UsersDataActivity">
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>

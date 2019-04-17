@@ -6,12 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DB {
 
     private static final String DB_NAME = "mydb";
     private static final int DB_VERSION = 1;
     private static final String DB_TABLE_USERS = "users";
+    private static final String TAG = "MyLog";
 
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_FIO = "fio";
@@ -26,7 +28,7 @@ public class DB {
                     COLUMN_FIO + " text, " +
                     COLUMN_MAIL + " text, " +
                     COLUMN_PASSWORD + " text, " +
-                    COLUMN_BIRDTH + " numeric, " +
+                    COLUMN_BIRDTH + " text, " +
                     COLUMN_PHOTO + " text" +
                     ");";
 
@@ -67,7 +69,8 @@ public class DB {
         cv.put(COLUMN_MAIL, mail);
         cv.put(COLUMN_BIRDTH, password);
         cv.put(COLUMN_BIRDTH, date_birdth);
-        mDB.insert(DB_CREATE_USERS, null, cv);
+        long rowID = mDB.insert(DB_CREATE_USERS, null, cv);
+        Log.d(TAG, "row inserted, ID = " + rowID);
     }
 
     // удалить запись из DB_TABLE
@@ -87,7 +90,7 @@ public class DB {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(DB_CREATE_USERS);
-
+            Log.d(TAG, "Create new BD");
         }
 
         @Override

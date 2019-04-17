@@ -39,6 +39,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private SomeEvet someEvent = new SomeEvet();
     private Button btnDrawerOpener;
+    private Button btnUsersData;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Presenter presenter;
@@ -59,6 +60,9 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         btnDrawerOpener = (Button) findViewById(R.id.btnDrawerOpener);
         btnDrawerOpener.setOnClickListener(this);
+
+        btnUsersData = (Button) findViewById(R.id.btnUsersData);
+        btnUsersData.setOnClickListener(this);
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -101,6 +105,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             case R.id.btnDrawerOpener:
                 drawerLayout.openDrawer(GravityCompat.START);
                 Log.d(TAG, "Click");
+                break;
+
+            case R.id.btnUsersData:
+                Log.d(TAG, "UsersData");
+                Intent intent1 = new Intent(this, UsersDataActivity.class);
+                startActivity(intent1);
                 break;
 
             case R.id.btnRegistration:
