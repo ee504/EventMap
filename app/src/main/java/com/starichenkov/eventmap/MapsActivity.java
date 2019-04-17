@@ -1,6 +1,7 @@
 package com.starichenkov.eventmap;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.support.design.widget.NavigationView;
@@ -106,6 +107,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
             case R.id.btnRegistration:
                 Log.d(TAG, "Registration");
+                Intent intent = new Intent(this, RegistrationActivity.class);
+                startActivity(intent);
                 break;
         }
     }

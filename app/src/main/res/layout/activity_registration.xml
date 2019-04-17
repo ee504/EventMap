@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/textViewRegistration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:text="Регистрация" />
+
+        <EditText
+            android:id="@+id/editFIO"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:ems="10"
+            android:padding="10dp"
+            android:hint="ФИО:"/>
+
+        <EditText
+            android:id="@+id/editMail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:ems="10"
+            android:padding="10dp"
+            android:inputType="textEmailAddress"
+            android:hint="Почта:"/>
+
+        <EditText
+            android:id="@+id/editPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:ems="10"
+            android:padding="10dp"
+            android:inputType="textPassword"
+            android:hint="Пароль:"/>
+
+        <EditText
+            android:id="@+id/editDateBirth"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:ems="10"
+            android:padding="10dp"
+            android:inputType="date"
+            android:hint="Дата рождения:"/>
+
+        <Button
+            android:id="@+id/buttonCreateAcc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:padding="10dp"
+            android:text="Создать аккаунт" />
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

@@ -1,19 +1,25 @@
 package com.starichenkov.presenter;
 
-import android.support.v4.view.GravityCompat;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import com.starichenkov.eventmap.IView;
 
-import com.starichenkov.eventmap.R;
+import com.starichenkov.Model.IModel;
+import com.starichenkov.Model.Model;
 
-public class Presenter {
+public class Presenter implements IPresenter{
 
     private static final String TAG = "MyLog";
+    private IView iView;
+    private IModel iModel;
 
-    private View mView;
-
-    public Presenter(View view){
-        this.mView = view;
+    public Presenter(IView iView){
+        this.iView = iView;
+        iModel = new Model(iView);
     }
+
+
+    @Override
+    public void createUser(String fio, String mail, String date_birdth, String password){
+
+
+    };
 }

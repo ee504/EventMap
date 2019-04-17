@@ -16,13 +16,17 @@ public class DB {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_FIO = "fio";
     public static final String COLUMN_MAIL = "mail";
+    public static final String COLUMN_BIRDTH = "date_birdth";
     public static final String COLUMN_PHOTO = "photo";
+    public static final String COLUMN_PASSWORD = "password";
 
     private static final String DB_CREATE_USERS =
             "create table " + DB_TABLE_USERS + "(" +
                     COLUMN_ID + " integer primary key autoincrement, " +
-                    COLUMN_FIO + " integer, " +
+                    COLUMN_FIO + " text, " +
                     COLUMN_MAIL + " text, " +
+                    COLUMN_BIRDTH + " numeric, " +
+                    COLUMN_PASSWORD + " text, " +
                     COLUMN_PHOTO + " text" +
                     ");";
 
@@ -52,11 +56,12 @@ public class DB {
     }
 
     // добавить запись в DB_CREATE_USERS
-    public void addRec(String fio, String mail, String photo) {
+    public void addRec(String fio, String mail, String date_birdth, String password) {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_FIO, fio);
         cv.put(COLUMN_MAIL, mail);
-        cv.put(COLUMN_PHOTO, photo);
+        cv.put(COLUMN_BIRDTH, date_birdth);
+        cv.put(COLUMN_BIRDTH, password);
         mDB.insert(DB_CREATE_USERS, null, cv);
     }
 
