@@ -28,11 +28,18 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.android.gms:play-services:12.0.1'
     implementation 'com.android.support:design:28.0.0'
+    implementation "android.arch.persistence.room:runtime:1.0.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
 }
 
 allprojects {
     repositories {
         //start here
+
         configurations.all {
             resolutionStrategy.eachDependency { DependencyResolveDetails details ->
                 def requested = details.requested
@@ -46,6 +53,7 @@ allprojects {
         }
         //end
         jcenter()
+        google()
         maven {
             url "https://maven.google.com"
         }

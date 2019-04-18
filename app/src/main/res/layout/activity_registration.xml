@@ -52,16 +52,6 @@
             android:inputType="textPassword"
             android:hint="Пароль:"/>
 
-        <EditText
-            android:id="@+id/editDateBirth"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:ems="10"
-            android:padding="10dp"
-            android:inputType="date"
-            android:hint="Дата рождения:"/>
-
         <Button
             android:id="@+id/buttonCreateAcc"
             android:layout_width="match_parent"

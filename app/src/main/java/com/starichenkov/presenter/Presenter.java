@@ -8,19 +8,19 @@ import com.starichenkov.Model.Model;
 public class Presenter implements IPresenter{
 
     private static final String TAG = "MyLog";
-    private IView iView;
+    //private IView iView;
     private IModel iModel;
 
-    public Presenter(IView iView){
-        this.iView = iView;
-        iModel = new Model(iView);
+    public Presenter(){
+        //this.iView = iView;
+        iModel = new Model();
     }
 
 
     @Override
-    public void createUser(String fio, String mail, String password, String date_birdth){
+    public void createUser(String fio, String mail, String password){
 
-        iModel.createUser(fio, mail, password, date_birdth);
+        iModel.createUser(fio, mail, password);
 
     };
 }

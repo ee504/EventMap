@@ -20,7 +20,6 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
     private EditText editFIO;
     private EditText editMail;
     private EditText editPassword;
-    private EditText editDateBirth;
     private Button buttonCreateAcc;
     private static final String TAG = "MyLog";
 
@@ -31,7 +30,7 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
         setContentView(R.layout.activity_registration);
 
         initView();
-        iPresenter = new Presenter(this);
+        iPresenter = new Presenter();
     }
 
     private void initView() {
@@ -39,7 +38,6 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
         editFIO = (EditText) findViewById(R.id.editFIO);
         editMail = (EditText) findViewById(R.id.editMail);
         editPassword = (EditText) findViewById(R.id.editPassword);
-        editDateBirth = (EditText) findViewById(R.id.editDateBirth);
         buttonCreateAcc = (Button) findViewById(R.id.buttonCreateAcc);
         buttonCreateAcc.setOnClickListener(this);
     }
@@ -52,12 +50,11 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
 
             case R.id.buttonCreateAcc:
                 Log.d(TAG, "Create account");
-                iPresenter.createUser(editFIO.getText().toString(), editMail.getText().toString(), editPassword.getText().toString(), editDateBirth.getText().toString());
+                iPresenter.createUser(editFIO.getText().toString(), editMail.getText().toString(), editPassword.getText().toString());
                 Log.d(TAG, "Список переменных");
                 Log.d(TAG,
                         "name = " + editFIO.getText().toString() +
                                 ", email = " + editMail.getText().toString() +
-                                ", birdthlColIndex = " + editDateBirth.getText().toString() +
                                 ", passwordColIndex = " + editPassword.getText().toString());
                 Intent intent = new Intent(this, MapsActivity.class);
                 startActivity(intent);
