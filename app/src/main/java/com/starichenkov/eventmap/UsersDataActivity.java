@@ -19,7 +19,7 @@ import com.starichenkov.Model.DB;
 
 import java.util.concurrent.TimeUnit;
 
-public class UsersDataActivity extends AppCompatActivity implements IView, LoaderManager.LoaderCallbacks<Cursor> {
+public class UsersDataActivity extends AppCompatActivity implements IView {
 
 
     ListView lvData;
@@ -50,7 +50,37 @@ public class UsersDataActivity extends AppCompatActivity implements IView, Loade
         //registerForContextMenu(lvData);
 
         // создаем лоадер для чтения данных
-        getSupportLoaderManager().initLoader(0, null,  this);
+        //getSupportLoaderManager().initLoader(0, null,  this);
+
+        Log.d(TAG, "--- Rows in mytable: ---");
+        // делаем запрос всех данных из таблицы mytable, получаем Cursor
+        Cursor c = db.getAllData();
+
+        // ставим позицию курсора на первую строку выборки
+        // если в выборке нет строк, вернется false
+        if (c.moveToFirst()) {
+
+            // определяем номера столбцов по имени в выборке
+            int idColIndex = c.getColumnIndex("_id");
+            int nameColIndex = c.getColumnIndex("fio");
+            int emailColIndex = c.getColumnIndex("mail");
+            int birdthlColIndex = c.getColumnIndex("date_birdth");
+            int passwordColIndex = c.getColumnIndex("password");
+
+            do {
+                // получаем значения по номерам столбцов и пишем все в лог
+                Log.d(TAG,
+                        "ID = " + c.getInt(idColIndex) +
+                                ", name = " + c.getString(nameColIndex) +
+                                ", email = " + c.getString(emailColIndex) +
+                                ", birdthlColIndex = " + c.getString(birdthlColIndex) +
+                                ", passwordColIndex = " + c.getString(passwordColIndex));
+                // переход на следующую строку
+                // а если следующей нет (текущая - последняя), то false - выходим из цикла
+            } while (c.moveToNext());
+        } else
+            Log.d(TAG, "0 rows");
+        c.close();
 
     }
 
@@ -61,39 +91,5 @@ public class UsersDataActivity extends AppCompatActivity implements IView, Loade
         db.close();
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle bndl) {
-        return new MyCursorLoader(this, db);
-    }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        scAdapter.swapCursor(cursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-    }
-
-    static class MyCursorLoader extends CursorLoader {
-
-        DB db;
-
-        public MyCursorLoader(Context context, DB db) {
-            super(context);
-            this.db = db;
-        }
-
-        @Override
-        public Cursor loadInBackground() {
-            Cursor cursor = db.getAllData();
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return cursor;
-        }
-
-    }
 }

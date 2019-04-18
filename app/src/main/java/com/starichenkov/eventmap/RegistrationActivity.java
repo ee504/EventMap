@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
 
-import static com.google.android.gms.wearable.DataMap.TAG;
+//import static com.google.android.gms.wearable.DataMap.TAG;
 
 public class RegistrationActivity extends Activity implements IView, OnClickListener {
 
@@ -22,6 +22,7 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
     private EditText editPassword;
     private EditText editDateBirth;
     private Button buttonCreateAcc;
+    private static final String TAG = "MyLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,12 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
             case R.id.buttonCreateAcc:
                 Log.d(TAG, "Create account");
                 iPresenter.createUser(editFIO.getText().toString(), editMail.getText().toString(), editPassword.getText().toString(), editDateBirth.getText().toString());
+                Log.d(TAG, "Список переменных");
+                Log.d(TAG,
+                        "name = " + editFIO.getText().toString() +
+                                ", email = " + editMail.getText().toString() +
+                                ", birdthlColIndex = " + editDateBirth.getText().toString() +
+                                ", passwordColIndex = " + editPassword.getText().toString());
                 Intent intent = new Intent(this, MapsActivity.class);
                 startActivity(intent);
                 break;

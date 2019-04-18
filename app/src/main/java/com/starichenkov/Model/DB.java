@@ -69,6 +69,7 @@ public class DB {
         cv.put(COLUMN_MAIL, mail);
         cv.put(COLUMN_BIRDTH, password);
         cv.put(COLUMN_BIRDTH, date_birdth);
+        cv.put(COLUMN_PHOTO, "-");
         long rowID = mDB.insert(DB_CREATE_USERS, null, cv);
         Log.d(TAG, "row inserted, ID = " + rowID);
     }
