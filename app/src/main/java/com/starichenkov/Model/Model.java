@@ -25,13 +25,13 @@ public class Model implements IModel{
     private static final String TAG = "MyLog";
 
     public Model() {
-        //this.db = new DB((Context) iView);
-        //db.open();
+
         AppDataBase db = App.getInstance().getDatabase();
         userDao = db.usersDao();
 
     }
 
+    @Override
     public void createUser(final String fio, final String mail, final String password){
 
         //userDao.insert(new Users(fio, mail, password));
@@ -61,6 +61,29 @@ public class Model implements IModel{
                     public void onError(Throwable e) {
                         // something went wrong
                         Log.d(TAG, "onError");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+
+    }
+
+    @Override
+    public void findUser(String mail, String password){
+
+        userDao.getId(mail, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<Integer>() {
+                    @Override
+                    public void onSuccess(Integer id) {
+                        Log.d(TAG, "onSuccess");
+                            Log.d(TAG,
+                                    "ID = " + id);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "Some error");
                         Log.d(TAG, e.getMessage());
                     }
                 });

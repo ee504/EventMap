@@ -23,4 +23,9 @@ public class Presenter implements IPresenter{
         iModel.createUser(fio, mail, password);
 
     };
+
+    @Override
+    public void findUser(String mail, String password){
+        iModel.findUser(mail, password);
+    }
 }

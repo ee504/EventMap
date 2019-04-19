@@ -6,4 +6,5 @@ public interface IPresenter {
 
     void createUser(String fio, String mail, String password);
 
+    void findUser(String mail, String password);
 }

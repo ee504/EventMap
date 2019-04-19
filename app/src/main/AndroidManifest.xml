@@ -53,6 +53,10 @@
             android:label="Registration">
         </activity>
 
+        <activity android:name=".EnterAccountActivity"
+            android:label="EnterAccountActivity">
+        </activity>
+
         <activity android:name=".UsersDataActivity"
             android:label="UsersDataActivity">
         </activity>

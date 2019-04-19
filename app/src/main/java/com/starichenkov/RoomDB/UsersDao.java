@@ -21,6 +21,9 @@ public interface UsersDao {
     @Query("SELECT * FROM Users WHERE id = :id")
     Single<Users> getById(long id);
 
+    @Query("SELECT id FROM Users WHERE mail = :mail and password = :password")
+    Single<Integer> getId(String mail, String password);
+
     @Insert
     void insert(Users user);
     //Single<Long> insert(Users user);

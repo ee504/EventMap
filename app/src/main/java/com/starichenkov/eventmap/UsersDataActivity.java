@@ -54,7 +54,7 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
                                     "ID = " + user.id +
                                             ", fio = " + user.fio +
                                             ", email = " + user.mail +
-                                            ", passwordColIndex = " + user.password);
+                                            ", password = " + user.password);
                         }
                     }
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/textViewEnter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:text="Авторизация" />
+
+        <EditText
+            android:id="@+id/editMailEnter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:ems="10"
+            android:padding="10dp"
+            android:hint="Почта:"/>
+
+        <EditText
+            android:id="@+id/editPasswordEnter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:ems="10"
+            android:padding="10dp"
+            android:inputType="textPassword"
+            android:hint="Пароль:"/>
+
+        <Button
+            android:id="@+id/buttonEnterAcc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:padding="10dp"
+            android:text="Войти в аккаунт" />
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

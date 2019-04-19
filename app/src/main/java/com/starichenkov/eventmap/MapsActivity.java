@@ -43,9 +43,9 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Presenter presenter;
-    private DB db;
 
     private Button btnRegistration;
+    private Button btnEnterAccount;
 
 
     @Override
@@ -58,6 +58,16 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        initView();
+
+        Log.d(TAG, "Hello");
+
+
+
+    }
+
+    private void initView() {
+
         btnDrawerOpener = (Button) findViewById(R.id.btnDrawerOpener);
         btnDrawerOpener.setOnClickListener(this);
 
@@ -67,13 +77,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, navigationView, false);
-        navigationView.addHeaderView(header);
-
-        btnRegistration = (Button) header.findViewById(R.id.btnRegistration);
-        btnRegistration.setOnClickListener(this);
-
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -89,11 +92,17 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 }
         );
 
-        Log.d(TAG, "Hello");
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, navigationView, false);
+        navigationView.addHeaderView(header);
 
-        // открываем подключение к БД
-        //db = new DB(this);
-        //db.open();
+        btnRegistration = (Button) header.findViewById(R.id.btnRegistration);
+        btnRegistration.setOnClickListener(this);
+
+        btnEnterAccount = (Button) header.findViewById(R.id.btnEnterAccount);
+        btnEnterAccount.setOnClickListener(this);
+
+
+
 
     }
 
@@ -109,14 +118,20 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
             case R.id.btnUsersData:
                 Log.d(TAG, "UsersData");
-                Intent intent1 = new Intent(this, UsersDataActivity.class);
-                startActivity(intent1);
+                Intent intentUsersData = new Intent(this, UsersDataActivity.class);
+                startActivity(intentUsersData);
                 break;
 
             case R.id.btnRegistration:
                 Log.d(TAG, "Registration");
-                Intent intent = new Intent(this, RegistrationActivity.class);
-                startActivity(intent);
+                Intent intentRegistration = new Intent(this, RegistrationActivity.class);
+                startActivity(intentRegistration);
+                break;
+
+            case R.id.btnEnterAccount:
+                Log.d(TAG, "btnEnterAccount");
+                Intent intentEnterAccount = new Intent(this, EnterAccountActivity.class);
+                startActivity(intentEnterAccount);
                 break;
         }
     }

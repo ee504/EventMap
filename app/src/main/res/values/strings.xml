@@ -3,4 +3,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="nav_search">Search</string>
     <string name="nav_bookmarks">Bookmarks</string>
+    <string name="account_preference">AccountPreference</string>
+    <string name="account">Account</string>
 </resources>
