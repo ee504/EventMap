@@ -61,6 +61,10 @@
             android:label="UsersDataActivity">
         </activity>
 
+        <activity android:name=".CreateEventActivity"
+            android:label="CreateEventActivity">
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>

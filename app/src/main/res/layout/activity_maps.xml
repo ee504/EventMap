@@ -37,6 +37,15 @@
             android:layout_marginTop="150dp"
             android:paddingRight="10dp"/>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btnFloatingAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:src="@drawable/ic_add"
+            android:layout_marginBottom="150dp"
+            android:layout_marginRight="20dp"/>
+
     </fragment>
 
     <android.support.design.widget.NavigationView
@@ -47,7 +56,6 @@
         android:fitsSystemWindows="true"
         app:menu="@menu/drawer_view"/>
         //app:headerLayout="@layout/nav_header" />
-
 
 
 </android.support.v4.widget.DrawerLayout>

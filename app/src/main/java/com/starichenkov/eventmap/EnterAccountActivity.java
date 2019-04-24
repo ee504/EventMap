@@ -1,6 +1,7 @@
 package com.starichenkov.eventmap;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,6 +49,8 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
 
                 Log.d(TAG, "Click buttonEnterAcc");
                 Log.d(TAG, "authorized = " + test);
+                Intent intentMapsActivity = new Intent(this, MapsActivity.class);
+                startActivity(intentMapsActivity);
                 break;
 
         }

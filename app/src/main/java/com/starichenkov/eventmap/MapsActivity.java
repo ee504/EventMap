@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -18,9 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
+import android.view.Gravity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -52,6 +56,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private View header_not_authorized;
     private View header_authorized;
 
+    private FloatingActionButton btnFloatingAction;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +84,9 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         btnUsersData = (Button) findViewById(R.id.btnUsersData);
         btnUsersData.setOnClickListener(this);
+
+        btnFloatingAction = (FloatingActionButton) findViewById(R.id.btnFloatingAction);
+        btnFloatingAction.setOnClickListener(this);
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -125,7 +134,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     @Override
     public void onClick(View v) {
         // по id определяем кнопку, вызвавшую этот обработчик
-        Log.d(TAG, "по id определяем кнопку, вызвавшую этот обработчик");
+        //Log.d(TAG, "по id определяем кнопку, вызвавшую этот обработчик");
         switch (v.getId()) {
             case R.id.btnDrawerOpener:
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -136,6 +145,18 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 Log.d(TAG, "Click btnUsersData");
                 Intent intentUsersData = new Intent(this, UsersDataActivity.class);
                 startActivity(intentUsersData);
+                break;
+
+            case R.id.btnFloatingAction:
+                if(new AccountAuthorization(this).checkAuthorization()) {
+                    Log.d(TAG, "Click btnFloatingAction");
+                    Intent intentCreateEvent = new Intent(this, CreateEventActivity.class);
+                    startActivity(intentCreateEvent);
+                }else{
+                    Toast toast = Toast.makeText(this, "Требуется регистрация",Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
+                }
                 break;
 
             case R.id.btnEnterAccount:
@@ -183,6 +204,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         mMap = googleMap;
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
+        //mMap.setPadding (0, 0, 0,300);
 
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(someEvent.latitude, someEvent.longtude))
@@ -202,6 +224,9 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             mMap.setMyLocationEnabled(true);
             //uiSettings.setMyLocationButtonEnabled(true);
         }
+
+        //MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        //View zoomControls = mapFragment.getView().findViewById(0x1);
 
         //mMap.setMyLocationEnabled(true);
         //uiSettings.setMyLocationButtonEnabled(true);
