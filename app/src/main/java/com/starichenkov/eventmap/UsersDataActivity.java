@@ -19,6 +19,7 @@ import com.starichenkov.Model.DB;
 import com.starichenkov.RoomDB.App;
 import com.starichenkov.RoomDB.AppDataBase;
 import com.starichenkov.RoomDB.Users;
+import com.starichenkov.customClasses.AccountAuthorization;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +42,9 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
         Log.d(TAG, "--- Rows in mytable: ---");
 
         AppDataBase db = App.getInstance().getDatabase();
+
+        boolean test = new AccountAuthorization(this).checkAuthorization();
+        Log.d(TAG, "authorized = " + test);
 
         db.usersDao().getAll()
                 .subscribeOn(Schedulers.io())

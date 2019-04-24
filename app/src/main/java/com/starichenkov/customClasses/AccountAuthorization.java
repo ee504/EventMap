@@ -13,7 +13,7 @@ public class AccountAuthorization {
 
     public AccountAuthorization(Context con){
 
-        sPref = con.getSharedPreferences("@string/account_preference", MODE_PRIVATE);
+        sPref = con.getSharedPreferences("AccountPreference", MODE_PRIVATE);
 
     }
 
@@ -33,7 +33,7 @@ public class AccountAuthorization {
 
     }
 
-    public boolean ifAuthorized(){
+    public boolean checkAuthorization(){
 
         if (sPref.getInt(namePreference, 0) != 0){
             return true;

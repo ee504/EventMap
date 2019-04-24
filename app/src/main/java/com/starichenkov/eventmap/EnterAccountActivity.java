@@ -26,7 +26,7 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
         setContentView(R.layout.activity_enter_account);
 
         initView();
-        iPresenter = new Presenter();
+        iPresenter = new Presenter(this);
     }
 
     private void initView() {
@@ -44,9 +44,10 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
         switch (v.getId()) {
             case R.id.buttonEnterAcc:
 
-                iPresenter.findUser(editMailEnter.getText().toString(), editPasswordEnter.getText().toString());
+                boolean test = iPresenter.findUser(editMailEnter.getText().toString(), editPasswordEnter.getText().toString());
 
                 Log.d(TAG, "Click buttonEnterAcc");
+                Log.d(TAG, "authorized = " + test);
                 break;
 
         }

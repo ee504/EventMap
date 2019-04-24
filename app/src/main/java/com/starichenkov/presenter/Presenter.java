@@ -1,5 +1,8 @@
 package com.starichenkov.presenter;
 
+import android.content.Context;
+
+import com.starichenkov.customClasses.AccountAuthorization;
 import com.starichenkov.eventmap.IView;
 
 import com.starichenkov.Model.IModel;
@@ -8,12 +11,12 @@ import com.starichenkov.Model.Model;
 public class Presenter implements IPresenter{
 
     private static final String TAG = "MyLog";
-    //private IView iView;
+    private IView iView;
     private IModel iModel;
 
-    public Presenter(){
-        //this.iView = iView;
-        iModel = new Model();
+    public Presenter(IView iView){
+        this.iView = iView;
+        iModel = new Model(iView);
     }
 
 
@@ -25,7 +28,10 @@ public class Presenter implements IPresenter{
     };
 
     @Override
-    public void findUser(String mail, String password){
+    public boolean findUser(String mail, String password){
+
         iModel.findUser(mail, password);
+        return new AccountAuthorization((Context)this.iView).checkAuthorization();
+
     }
 }

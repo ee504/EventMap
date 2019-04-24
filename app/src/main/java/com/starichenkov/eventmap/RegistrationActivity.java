@@ -30,7 +30,7 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
         setContentView(R.layout.activity_registration);
 
         initView();
-        iPresenter = new Presenter();
+        iPresenter = new Presenter(this);
     }
 
     private void initView() {

@@ -9,15 +9,15 @@
     android:gravity="bottom">
 
     <Button
-        android:id="@+id/btnEnterAccount"
+        android:id="@+id/btnAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Войти в аккаунт" />
+        android:text="Аккаунт" />
 
     <Button
-        android:id="@+id/btnRegistration"
+        android:id="@+id/btnExit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Регистрация" />
+        android:text="Выйти" />
 
 </LinearLayout>

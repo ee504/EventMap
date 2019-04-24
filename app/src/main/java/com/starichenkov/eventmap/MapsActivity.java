@@ -1,6 +1,7 @@
 package com.starichenkov.eventmap;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -28,8 +29,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.starichenkov.customClasses.AccountAuthorization;
 import com.starichenkov.customClasses.SomeEvet;
-import com.starichenkov.Model.DB;
 import com.starichenkov.presenter.Presenter;
 
 public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener{
@@ -46,6 +47,10 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private Button btnRegistration;
     private Button btnEnterAccount;
+    private Button btnAccount;
+    private Button btnExit;
+    private View header_not_authorized;
+    private View header_authorized;
 
 
     @Override
@@ -92,17 +97,28 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 }
         );
 
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header, navigationView, false);
-        navigationView.addHeaderView(header);
 
-        btnRegistration = (Button) header.findViewById(R.id.btnRegistration);
+        header_authorized = LayoutInflater.from(this).inflate(R.layout.nav_header_authorized, navigationView, false);
+        header_not_authorized = LayoutInflater.from(this).inflate(R.layout.nav_header_not_authorized, navigationView, false);
+
+        if(new AccountAuthorization(this).checkAuthorization()) {
+            navigationView.addHeaderView(header_authorized);
+        }else{
+            navigationView.addHeaderView(header_not_authorized);
+        }
+
+        btnRegistration = (Button) header_not_authorized.findViewById(R.id.btnRegistration);
         btnRegistration.setOnClickListener(this);
 
-        btnEnterAccount = (Button) header.findViewById(R.id.btnEnterAccount);
+        btnEnterAccount = (Button) header_not_authorized.findViewById(R.id.btnEnterAccount);
         btnEnterAccount.setOnClickListener(this);
 
+        btnExit = (Button) header_authorized.findViewById(R.id.btnExit);
+        btnExit.setOnClickListener(this);
 
-
+        btnAccount = (Button) header_authorized.findViewById(R.id.btnAccount);
+        btnAccount.setOnClickListener(this);
+        
 
     }
 
@@ -113,25 +129,38 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         switch (v.getId()) {
             case R.id.btnDrawerOpener:
                 drawerLayout.openDrawer(GravityCompat.START);
-                Log.d(TAG, "Click");
+                Log.d(TAG, "Click Menu");
                 break;
 
             case R.id.btnUsersData:
-                Log.d(TAG, "UsersData");
+                Log.d(TAG, "Click btnUsersData");
                 Intent intentUsersData = new Intent(this, UsersDataActivity.class);
                 startActivity(intentUsersData);
                 break;
 
+            case R.id.btnEnterAccount:
+                Log.d(TAG, "Click btnEnterAccount");
+                Intent intentEnterAccount = new Intent(this, EnterAccountActivity.class);
+                startActivity(intentEnterAccount);
+                break;
+
             case R.id.btnRegistration:
-                Log.d(TAG, "Registration");
+                Log.d(TAG, "Click btnRegistration");
                 Intent intentRegistration = new Intent(this, RegistrationActivity.class);
                 startActivity(intentRegistration);
                 break;
 
-            case R.id.btnEnterAccount:
-                Log.d(TAG, "btnEnterAccount");
-                Intent intentEnterAccount = new Intent(this, EnterAccountActivity.class);
-                startActivity(intentEnterAccount);
+            case R.id.btnAccount:
+                Log.d(TAG, "Click btnAccount");
+                //Intent intentAccount = new Intent(this, EnterAccountActivity.class);
+                //startActivity(intentAccount);
+                break;
+
+            case R.id.btnExit:
+                Log.d(TAG, "Click btnExit");
+                new AccountAuthorization(this).deleteAuthorization();
+                Intent intentExit = new Intent(this, MapsActivity.class);
+                startActivity(intentExit);
                 break;
         }
     }
