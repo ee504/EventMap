@@ -1,85 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <FrameLayout
+        android:id="@+id/frgmCreateEvent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/textViewCreateEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:text="Создание мероприятия" />
-
-        <EditText
-            android:id="@+id/editNameEvent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:ems="10"
-            android:padding="10dp"
-            android:hint="Наименование мероприятия:"/>
-
-        <EditText
-            android:id="@+id/editDateEvent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:ems="10"
-            android:padding="10dp"
-            android:inputType="datetime"
-            android:hint="Дата мероприятия:"/>
-
-        <EditText
-            android:id="@+id/editTypeEvent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:ems="10"
-            android:padding="10dp"
-            android:hint="Тип мероприятия:"/>
-
-        <Spinner
-            android:id="@+id/spinnerTypeEvent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:ems="10"
-            android:padding="10dp">
-        </Spinner>
-
-        <EditText
-            android:id="@+id/editAddressEvent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:ems="10"
-            android:padding="10dp"
-            android:hint="Адрес мероприятия:"/>
-
-        <Button
-            android:id="@+id/buttonCreateEvent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:padding="10dp"
-            android:text="Создать мероприятия" />
-
-    </LinearLayout>
-
-
-
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 </LinearLayout>
