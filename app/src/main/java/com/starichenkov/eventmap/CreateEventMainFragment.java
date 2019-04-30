@@ -1,5 +1,6 @@
 package com.starichenkov.eventmap;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -24,6 +25,12 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     private EditText editAddressEvent;
     private Button buttonCreateEvent;
 
+    private OnClickAddressListener mListener;
+
+    public interface OnClickAddressListener {
+        public void OnClickAddress(String link);
+    }
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,6 +48,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: // нажатие
                         Log.d(TAG, "Touch editAddressEvent");
+                        mListener.OnClickAddress("Click editAddressEvent 123 test");
                         break;
             }
                 return true;
@@ -65,7 +73,18 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
             case R.id.editAddressEvent:
                 Log.d(TAG, "Click editAddressEvent");
+                //mListener.OnClickAddress("Click editAddressEvent 123 test");
                 break;
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnClickAddressListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnArticleSelectedListener");
         }
     }
 
