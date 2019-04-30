@@ -28,7 +28,8 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     private OnClickAddressListener mListener;
 
     public interface OnClickAddressListener {
-        public void OnClickAddress(String link);
+        void OnClickAddress(String link);
+        void OpenPlaceAutocomplete();
     }
 
 
@@ -49,6 +50,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
                     case MotionEvent.ACTION_DOWN: // нажатие
                         Log.d(TAG, "Touch editAddressEvent");
                         mListener.OnClickAddress("Click editAddressEvent 123 test");
+                        mListener.OpenPlaceAutocomplete();
                         break;
             }
                 return true;

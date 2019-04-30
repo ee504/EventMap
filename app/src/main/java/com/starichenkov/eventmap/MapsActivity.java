@@ -85,6 +85,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         btnUsersData = (Button) findViewById(R.id.btnUsersData);
         btnUsersData.setOnClickListener(this);
 
+
         btnFloatingAction = (FloatingActionButton) findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
 
@@ -146,6 +147,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 Intent intentUsersData = new Intent(this, UsersDataActivity.class);
                 startActivity(intentUsersData);
                 break;
+
 
             case R.id.btnFloatingAction:
                 if(new AccountAuthorization(this).checkAuthorization()) {

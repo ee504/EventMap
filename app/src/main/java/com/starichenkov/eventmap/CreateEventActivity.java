@@ -15,6 +15,7 @@ public class CreateEventActivity extends Activity implements CreateEventMainFrag
 
 
     private Fragment createEventMainFragment;
+    private Fragment createEventPlaceFragment;
     private FragmentTransaction fTrans;
     private static final String TAG = "MyLog";
 
@@ -33,8 +34,19 @@ public class CreateEventActivity extends Activity implements CreateEventMainFrag
     @Override
     public void OnClickAddress(String test) {
 
-        Log.d(TAG, "String from fragment" + test);
+        Log.d(TAG, "OnClickAddress: " + test);
 
+    }
+
+    @Override
+    public void OpenPlaceAutocomplete() {
+
+        Log.d(TAG, "OpenPlaceAutocomplete");
+
+        //createEventPlaceFragment = new CreateEventPlaceFragment();
+        fTrans = getFragmentManager().beginTransaction();
+        fTrans.hide(createEventMainFragment);
+        fTrans.add(R.id.frgmCreateEvent, createEventPlaceFragment).commit();
     }
 
 }
