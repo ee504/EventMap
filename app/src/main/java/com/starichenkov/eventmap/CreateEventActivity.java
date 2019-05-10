@@ -3,6 +3,7 @@ package com.starichenkov.eventmap;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -28,12 +29,13 @@ import com.starichenkov.presenter.Presenter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
-public class CreateEventActivity extends Activity implements CreateEventMainFragment.OnClickAddressListener {
+public class CreateEventActivity extends Activity implements CallBackInterfaceCreateEvent {
 
 
     private Fragment createEventMainFragment;
-    //private Fragment createEventPlaceFragment;
+    private Fragment createEventPlaceFragment;
     private FragmentTransaction fTrans;
     private static final String TAG = "MyLog";
     private int AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -44,10 +46,11 @@ public class CreateEventActivity extends Activity implements CreateEventMainFrag
         setContentView(R.layout.activity_create_event);
 
         createEventMainFragment = new CreateEventMainFragment();
+        createEventPlaceFragment = new CreateEventPlaceFragment();
         fTrans = getFragmentManager().beginTransaction();
-        fTrans.add(R.id.frgmCreateEvent, createEventMainFragment)
+        fTrans.add(R.id.frgmCreateEvent, createEventMainFragment).show(createEventMainFragment)
                 .commit();
-        fTrans.show(createEventMainFragment);
+        //fTrans.show(createEventMainFragment);
 
     }
 
@@ -74,32 +77,33 @@ public class CreateEventActivity extends Activity implements CreateEventMainFrag
 
         //createEventPlaceFragment = new CreateEventPlaceFragment();
         fTrans = getFragmentManager().beginTransaction();
-        fTrans.hide(createEventMainFragment).commit();
+        //fTrans.hide(createEventMainFragment).commit();
+        fTrans.add(R.id.frgmCreateEvent, createEventPlaceFragment)
+                .hide(createEventMainFragment)
+                .show(createEventPlaceFragment)
+                .commit();
         //fTrans.add(R.id.frgmCreateEvent, createEventPlaceFragment).commit();
 
 
         // Set the fields to specify which types of place data to
         // return after the user has made a selection.
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
-        Log.d(TAG, "OpenPlaceAutocomplete 1");
+        //List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+       // Log.d(TAG, "OpenPlaceAutocomplete 1");
 
         // Start the autocomplete intent.
-        Places.initialize(getApplicationContext(), "AIzaSyCFM9hjthZrR52HYFFpoARIZ41EQJ8Ny7M");
-        PlacesClient placesClient = Places.createClient(this);
-        Intent intent = new Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.FULLSCREEN, fields)
-                .setLocationRestriction(RectangularBounds.newInstance(
-                        new LatLng(56.188109, 43.702207),
-                        new LatLng(56.393887, 44.160886)))
-                .build(CreateEventActivity.this);
-        Log.d(TAG, "OpenPlaceAutocomplete 2");
-        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
-        Log.d(TAG, "OpenPlaceAutocomplete 3");
+        //Places.initialize(getApplicationContext(), "AIzaSyCFM9hjthZrR52HYFFpoARIZ41EQJ8Ny7M");
+        //PlacesClient placesClient = Places.createClient(this);
+        //Intent intent = new Autocomplete.IntentBuilder(
+                //AutocompleteActivityMode.FULLSCREEN, fields)
+                //.setLocationRestriction(RectangularBounds.newInstance(
+                        //new LatLng(56.188109, 43.702207),
+                        //new LatLng(56.393887, 44.160886)))
+                //.build(CreateEventActivity.this);
+        //startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "OpenPlaceAutocomplete 4");
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
@@ -112,6 +116,6 @@ public class CreateEventActivity extends Activity implements CreateEventMainFrag
                 // The user canceled the operation.
             }
         }
-    }
+    }*/
 
 }
