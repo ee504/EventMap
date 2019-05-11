@@ -1,12 +1,17 @@
 package com.starichenkov.eventmap;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,8 +23,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.view.View.OnTouchListener;
+import android.widget.Toast;
+
+import com.starichenkov.customClasses.AccountAuthorization;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -37,11 +48,18 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     private ImageView imageView;
     private Button buttonTakePhoto;
     private Button buttonDeletePhoto;
-
-    private File directory;
-    final int REQUEST_CODE_PHOTO = 1;
+    
+    final int REQUEST_TAKE_PHOTO = 1;
+    private Uri photoURI;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
 
     private CallBackInterfaceCreateEvent mListener;
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     /*public interface OnClickAddressListener {
         void OnClickAddress(String link);
@@ -53,7 +71,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_create_event, null);
-        createDirectory();
+
 
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.event_map_logo);
@@ -101,13 +119,84 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
             case R.id.buttonTakePhoto:
                 Log.d(TAG, "Click buttonTakePhoto");
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, generateFileUri());
-                startActivityForResult(intent, REQUEST_CODE_PHOTO);
+                /*int permission = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                if (permission != PackageManager.PERMISSION_GRANTED) {
+                    // We don't have permission so prompt the user
+                    ActivityCompat.requestPermissions(
+                            getActivity(),
+                            PERMISSIONS_STORAGE,
+                            REQUEST_EXTERNAL_STORAGE
+                    );
+                }*/
+                /*if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED){
+
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.CAMERA},
+                            MY_PERMISSIONS_REQUEST_CAMERA);
+
+                }else{*/
+                    dispatchTakePictureIntent();
+                //}
+
                 break;
 
         }
     }
+
+    private void dispatchTakePictureIntent() {
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Error: " + ex.getMessage());
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Log.d(TAG, "photoFile: " + photoFile.getAbsolutePath());
+                Log.d(TAG, "BuildConfig.APPLICATION_ID: " + BuildConfig.APPLICATION_ID + ".provider");
+                //photoURI = Uri.fromFile(photoFile);
+                photoURI = FileProvider.getUriForFile(getActivity(),
+                        //"com.example.android.provider",
+                        BuildConfig.APPLICATION_ID + ".provider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException{
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + ".jpg";
+        //File mydir = getActivity().getDir("for_pictures", Context.MODE_PRIVATE); //Creating an internal dir;
+        File mydir = getActivity().getFilesDir();
+        Log.d(TAG, "getActivity().getFilesDir(): " + getActivity().getFilesDir());
+        File image = new File(mydir, imageFileName); //Getting a file within the dir.
+
+        //String imageFileName = "JPEG_" + timeStamp + "_";
+        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        //File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        //File image = File.createTempFile(
+                //imageFileName,  /* prefix */
+                //".jpg",         /* suffix */
+                //storageDir      /* directory */
+        ///);
+        // Save a file: path for use with ACTION_VIEW intents
+        //mCurrentPhotoUri = image.getAbsolutePath();
+        return image;
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -122,45 +211,47 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
-        if (requestCode == REQUEST_CODE_PHOTO) {
-            if (resultCode == RESULT_OK) {
-                if (intent == null) {
-                    Log.d(TAG, "Intent is null");
-                } else {
-                    Log.d(TAG, "Photo uri: " + intent.getData());
-                    imageView.setImageURI(intent.getData());
-                    /*Bundle bndl = intent.getExtras();
-                    if (bndl != null) {
-                        Object obj = intent.getExtras().get("data");
-                        if (obj instanceof Bitmap) {
-                            Bitmap bitmap = (Bitmap) obj;
-                            Log.d(TAG, "bitmap " + bitmap.getWidth() + " x "
-                                    + bitmap.getHeight());
-                            ivPhoto.setImageBitmap(bitmap);
-                        }
-                    }*/
-                }
-            } else if (resultCode == RESULT_CANCELED) {
-                Log.d(TAG, "Canceled");
-            }
+
+        //super.onActivityResult(requestCode, resultCode, intent);
+
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            Log.d(TAG, "photoURI: " + photoURI);
+            Log.d(TAG, "intent.getData(): " + intent.getData());
+            Log.d(TAG, "intent.getExtras(): " + intent.getExtras());
+            imageView.setImageURI(photoURI);
         }
     }
 
-    private Uri generateFileUri() {
-        File file = null;
-        file = new File(directory.getPath() + "/" + "photo_"
-                + System.currentTimeMillis() + ".jpg");
-        Log.d(TAG, "fileName = " + file);
-        return Uri.fromFile(file);
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                    if (ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.CAMERA)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        dispatchTakePictureIntent();
+                    }
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 
-    private void createDirectory() {
-        directory = new File(
-                Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                "MyFolder");
-        if (!directory.exists())
-            directory.mkdirs();
-    }
 
 }

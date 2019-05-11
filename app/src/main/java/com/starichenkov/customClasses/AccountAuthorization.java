@@ -10,6 +10,7 @@ public class AccountAuthorization {
 
     private SharedPreferences sPref;
     private String namePreference = "Authorization";
+    private int idUser;
 
     public AccountAuthorization(Context con){
 
@@ -19,6 +20,7 @@ public class AccountAuthorization {
 
     public void saveAuthorization(int idUser){
 
+        this.idUser = idUser;
         Editor ed = sPref.edit();
         ed.putInt(namePreference, idUser);
         ed.commit();
@@ -41,6 +43,10 @@ public class AccountAuthorization {
             return false;
         }
 
+    }
+
+    public int getIdUser(){
+        return this.idUser;
     }
 
 
