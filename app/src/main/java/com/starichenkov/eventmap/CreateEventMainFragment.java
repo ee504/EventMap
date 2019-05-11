@@ -148,7 +148,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+       /* if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;
             try {
@@ -165,10 +165,10 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
                 photoURI = FileProvider.getUriForFile(getActivity(),
                         BuildConfig.APPLICATION_ID + ".provider",
                         photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);*/
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
+            //}
+        //}
     }
 
     private File createImageFile() throws IOException{
@@ -206,11 +206,17 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             if(intent != null) {
+                Log.d(TAG, "intent is not null");
                 Log.d(TAG, "photoURI: " + photoURI);
                 Log.d(TAG, "intent.getData(): " + intent.getData());
                 Log.d(TAG, "intent.getExtras(): " + intent.getExtras());
-                imageView.setImageURI(photoURI);
+                Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+                if (bitmap != null) {
+                    imageView.setImageBitmap(bitmap);
+                }
+                //imageView.setImageURI(photoURI);
             }else{
+                Log.d(TAG, "intent is null");
                 Log.d(TAG, "intent is null");
                 Log.d(TAG, "photoURI: " + photoURI);
                 Log.d(TAG, "mCurrentPhotoPath: " + mCurrentPhotoPath);
