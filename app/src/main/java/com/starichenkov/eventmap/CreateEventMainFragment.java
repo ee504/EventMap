@@ -1,11 +1,15 @@
 package com.starichenkov.eventmap;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -53,6 +57,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     private Button buttonDeletePhoto;
     
     final int REQUEST_TAKE_PHOTO = 1;
+    final int PIC_CROP = 2;
     private Uri photoURI;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     private String mCurrentPhotoPath;
@@ -123,22 +128,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
             case R.id.buttonTakePhoto:
                 Log.d(TAG, "Click buttonTakePhoto");
-                /*if (ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED){
-
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.CAMERA},
-                            MY_PERMISSIONS_REQUEST_CAMERA);
-
-                    //mMap.setMyLocationEnabled(true);
-
-                }else{*/
-                    dispatchTakePictureIntent();
-                    //uiSettings.setMyLocationButtonEnabled(true);
-                //}
-
-
+                dispatchTakePictureIntent();
                 break;
 
         }
@@ -148,7 +138,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-       /* if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;
             try {
@@ -165,10 +155,10 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
                 photoURI = FileProvider.getUriForFile(getActivity(),
                         BuildConfig.APPLICATION_ID + ".provider",
                         photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);*/
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            //}
-        //}
+            }
+        }
     }
 
     private File createImageFile() throws IOException{
@@ -202,72 +192,109 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
 
-        //super.onActivityResult(requestCode, resultCode, intent);
+        super.onActivityResult(requestCode, resultCode, intent);
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            if(intent != null) {
-                Log.d(TAG, "intent is not null");
-                Log.d(TAG, "photoURI: " + photoURI);
-                Log.d(TAG, "intent.getData(): " + intent.getData());
-                Log.d(TAG, "intent.getExtras(): " + intent.getExtras());
-                Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
-                if (bitmap != null) {
-                    imageView.setImageBitmap(bitmap);
-                }
-                //imageView.setImageURI(photoURI);
-            }else{
-                Log.d(TAG, "intent is null");
-                Log.d(TAG, "intent is null");
-                Log.d(TAG, "photoURI: " + photoURI);
-                Log.d(TAG, "mCurrentPhotoPath: " + mCurrentPhotoPath);
-                File myFile = new File(mCurrentPhotoPath);
-                Bitmap myBitmap;
-                try {
-                    myBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.fromFile(myFile));
-                    if (myBitmap != null) {
-                        Log.d(TAG, "myBitmap is not null");
-                        imageView.setImageBitmap(myBitmap);
-                    }else{
-                        Log.d(TAG, "myBitmap is null");
-                    }
+            Log.d(TAG, "intent is not null");
+            Log.d(TAG, "photoURI: " + photoURI);
+            //Log.d(TAG, "intent.getData(): " + intent.getData());
+            //Log.d(TAG, "intent.getExtras(): " + intent.getExtras());
+            //imageView.setImageURI(photoURI);
+            setPic();
+            //performCrop();
 
-                }catch (IOException ex){
-                    Log.d(TAG, "Exception:" + ex.getMessage());
-                }
-
-                //imageView.setImageURI(photoURI);
-            }
+        }else if(requestCode == PIC_CROP && resultCode == RESULT_OK){
+            Bundle extras = intent.getExtras();
+            // Получим кадрированное изображение
+            Bitmap thePic = extras.getParcelable("data");
+            // передаём его в ImageView
+            imageView.setImageBitmap(thePic);
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
+    private void setPic() {
 
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+        // Get the dimensions of the View
+        int targetW = imageView.getWidth();
+        int targetH = imageView.getHeight();
 
-                    if (ContextCompat.checkSelfPermission(getActivity(),
-                            Manifest.permission.CAMERA)
-                            == PackageManager.PERMISSION_GRANTED) {
-                        dispatchTakePictureIntent();
-                    }
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
 
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
 
-            // other 'case' lines to check for other
-            // permissions this app might request.
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+
+        //orientation
+        try{
+        ExifInterface ei = new ExifInterface(mCurrentPhotoPath);
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+
+        switch(orientation) {
+
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                bitmap = rotateImage(bitmap, 90);
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                bitmap = rotateImage(bitmap, 180);
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                bitmap = rotateImage(bitmap, 270);
+                break;
+
+            case ExifInterface.ORIENTATION_NORMAL:
+            default:
+                bitmap = bitmap;
+        }
+
+        }catch (IOException ex) {
+            // Error occurred while creating the File
+            Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Error: " + ex.getMessage());
+        }
+
+        imageView.setImageBitmap(bitmap);
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+    }
+
+    private void performCrop(){
+        try {
+            // Намерение для кадрирования. Не все устройства поддерживают его
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            cropIntent.setDataAndType(photoURI, "image/*");
+            cropIntent.putExtra("crop", "true");
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+            cropIntent.putExtra("outputX", 147);
+            cropIntent.putExtra("outputY", 147);
+            cropIntent.putExtra("return-data", true);
+            startActivityForResult(cropIntent, PIC_CROP);
+        }
+        catch(ActivityNotFoundException anfe){
+            String errorMessage = "Извините, но ваше устройство не поддерживает кадрирование";
+            Toast toast = Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
+
 
 }
