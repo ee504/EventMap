@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 import com.starichenkov.customClasses.AccountAuthorization;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,6 +55,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     final int REQUEST_TAKE_PHOTO = 1;
     private Uri photoURI;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+    private String mCurrentPhotoPath;
 
     private CallBackInterfaceCreateEvent mListener;
 
@@ -119,17 +123,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
             case R.id.buttonTakePhoto:
                 Log.d(TAG, "Click buttonTakePhoto");
-                /*int permission = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-                if (permission != PackageManager.PERMISSION_GRANTED) {
-                    // We don't have permission so prompt the user
-                    ActivityCompat.requestPermissions(
-                            getActivity(),
-                            PERMISSIONS_STORAGE,
-                            REQUEST_EXTERNAL_STORAGE
-                    );
-                }*/
-                /*if (ContextCompat.checkSelfPermission(getActivity(),
+                if (ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED){
 
@@ -137,9 +131,13 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
                             new String[]{Manifest.permission.CAMERA},
                             MY_PERMISSIONS_REQUEST_CAMERA);
 
-                }else{*/
+                    //mMap.setMyLocationEnabled(true);
+
+                }else{
                     dispatchTakePictureIntent();
-                //}
+                    //uiSettings.setMyLocationButtonEnabled(true);
+                }
+
 
                 break;
 
@@ -163,10 +161,8 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Log.d(TAG, "photoFile: " + photoFile.getAbsolutePath());
-                Log.d(TAG, "BuildConfig.APPLICATION_ID: " + BuildConfig.APPLICATION_ID + ".provider");
                 //photoURI = Uri.fromFile(photoFile);
                 photoURI = FileProvider.getUriForFile(getActivity(),
-                        //"com.example.android.provider",
                         BuildConfig.APPLICATION_ID + ".provider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
@@ -178,22 +174,16 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     private File createImageFile() throws IOException{
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + ".jpg";
-        //File mydir = getActivity().getDir("for_pictures", Context.MODE_PRIVATE); //Creating an internal dir;
-        File mydir = getActivity().getFilesDir();
-        Log.d(TAG, "getActivity().getFilesDir(): " + getActivity().getFilesDir());
-        File image = new File(mydir, imageFileName); //Getting a file within the dir.
-
-        //String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = "JPEG_" + timeStamp + "_";
         //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        //File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        //File image = File.createTempFile(
-                //imageFileName,  /* prefix */
-                //".jpg",         /* suffix */
-                //storageDir      /* directory */
-        ///);
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
         // Save a file: path for use with ACTION_VIEW intents
-        //mCurrentPhotoUri = image.getAbsolutePath();
+        mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
@@ -212,13 +202,35 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
 
-        //super.onActivityResult(requestCode, resultCode, intent);
+        super.onActivityResult(requestCode, resultCode, intent);
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Log.d(TAG, "photoURI: " + photoURI);
-            Log.d(TAG, "intent.getData(): " + intent.getData());
-            Log.d(TAG, "intent.getExtras(): " + intent.getExtras());
-            imageView.setImageURI(photoURI);
+            if(intent != null) {
+                Log.d(TAG, "photoURI: " + photoURI);
+                Log.d(TAG, "intent.getData(): " + intent.getData());
+                Log.d(TAG, "intent.getExtras(): " + intent.getExtras());
+                imageView.setImageURI(photoURI);
+            }else{
+                Log.d(TAG, "intent is null");
+                Log.d(TAG, "photoURI: " + photoURI);
+                Log.d(TAG, "mCurrentPhotoPath: " + mCurrentPhotoPath);
+                File myFile = new File(mCurrentPhotoPath);
+                Bitmap myBitmap;
+                try {
+                    myBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.fromFile(myFile));
+                    if (myBitmap != null) {
+                        Log.d(TAG, "myBitmap is not null");
+                        imageView.setImageBitmap(myBitmap);
+                    }else{
+                        Log.d(TAG, "myBitmap is null");
+                    }
+
+                }catch (IOException ex){
+                    Log.d(TAG, "Exception:" + ex.getMessage());
+                }
+
+                //imageView.setImageURI(photoURI);
+            }
         }
     }
 
@@ -237,7 +249,6 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
                     if (ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.CAMERA)
                             == PackageManager.PERMISSION_GRANTED) {
-
                         dispatchTakePictureIntent();
                     }
 
@@ -252,6 +263,5 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
             // permissions this app might request.
         }
     }
-
 
 }
