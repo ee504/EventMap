@@ -77,7 +77,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.fragment_create_event, null);
 
 
-        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+        imageView = (ImageView) view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.event_map_logo);
 
         EditText editNameEvent = (EditText) view.findViewById(R.id.editNameEvent);
@@ -123,7 +123,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
             case R.id.buttonTakePhoto:
                 Log.d(TAG, "Click buttonTakePhoto");
-                if (ContextCompat.checkSelfPermission(getActivity(),
+                /*if (ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED){
 
@@ -133,10 +133,10 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
                     //mMap.setMyLocationEnabled(true);
 
-                }else{
+                }else{*/
                     dispatchTakePictureIntent();
                     //uiSettings.setMyLocationButtonEnabled(true);
-                }
+                //}
 
 
                 break;
@@ -202,7 +202,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
 
-        super.onActivityResult(requestCode, resultCode, intent);
+        //super.onActivityResult(requestCode, resultCode, intent);
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             if(intent != null) {
