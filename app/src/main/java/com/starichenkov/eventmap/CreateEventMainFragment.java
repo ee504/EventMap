@@ -59,21 +59,9 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     final int REQUEST_TAKE_PHOTO = 1;
     final int PIC_CROP = 2;
     private Uri photoURI;
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     private String mCurrentPhotoPath;
 
     private CallBackInterfaceCreateEvent mListener;
-
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-    /*public interface OnClickAddressListener {
-        void OnClickAddress(String link);
-        void OpenPlaceAutocomplete();
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,10 +73,10 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
         imageView = (ImageView) view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.event_map_logo);
 
-        EditText editNameEvent = (EditText) view.findViewById(R.id.editNameEvent);
-        EditText editDateEvent = (EditText) view.findViewById(R.id.editDateEvent);
-        Spinner spinnerTypeEvent = (Spinner) view.findViewById(R.id.spinnerTypeEvent);
-        EditText editAddressEvent = (EditText) view.findViewById(R.id.editAddressEvent);
+        editNameEvent = (EditText) view.findViewById(R.id.editNameEvent);
+        editDateEvent = (EditText) view.findViewById(R.id.editDateEvent);
+        spinnerTypeEvent = (Spinner) view.findViewById(R.id.spinnerTypeEvent);
+        editAddressEvent = (EditText) view.findViewById(R.id.editAddressEvent);
         editAddressEvent.setOnClickListener(this);
         editAddressEvent.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -102,13 +90,14 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
             }
                 return true;
         }});
-        Button buttonCreateEvent = (Button) view.findViewById(R.id.buttonCreateEvent);
+
+        buttonCreateEvent = (Button) view.findViewById(R.id.buttonCreateEvent);
         buttonCreateEvent.setOnClickListener(this);
 
-        Button buttonTakePhoto = (Button) view.findViewById(R.id.buttonTakePhoto);
+        buttonTakePhoto = (Button) view.findViewById(R.id.buttonTakePhoto);
         buttonTakePhoto.setOnClickListener(this);
 
-        Button buttonDeletePhoto = (Button) view.findViewById(R.id.buttonDeletePhoto);
+        buttonDeletePhoto = (Button) view.findViewById(R.id.buttonDeletePhoto);
         buttonDeletePhoto.setOnClickListener(this);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, TypeEvents);
@@ -129,6 +118,12 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
             case R.id.buttonTakePhoto:
                 Log.d(TAG, "Click buttonTakePhoto");
                 dispatchTakePictureIntent();
+                break;
+
+            case R.id.buttonDeletePhoto:
+                Log.d(TAG, "Click buttonDeletePhoto");
+                imageView.setImageResource(R.drawable.event_map_logo);
+                getActivity().getContentResolver().delete(photoURI, null, null);
                 break;
 
         }
@@ -197,19 +192,61 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Log.d(TAG, "intent is not null");
             Log.d(TAG, "photoURI: " + photoURI);
-            //Log.d(TAG, "intent.getData(): " + intent.getData());
-            //Log.d(TAG, "intent.getExtras(): " + intent.getExtras());
             //imageView.setImageURI(photoURI);
-            setPic();
-            //performCrop();
+            try{
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), photoURI);
+                setImage(bitmap);
+            }catch (IOException ex) {
+                // Error occurred while creating the File
+                Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Error: " + ex.getMessage());
+            }
 
-        }else if(requestCode == PIC_CROP && resultCode == RESULT_OK){
-            Bundle extras = intent.getExtras();
+            //setPic();
+            //performCrop();
+        }//else if(requestCode == PIC_CROP && resultCode == RESULT_OK){
+            //Bundle extras = intent.getExtras();
             // Получим кадрированное изображение
-            Bitmap thePic = extras.getParcelable("data");
+            //Bitmap thePic = extras.getParcelable("data");
             // передаём его в ImageView
-            imageView.setImageBitmap(thePic);
+            //imageView.setImageBitmap(thePic);
+        //}
+    }
+
+    private void setImage(Bitmap bitmap) {
+
+        try{
+            ExifInterface ei = new ExifInterface(mCurrentPhotoPath);
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED);
+
+            switch(orientation) {
+
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    bitmap = rotateImage(bitmap, 90);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    bitmap = rotateImage(bitmap, 180);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    bitmap = rotateImage(bitmap, 270);
+                    break;
+
+                case ExifInterface.ORIENTATION_NORMAL:
+                default:
+                    bitmap = bitmap;
+            }
+
+        }catch (IOException ex) {
+            // Error occurred while creating the File
+            Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Error: " + ex.getMessage());
         }
+
+        imageView.setImageBitmap(bitmap);
+
     }
 
     private void setPic() {
