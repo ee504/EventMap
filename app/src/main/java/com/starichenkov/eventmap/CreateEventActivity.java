@@ -40,6 +40,8 @@ public class CreateEventActivity extends Activity implements CallBackInterfaceCr
     private static final String TAG = "MyLog";
     private int AUTOCOMPLETE_REQUEST_CODE = 1;
 
+    private String nameEvent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,58 +66,23 @@ public class CreateEventActivity extends Activity implements CallBackInterfaceCr
     }
 
     @Override
-    public void OnClickAddress(String test) {
-
-        Log.d(TAG, "OnClickAddress: " + test);
-
-    }
-
-    @Override
     public void OpenPlaceAutocomplete() {
 
         Log.d(TAG, "OpenPlaceAutocomplete 0");
 
-        //createEventPlaceFragment = new CreateEventPlaceFragment();
         fTrans = getFragmentManager().beginTransaction();
-        //fTrans.hide(createEventMainFragment).commit();
-        fTrans.add(R.id.frgmCreateEvent, createEventPlaceFragment)
+        /*fTrans.add(R.id.frgmCreateEvent, createEventPlaceFragment)
                 .hide(createEventMainFragment)
                 .show(createEventPlaceFragment)
+                .commit();*/
+        fTrans.replace(R.id.frgmCreateEvent, createEventPlaceFragment)
+                .addToBackStack(null)
                 .commit();
-        //fTrans.add(R.id.frgmCreateEvent, createEventPlaceFragment).commit();
-
-
-        // Set the fields to specify which types of place data to
-        // return after the user has made a selection.
-        //List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
-       // Log.d(TAG, "OpenPlaceAutocomplete 1");
-
-        // Start the autocomplete intent.
-        //Places.initialize(getApplicationContext(), "AIzaSyCFM9hjthZrR52HYFFpoARIZ41EQJ8Ny7M");
-        //PlacesClient placesClient = Places.createClient(this);
-        //Intent intent = new Autocomplete.IntentBuilder(
-                //AutocompleteActivityMode.FULLSCREEN, fields)
-                //.setLocationRestriction(RectangularBounds.newInstance(
-                        //new LatLng(56.188109, 43.702207),
-                        //new LatLng(56.393887, 44.160886)))
-                //.build(CreateEventActivity.this);
-        //startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getAddress()  + ", " + place.getLatLng());
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
-                Status status = Autocomplete.getStatusFromIntent(data);
-                Log.i(TAG, status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-            }
-        }
-    }*/
+    @Override
+    public void SetEventAddress(String city, String street, String house){
+
+    }
 
 }

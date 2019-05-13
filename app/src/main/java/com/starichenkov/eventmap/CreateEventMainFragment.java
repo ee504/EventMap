@@ -1,6 +1,9 @@
 package com.starichenkov.eventmap;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.FragmentTransaction;
+import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +21,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,10 +29,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.view.View.OnTouchListener;
+import android.view.View.OnClickListener;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.starichenkov.customClasses.AccountAuthorization;
@@ -37,12 +44,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class CreateEventMainFragment extends Fragment implements View.OnClickListener {
+public class CreateEventMainFragment extends Fragment implements OnClickListener, OnTouchListener {
 
     private String[] TypeEvents = { "Спектакль", "Выставка", "Вечеринка", "Кинопоказ", "Концерт" };
     private static final String TAG = "MyLog";
@@ -59,7 +67,10 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
     final int REQUEST_TAKE_PHOTO = 1;
     final int PIC_CROP = 2;
     private Uri photoURI;
+    private Bitmap bitmapPhoto;
     private String mCurrentPhotoPath;
+
+    private Calendar dateAndTime= Calendar.getInstance();
 
     private CallBackInterfaceCreateEvent mListener;
 
@@ -69,27 +80,28 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
         View view = inflater.inflate(R.layout.fragment_create_event, null);
 
-
+        Log.d(TAG, "photoURI: " + photoURI);
         imageView = (ImageView) view.findViewById(R.id.imageView);
-        imageView.setImageResource(R.drawable.event_map_logo);
+        if(photoURI == null) {
+            imageView.setImageResource(R.drawable.event_map_logo);
+        }else{
+            imageView.setImageBitmap(bitmapPhoto);
+            /*try{
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), photoURI);
+                setImage(bitmap);
+            }catch (IOException ex) {
+                Log.d(TAG, "Error: " + ex.getMessage());
+            }*/
+        }
+
 
         editNameEvent = (EditText) view.findViewById(R.id.editNameEvent);
         editDateEvent = (EditText) view.findViewById(R.id.editDateEvent);
         spinnerTypeEvent = (Spinner) view.findViewById(R.id.spinnerTypeEvent);
         editAddressEvent = (EditText) view.findViewById(R.id.editAddressEvent);
-        editAddressEvent.setOnClickListener(this);
-        editAddressEvent.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: // нажатие
-                        Log.d(TAG, "Touch editAddressEvent");
-                        mListener.OnClickAddress("Click editAddressEvent 123 test");
-                        mListener.OpenPlaceAutocomplete();
-                        break;
-            }
-                return true;
-        }});
+        editAddressEvent.setOnTouchListener(this);
+        editDateEvent = (EditText) view.findViewById(R.id.editDateEvent);
+        editDateEvent.setOnTouchListener(this);
 
         buttonCreateEvent = (Button) view.findViewById(R.id.buttonCreateEvent);
         buttonCreateEvent.setOnClickListener(this);
@@ -127,6 +139,68 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
                 break;
 
         }
+    }
+
+    @Override
+    public boolean  onTouch(View v, MotionEvent event){
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            switch (v.getId()) {
+                case R.id.editAddressEvent:
+                    Log.d(TAG, "Touch editAddressEvent");
+                    FragmentTransaction fTrans = getFragmentManager().beginTransaction();
+                    fTrans.addToBackStack(null).commit();
+                    mListener.OpenPlaceAutocomplete();
+                    break;
+
+                case R.id.editDateEvent:
+                    setDate(v);
+                    //setTime(v);
+                    //setInitialDateTime();
+            }
+        }
+        return true;
+    }
+
+    public void setDate(View v) {
+        new DatePickerDialog(getActivity(), myDateCallBack,
+                dateAndTime.get(Calendar.YEAR),
+                dateAndTime.get(Calendar.MONTH),
+                dateAndTime.get(Calendar.DAY_OF_MONTH))
+                .show();
+    }
+
+    public void setTime(View v) {
+        new TimePickerDialog(getActivity(), myTimeCallBack,
+                dateAndTime.get(Calendar.HOUR_OF_DAY),
+                dateAndTime.get(Calendar.MINUTE), true)
+                .show();
+    }
+
+    // установка обработчика выбора даты
+    DatePickerDialog.OnDateSetListener myDateCallBack = new DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            dateAndTime.set(Calendar.YEAR, year);
+            dateAndTime.set(Calendar.MONTH, monthOfYear);
+            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            setTime(view);
+        }
+    };
+
+    TimePickerDialog.OnTimeSetListener myTimeCallBack=new TimePickerDialog.OnTimeSetListener() {
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            dateAndTime.set(Calendar.MINUTE, minute);
+            setInitialDateTime();
+        }
+    };
+
+    // установка даты и времени
+    private void setInitialDateTime() {
+
+        editDateEvent.setText(DateUtils.formatDateTime(getActivity(),
+                dateAndTime.getTimeInMillis(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
+                        | DateUtils.FORMAT_SHOW_TIME));
     }
 
     private void dispatchTakePictureIntent() {
@@ -204,13 +278,7 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
 
             //setPic();
             //performCrop();
-        }//else if(requestCode == PIC_CROP && resultCode == RESULT_OK){
-            //Bundle extras = intent.getExtras();
-            // Получим кадрированное изображение
-            //Bitmap thePic = extras.getParcelable("data");
-            // передаём его в ImageView
-            //imageView.setImageBitmap(thePic);
-        //}
+        }
     }
 
     private void setImage(Bitmap bitmap) {
@@ -234,9 +302,9 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
                     bitmap = rotateImage(bitmap, 270);
                     break;
 
-                case ExifInterface.ORIENTATION_NORMAL:
-                default:
-                    bitmap = bitmap;
+                //case ExifInterface.ORIENTATION_NORMAL:
+                //default:
+                    //bitmap = bitmap;
             }
 
         }catch (IOException ex) {
@@ -244,66 +312,9 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
             Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Error: " + ex.getMessage());
         }
-
+        bitmapPhoto = bitmap;
         imageView.setImageBitmap(bitmap);
 
-    }
-
-    private void setPic() {
-
-        // Get the dimensions of the View
-        int targetW = imageView.getWidth();
-        int targetH = imageView.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-
-        //orientation
-        try{
-        ExifInterface ei = new ExifInterface(mCurrentPhotoPath);
-        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED);
-
-        switch(orientation) {
-
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                bitmap = rotateImage(bitmap, 90);
-                break;
-
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                bitmap = rotateImage(bitmap, 180);
-                break;
-
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                bitmap = rotateImage(bitmap, 270);
-                break;
-
-            case ExifInterface.ORIENTATION_NORMAL:
-            default:
-                bitmap = bitmap;
-        }
-
-        }catch (IOException ex) {
-            // Error occurred while creating the File
-            Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Error: " + ex.getMessage());
-        }
-
-        imageView.setImageBitmap(bitmap);
     }
 
     public static Bitmap rotateImage(Bitmap source, float angle) {
@@ -312,26 +323,5 @@ public class CreateEventMainFragment extends Fragment implements View.OnClickLis
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
                 matrix, true);
     }
-
-    private void performCrop(){
-        try {
-            // Намерение для кадрирования. Не все устройства поддерживают его
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(photoURI, "image/*");
-            cropIntent.putExtra("crop", "true");
-            cropIntent.putExtra("aspectX", 1);
-            cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 147);
-            cropIntent.putExtra("outputY", 147);
-            cropIntent.putExtra("return-data", true);
-            startActivityForResult(cropIntent, PIC_CROP);
-        }
-        catch(ActivityNotFoundException anfe){
-            String errorMessage = "Извините, но ваше устройство не поддерживает кадрирование";
-            Toast toast = Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
-
 
 }

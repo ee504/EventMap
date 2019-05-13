@@ -39,6 +39,8 @@ public class CreateEventPlaceFragment extends Fragment implements OnMapReadyCall
     private GoogleMap mMap;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
+    private CallBackInterfaceCreateEvent mListener;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -127,17 +129,18 @@ public class CreateEventPlaceFragment extends Fragment implements OnMapReadyCall
             geocoder = new Geocoder(getActivity(), Locale.getDefault());
             try {
                 addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                String address = addresses.get(0).getAddressLine(0);
+                //String address = addresses.get(0).getAddressLine(0);
                 String city = addresses.get(0).getLocality();
-                String state = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
+                //String state = addresses.get(0).getAdminArea();
+                //String country = addresses.get(0).getCountryName();
                 String street = addresses.get(0).getThoroughfare();
-                String postalCode = addresses.get(0).getPostalCode();
+                //String postalCode = addresses.get(0).getPostalCode();
                 String house = addresses.get(0).getFeatureName();
-                Log.d(TAG, "address: " + address);
+                //Log.d(TAG, "address: " + address);
                 Log.d(TAG, "city: " + city);
                 Log.d(TAG, "street: " + street);
                 Log.d(TAG, "house: " + house);
+                mListener.SetEventAddress(city, street, house);
             }catch (IOException e) {
                     e.printStackTrace();
             }
@@ -170,6 +173,16 @@ public class CreateEventPlaceFragment extends Fragment implements OnMapReadyCall
 
             // other 'case' lines to check for other
             // permissions this app might request.
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (CallBackInterfaceCreateEvent) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnArticleSelectedListener");
         }
     }
 

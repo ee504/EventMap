@@ -2,7 +2,7 @@ package com.starichenkov.eventmap;
 
 public interface CallBackInterfaceCreateEvent {
 
-    void OnClickAddress(String link);
     void OpenPlaceAutocomplete();
+    void SetEventAddress(String city, String street, String house);
 
 }

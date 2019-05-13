@@ -37,7 +37,8 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,19 +47,23 @@
         </activity>
 
         <activity android:name=".RegistrationActivity"
-            android:label="Registration">
+            android:label="Registration"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".EnterAccountActivity"
-            android:label="EnterAccountActivity">
+            android:label="EnterAccountActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".UsersDataActivity"
-            android:label="UsersDataActivity">
+            android:label="UsersDataActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".CreateEventActivity"
-            android:label="CreateEventActivity">
+            android:label="CreateEventActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <provider
