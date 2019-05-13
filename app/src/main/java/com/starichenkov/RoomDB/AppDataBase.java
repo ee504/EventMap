@@ -7,5 +7,6 @@ import android.arch.persistence.room.RoomDatabase;
 public abstract class AppDataBase extends RoomDatabase {
 
     public abstract UsersDao usersDao();
+    public abstract EventsDao eventsDao();
 
 }

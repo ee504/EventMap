@@ -1,8 +1,10 @@
 package com.starichenkov.eventmap;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -38,9 +40,7 @@ public class CreateEventActivity extends Activity implements CallBackInterfaceCr
     private Fragment createEventPlaceFragment;
     private FragmentTransaction fTrans;
     private static final String TAG = "MyLog";
-    private int AUTOCOMPLETE_REQUEST_CODE = 1;
 
-    private String nameEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,8 @@ public class CreateEventActivity extends Activity implements CallBackInterfaceCr
         createEventMainFragment = new CreateEventMainFragment();
         createEventPlaceFragment = new CreateEventPlaceFragment();
         fTrans = getFragmentManager().beginTransaction();
-        fTrans.add(R.id.frgmCreateEvent, createEventMainFragment).show(createEventMainFragment)
+        fTrans.add(R.id.frgmCreateEvent, createEventMainFragment)
+                .show(createEventMainFragment)
                 .commit();
         //fTrans.show(createEventMainFragment);
 
@@ -68,7 +69,7 @@ public class CreateEventActivity extends Activity implements CallBackInterfaceCr
     @Override
     public void OpenPlaceAutocomplete() {
 
-        Log.d(TAG, "OpenPlaceAutocomplete 0");
+        Log.d(TAG, "OpenPlaceAutocomplete");
 
         fTrans = getFragmentManager().beginTransaction();
         /*fTrans.add(R.id.frgmCreateEvent, createEventPlaceFragment)
@@ -81,8 +82,18 @@ public class CreateEventActivity extends Activity implements CallBackInterfaceCr
     }
 
     @Override
-    public void SetEventAddress(String city, String street, String house){
-
+    public void SetEventAddress(Address address, LatLng latLng){
+        Log.d(TAG, "SetEventAddress");
+        //fTrans = getFragmentManager().beginTransaction();
+        //fTrans.replace(R.id.frgmCreateEvent, createEventMainFragment).commit();
+        //getFragmentManager().popBackStack();
+        getFragmentManager().popBackStackImmediate();
+        CreateEventMainFragment createEventMainFragment1 = (CreateEventMainFragment)
+                getFragmentManager().findFragmentById(R.id.frgmCreateEvent);
+        Log.d(TAG, "Change fragment");
+        //Fragment createEventMainFragment1 = getFragmentManager().findFragmentById(R.id.frgmCreateEvent);
+        createEventMainFragment1.SetEventAddress(address, latLng);
     }
+
 
 }

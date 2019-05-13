@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,7 +39,10 @@ import android.view.View.OnClickListener;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.starichenkov.customClasses.AccountAuthorization;
+import com.starichenkov.presenter.IPresenter;
+import com.starichenkov.presenter.Presenter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,7 +54,7 @@ import java.util.Date;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class CreateEventMainFragment extends Fragment implements OnClickListener, OnTouchListener {
+public class CreateEventMainFragment extends Fragment implements OnClickListener, OnTouchListener, IView {
 
     private String[] TypeEvents = { "Спектакль", "Выставка", "Вечеринка", "Кинопоказ", "Концерт" };
     private static final String TAG = "MyLog";
@@ -65,12 +69,21 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     private Button buttonDeletePhoto;
     
     final int REQUEST_TAKE_PHOTO = 1;
-    final int PIC_CROP = 2;
-    private Uri photoURI;
-    private Bitmap bitmapPhoto;
     private String mCurrentPhotoPath;
 
     private Calendar dateAndTime= Calendar.getInstance();
+
+    private Uri photoURI;
+    private Bitmap bitmapPhoto;
+    private String nameEvent;
+    private Calendar dateEvent;
+    private String typeEvent;
+    private Address addressEvent;
+    private LatLng latLngEvent;
+
+    private IPresenter iPresenter;
+
+
 
     private CallBackInterfaceCreateEvent mListener;
 
@@ -80,6 +93,9 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
         View view = inflater.inflate(R.layout.fragment_create_event, null);
 
+        iPresenter = new Presenter(this);
+
+        Log.d(TAG, "start CreateEventMainFragment");
         Log.d(TAG, "photoURI: " + photoURI);
         imageView = (ImageView) view.findViewById(R.id.imageView);
         if(photoURI == null) {
@@ -125,6 +141,8 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         switch (v.getId()) {
             case R.id.buttonCreateEvent:
                 Log.d(TAG, "Click buttonCreateEvent");
+                iPresenter.createEvent(new AccountAuthorization(getActivity()).getIdUser(), photoURI.toString(), editNameEvent.getText(),
+                        );
                 break;
 
             case R.id.buttonTakePhoto:
@@ -322,6 +340,13 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
                 matrix, true);
+    }
+
+    public void SetEventAddress(Address address, LatLng latLng){
+        addressEvent = address;
+        latLngEvent = latLng;
+        editAddressEvent.setText(address.getLocality() + ", " + address.getThoroughfare() + ", " + address.getFeatureName());
+
     }
 
 }

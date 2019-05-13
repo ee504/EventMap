@@ -140,7 +140,7 @@ public class CreateEventPlaceFragment extends Fragment implements OnMapReadyCall
                 Log.d(TAG, "city: " + city);
                 Log.d(TAG, "street: " + street);
                 Log.d(TAG, "house: " + house);
-                mListener.SetEventAddress(city, street, house);
+                mListener.SetEventAddress(addresses.get(0), latLng);
             }catch (IOException e) {
                     e.printStackTrace();
             }
