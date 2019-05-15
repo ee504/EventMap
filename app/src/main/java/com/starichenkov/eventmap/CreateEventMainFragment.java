@@ -47,6 +47,7 @@ import com.starichenkov.presenter.Presenter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -76,9 +77,9 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     private Uri photoURI;
     private Bitmap bitmapPhoto;
     private String nameEvent;
-    private Calendar dateEvent;
+    private String dateEvent;
     private String typeEvent;
-    private Address addressEvent;
+    private String addressEvent;
     private LatLng latLngEvent;
 
     private IPresenter iPresenter;
@@ -141,8 +142,21 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         switch (v.getId()) {
             case R.id.buttonCreateEvent:
                 Log.d(TAG, "Click buttonCreateEvent");
-                iPresenter.createEvent(new AccountAuthorization(getActivity()).getIdUser(), photoURI.toString(), editNameEvent.getText(),
-                        );
+                Log.d(TAG, "Создать мероприятие");
+                iPresenter.createEvent(new AccountAuthorization(getActivity()).getIdUser(), photoURI.toString(), editNameEvent.getText().toString(),
+                        dateEvent, spinnerTypeEvent.getSelectedItem().toString(), addressEvent, latLngEvent.latitude, latLngEvent.longitude);
+                Log.d(TAG, "Список переменных");
+                Log.d(TAG,
+                        "id = " + new AccountAuthorization(getActivity()).getIdUser() +
+                                ", photoURI = " + photoURI.toString() +
+                                ", editNameEvent = " + editNameEvent.getText().toString() +
+                                ", dateEvent = " + dateEvent +
+                                ", TypeEvent = " + spinnerTypeEvent.getSelectedItem().toString() +
+                                ", addressEvent = " + addressEvent +
+                                ", latitude = " + latLngEvent.latitude +
+                                ", longitude = " + latLngEvent.longitude);
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.buttonTakePhoto:
@@ -215,10 +229,24 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     // установка даты и времени
     private void setInitialDateTime() {
 
-        editDateEvent.setText(DateUtils.formatDateTime(getActivity(),
+        /*editDateEvent.setText(DateUtils.formatDateTime(getActivity(),
                 dateAndTime.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
-                        | DateUtils.FORMAT_SHOW_TIME));
+                        | DateUtils.FORMAT_SHOW_TIME));*/
+        SimpleDateFormat myDateFormat = new SimpleDateFormat("d MMM yyyy HH:mm");
+        dateEvent = myDateFormat.format(dateAndTime.getTime());
+        /*try {
+            Date myDate = myDateFormat.parse(formattedDate);
+            String formattedDate1 = myDateFormat.format(myDate);
+            //editDateEvent.setText(myDate.toString());
+            editDateEvent.setText(formattedDate1);
+        }
+        catch(ParseException pe) {
+            Log.d(TAG, "Error: " + pe.getMessage());
+        }*/
+        //Date myDate = Date(dateAndTime.getTime());
+        editDateEvent.setText(dateEvent);
+        //editDateEvent.setText(dateAndTime.getTime().toString());
     }
 
     private void dispatchTakePictureIntent() {
@@ -343,9 +371,9 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     }
 
     public void SetEventAddress(Address address, LatLng latLng){
-        addressEvent = address;
+        addressEvent = address.getLocality() + ", " + address.getThoroughfare() + ", " + address.getFeatureName();
         latLngEvent = latLng;
-        editAddressEvent.setText(address.getLocality() + ", " + address.getThoroughfare() + ", " + address.getFeatureName());
+        editAddressEvent.setText(addressEvent);
 
     }
 

@@ -46,7 +46,7 @@ public class AccountAuthorization {
     }
 
     public int getIdUser(){
-        return this.idUser;
+        return sPref.getInt(namePreference, 0);
     }
 
 

@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 import java.util.Calendar;
 
 @Entity(foreignKeys = @ForeignKey(entity = Users.class, parentColumns = "id", childColumns = "idOrganizer"),
-        indices = {@Index("nameEvent"), @Index(value = {"nameEvent"})})
+        indices = {@Index("nameEvent"), @Index("idOrganizer")})
 public class Events {
 
     @PrimaryKey(autoGenerate = true)
@@ -20,7 +20,7 @@ public class Events {
 
     public String nameEvent;
 
-    public Calendar dateEvent;
+    public String dateEvent;
 
     public String typeEvent;
 
@@ -30,7 +30,7 @@ public class Events {
 
     public double longitude;
 
-    public Events(long idOrganizer, String photoEvent, String nameEvent, Calendar dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
+    public Events(long idOrganizer, String photoEvent, String nameEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
         this.idOrganizer = idOrganizer;
         this.photoEvent = photoEvent;
         this.nameEvent = nameEvent;

@@ -12,9 +12,9 @@ import io.reactivex.Single;
 public interface EventsDao {
 
     @Query("SELECT * FROM Events")
-    Single<List<Users>> getAll();
+    Single<List<Events>> getAll();
 
     @Insert
-    void insert(Users user);
+    void insert(Events events);
 
 }

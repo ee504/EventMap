@@ -32,12 +32,23 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.starichenkov.RoomDB.App;
+import com.starichenkov.RoomDB.Events;
+import com.starichenkov.RoomDB.Users;
 import com.starichenkov.customClasses.AccountAuthorization;
 import com.starichenkov.customClasses.SomeEvet;
 import com.starichenkov.presenter.Presenter;
 
-public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener{
+import java.util.List;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
+public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private static final String TAG = "MyLog";
@@ -58,6 +69,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private FloatingActionButton btnFloatingAction;
 
+    private List<Events> events;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +85,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         initView();
 
         Log.d(TAG, "Hello");
-
-
 
     }
 
@@ -206,11 +217,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         mMap = googleMap;
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
-        //mMap.setPadding (0, 0, 0,300);
-
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(someEvent.latitude, someEvent.longtude))
-                .title(someEvent.name));
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -281,6 +287,44 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
         mMap.setMinZoomPreference(mMap.getCameraPosition().zoom);
 
+        App.getInstance().getDatabase().eventsDao().getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Events>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // add it to a CompositeDisposable
+                    }
+                    @Override
+                    public void onSuccess(List<Events> events) {
+                        Log.d(TAG, "onSuccess");
+                        setEvents(events);
+                        for(Events event : events){
+                            Marker  marker  = mMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(event.latitude, event.longitude))
+                                    .title(event.nameEvent));
+                            marker.setTag(event);
+                        }
+
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "Some error");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+        mMap.setOnMarkerClickListener(this);
+
+    }
+
+    private void setEvents(List<Events> events) {
+        this.events = events;
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        Log.e(TAG, "Marker: " + ((Events)marker.getTag()).nameEvent);
+        return false;
     }
 
     @Override

@@ -38,7 +38,7 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users_data);
-
+        Log.d(TAG, "ID: " + new AccountAuthorization(this).getIdUser());
         Log.d(TAG, "--- Rows in mytable: ---");
 
         AppDataBase db = App.getInstance().getDatabase();
@@ -60,6 +60,7 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
                                             ", email = " + user.mail +
                                             ", password = " + user.password);
                         }
+
                     }
 
                     @Override
