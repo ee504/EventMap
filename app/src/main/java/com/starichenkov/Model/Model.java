@@ -140,7 +140,7 @@ public class Model implements IModel {
 
     @Override
     public void getAllEvents(){
-
+        Log.e(TAG, "Model getAllEvents()");
         eventsDao.getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -151,8 +151,8 @@ public class Model implements IModel {
                     }
                     @Override
                     public void onSuccess(List<Events> events) {
-                        Log.d(TAG, "onSuccess");
-                        //new Presenter(iView).sendEvents(events);
+                        Log.d(TAG, "Model getAllEvents() onSuccess");
+                        new Presenter(iView).sendEvents(events);
                     }
                     @Override
                     public void onError(Throwable e) {

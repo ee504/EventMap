@@ -48,7 +48,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener {
+public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener, CallBackFromDB, IView {
 
     private GoogleMap mMap;
     private static final String TAG = "MyLog";
@@ -72,6 +72,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private List<Events> events;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -83,6 +84,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         initView();
+        presenter = new Presenter(this);
+        presenter.getAllEvents();
 
         Log.d(TAG, "Hello");
 
@@ -200,8 +203,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     }
 
 
-
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -212,8 +213,10 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap) {this.mMap = googleMap;};
 
+    public void onMap(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady()");
         mMap = googleMap;
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
@@ -287,7 +290,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
         mMap.setMinZoomPreference(mMap.getCameraPosition().zoom);
 
-        App.getInstance().getDatabase().eventsDao().getAll()
+        /*App.getInstance().getDatabase().eventsDao().getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Events>>() {
@@ -312,20 +315,31 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         Log.d(TAG, "Some error");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
+
+        Log.e(TAG, "OnMapReady for");
+        for(Events event : events) {
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(event.latitude, event.longitude))
+                    .title(event.nameEvent));
+            marker.setTag(event);
+        }
         mMap.setOnMarkerClickListener(this);
 
     }
 
-    private void setEvents(List<Events> events) {
-        this.events = events;
-    }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
         Log.e(TAG, "Marker: " + ((Events)marker.getTag()).nameEvent);
         Log.e(TAG, "Marker description: " + ((Events)marker.getTag()).descriptionEvent);
         return false;
+    }
+
+    @Override
+    public void sendEvents(List<Events> events){
+        this.events = events;
+        onMap(mMap);
     }
 
     @Override

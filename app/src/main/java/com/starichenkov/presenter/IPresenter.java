@@ -16,4 +16,6 @@ public interface IPresenter {
     void createEvent(int idUser, String photoURI, String editNameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude);
 
     void sendEvents(List<Events> events);
+
+    void getAllEvents();
 }

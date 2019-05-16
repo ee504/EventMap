@@ -2,9 +2,11 @@ package com.starichenkov.presenter;
 
 import android.content.Context;
 import android.location.Address;
+import android.util.Log;
 
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.customClasses.AccountAuthorization;
+import com.starichenkov.eventmap.CallBackFromDB;
 import com.starichenkov.eventmap.IView;
 
 import com.starichenkov.Model.IModel;
@@ -18,9 +20,12 @@ public class Presenter implements IPresenter{
     private IView iView;
     private IModel iModel;
 
+    private CallBackFromDB mListener;
+
     public Presenter(IView iView){
         this.iView = iView;
         iModel = new Model(iView);
+        mListener = (CallBackFromDB) iView;
     }
 
 
@@ -46,6 +51,13 @@ public class Presenter implements IPresenter{
 
     @Override
     public void sendEvents(List<Events> events){
+        Log.e(TAG, "Presenter sendEvents()");
+        mListener.sendEvents(events);
 
+    }
+
+    public void getAllEvents() {
+        Log.e(TAG, "Presenter getAllEvents()");
+        iModel.getAllEvents();
     }
 }
