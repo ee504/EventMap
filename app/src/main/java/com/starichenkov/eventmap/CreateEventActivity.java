@@ -60,10 +60,10 @@ public class CreateEventActivity extends Activity implements CallBackInterfaceCr
     @Override
     protected void onResume(){
         super.onResume();
-        fTrans = getFragmentManager().beginTransaction();
+        /*fTrans = getFragmentManager().beginTransaction();
         fTrans.hide(createEventMainFragment)
                 .show(createEventMainFragment)
-                .commit();
+                .commit();*/
     }
 
     @Override

@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -61,6 +62,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private SomeEvet someEvent = new SomeEvet();
     private Button btnDrawerOpener;
+    private ImageButton ibtnDrawerOpener;
     private Button btnUsersData;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -111,10 +113,14 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         btnDrawerOpener = (Button) findViewById(R.id.btnDrawerOpener);
         btnDrawerOpener.setOnClickListener(this);
+        btnDrawerOpener.setVisibility(View.GONE);
+
+        ibtnDrawerOpener = (ImageButton) findViewById(R.id.ibtnDrawerOpener);
+        ibtnDrawerOpener.setOnClickListener(this);
 
         btnUsersData = (Button) findViewById(R.id.btnUsersData);
         btnUsersData.setOnClickListener(this);
-
+        btnUsersData.setVisibility(View.GONE);
 
         btnFloatingAction = (FloatingActionButton) findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
@@ -179,6 +185,11 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         //Log.d(TAG, "по id определяем кнопку, вызвавшую этот обработчик");
         switch (v.getId()) {
             case R.id.btnDrawerOpener:
+                drawerLayout.openDrawer(GravityCompat.START);
+                Log.d(TAG, "Click Menu");
+                break;
+
+            case R.id.ibtnDrawerOpener:
                 drawerLayout.openDrawer(GravityCompat.START);
                 Log.d(TAG, "Click Menu");
                 break;
