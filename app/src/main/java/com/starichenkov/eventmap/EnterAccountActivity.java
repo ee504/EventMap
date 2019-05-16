@@ -27,7 +27,7 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
         setContentView(R.layout.activity_enter_account);
 
         initView();
-        iPresenter = new Presenter(this);
+        iPresenter = new Presenter(this, this.getLocalClassName());
     }
 
     private void initView() {

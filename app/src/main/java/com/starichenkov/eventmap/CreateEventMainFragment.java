@@ -95,7 +95,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
         View view = inflater.inflate(R.layout.fragment_create_event, null);
 
-        iPresenter = new Presenter(this);
+        iPresenter = new Presenter(this, getActivity().getLocalClassName());
 
         Log.d(TAG, "start CreateEventMainFragment");
         Log.d(TAG, "photoURI: " + photoURI);

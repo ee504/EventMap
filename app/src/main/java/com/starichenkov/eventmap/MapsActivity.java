@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.net.Uri;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +22,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Gravity;
 
@@ -67,9 +73,18 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private View header_not_authorized;
     private View header_authorized;
 
+    private ImageView imageEvent;
+    private TextView textNameEvent;
+    private TextView textTypeEvent;
+    private TextView textDateEvent;
+    private TextView textAddressEvent;
+    private TextView textDescriptionEvent;
+
     private FloatingActionButton btnFloatingAction;
 
     private List<Events> events;
+
+    private BottomSheetBehavior bottomSheetBehavior;
 
 
 
@@ -77,14 +92,15 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        //setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_main_view);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         initView();
-        presenter = new Presenter(this);
+        presenter = new Presenter(this, this.getLocalClassName());
         presenter.getAllEvents();
 
         Log.d(TAG, "Hello");
@@ -105,7 +121,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -142,7 +158,18 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         btnAccount = (Button) header_authorized.findViewById(R.id.btnAccount);
         btnAccount.setOnClickListener(this);
-        
+
+        LinearLayout llBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        imageEvent = (ImageView) findViewById(R.id.imageEvent);
+        textNameEvent = (TextView) findViewById(R.id.textNameEvent);
+        textTypeEvent = (TextView) findViewById(R.id.textTypeEvent);
+        textDateEvent = (TextView) findViewById(R.id.textDateEvent);
+        textAddressEvent = (TextView) findViewById(R.id.textAddressEvent);
+        textDescriptionEvent = (TextView) findViewById(R.id.textDescriptionEvent);
+
 
     }
 
@@ -158,10 +185,14 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
             case R.id.btnUsersData:
                 Log.d(TAG, "Click btnUsersData");
-                Intent intentUsersData = new Intent(this, UsersDataActivity.class);
-                startActivity(intentUsersData);
+                Log.d(TAG, "this.getLocalClassName(): " + this.getLocalClassName());
+                //Intent intentUsersData = new Intent(this, UsersDataActivity.class);
+                //startActivity(intentUsersData);
+                //View frgm = findViewById(R.id.map);
+                //frgm.setClickable(false);
+                //bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                //bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
-
 
             case R.id.btnFloatingAction:
                 if(new AccountAuthorization(this).checkAuthorization()) {
@@ -320,8 +351,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         Log.e(TAG, "OnMapReady for");
         for(Events event : events) {
             Marker marker = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(event.latitude, event.longitude))
-                    .title(event.nameEvent));
+                    .position(new LatLng(event.latitude, event.longitude)));
+                    //.title(event.nameEvent));
             marker.setTag(event);
         }
         mMap.setOnMarkerClickListener(this);
@@ -331,8 +362,15 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         Log.e(TAG, "Marker: " + ((Events)marker.getTag()).nameEvent);
         Log.e(TAG, "Marker description: " + ((Events)marker.getTag()).descriptionEvent);
+        imageEvent.setImageURI(Uri.parse(((Events)marker.getTag()).photoEvent));
+        textNameEvent.setText(((Events)marker.getTag()).nameEvent);
+        textTypeEvent.setText(((Events)marker.getTag()).typeEvent);
+        textDateEvent.setText(((Events)marker.getTag()).dateEvent);
+        textAddressEvent.setText(((Events)marker.getTag()).addressEvent);
+        textDescriptionEvent.setText(((Events)marker.getTag()).descriptionEvent);
         return false;
     }
 

@@ -22,10 +22,12 @@ public class Presenter implements IPresenter{
 
     private CallBackFromDB mListener;
 
-    public Presenter(IView iView){
+    public Presenter(IView iView, String nameActivity){
         this.iView = iView;
         iModel = new Model(iView);
-        mListener = (CallBackFromDB) iView;
+        if (nameActivity == "MapsActivity" || nameActivity ==  "Model") {
+            mListener = (CallBackFromDB) iView;
+        }
     }
 
 

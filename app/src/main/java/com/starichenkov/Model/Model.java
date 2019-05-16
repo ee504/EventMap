@@ -152,7 +152,7 @@ public class Model implements IModel {
                     @Override
                     public void onSuccess(List<Events> events) {
                         Log.d(TAG, "Model getAllEvents() onSuccess");
-                        new Presenter(iView).sendEvents(events);
+                        new Presenter(iView, "Model").sendEvents(events);
                     }
                     @Override
                     public void onError(Throwable e) {
