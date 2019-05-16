@@ -9,7 +9,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -17,7 +16,7 @@
             android:id="@+id/textViewCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:layout_gravity="center"
             android:padding="10dp"
             android:textSize="20sp"
@@ -26,7 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -65,26 +64,38 @@
             android:id="@+id/editNameEvent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:ems="10"
             android:padding="10dp"
+            android:lines="1"
             android:hint="Наименование мероприятия:"/>
+
+        <EditText
+            android:id="@+id/editDescriptionEvent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:ems="10"
+            android:padding="30dp"
+            android:lines="3"
+            android:hint="Описание мероприятия:"/>
 
         <EditText
             android:id="@+id/editDateEvent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:ems="10"
             android:padding="10dp"
             android:inputType="datetime"
+            android:lines="1"
             android:hint="Дата мероприятия:"/>
 
         <Spinner
             android:id="@+id/spinnerTypeEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:ems="10"
             android:padding="10dp">
         </Spinner>
@@ -93,16 +104,17 @@
             android:id="@+id/editAddressEvent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:ems="10"
             android:padding="10dp"
+            android:lines="2"
             android:hint="Адрес мероприятия:"/>
 
         <Button
             android:id="@+id/buttonCreateEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:padding="10dp"
             android:text="Создать мероприятия" />
 

@@ -61,6 +61,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     private static final String TAG = "MyLog";
 
     private EditText editNameEvent;
+    private EditText editDescriptionEvent;
     private EditText editDateEvent;
     private Spinner spinnerTypeEvent;
     private EditText editAddressEvent;
@@ -113,6 +114,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
 
         editNameEvent = (EditText) view.findViewById(R.id.editNameEvent);
+        editDescriptionEvent = (EditText) view.findViewById(R.id.editDescriptionEvent);
         editDateEvent = (EditText) view.findViewById(R.id.editDateEvent);
         spinnerTypeEvent = (Spinner) view.findViewById(R.id.spinnerTypeEvent);
         editAddressEvent = (EditText) view.findViewById(R.id.editAddressEvent);
@@ -143,7 +145,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             case R.id.buttonCreateEvent:
                 Log.d(TAG, "Click buttonCreateEvent");
                 Log.d(TAG, "Создать мероприятие");
-                iPresenter.createEvent(new AccountAuthorization(getActivity()).getIdUser(), photoURI.toString(), editNameEvent.getText().toString(),
+                iPresenter.createEvent(new AccountAuthorization(getActivity()).getIdUser(), photoURI.toString(), editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
                         dateEvent, spinnerTypeEvent.getSelectedItem().toString(), addressEvent, latLngEvent.latitude, latLngEvent.longitude);
                 Log.d(TAG, "Список переменных");
                 Log.d(TAG,

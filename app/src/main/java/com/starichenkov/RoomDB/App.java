@@ -16,7 +16,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         database = Room.databaseBuilder(this, AppDataBase.class, "database")
-                .addMigrations(App.MIGRATION_1_2)
+                .addMigrations(App.MIGRATION_2_3)
                 .build();
     }
 
@@ -35,6 +35,14 @@ public class App extends Application {
                     + "`addressEvent` TEXT, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, FOREIGN KEY (`idOrganizer`) REFERENCES 'Users' ('id'))");
             database.execSQL("CREATE INDEX `index_Events_nameEvent` ON `Events` (`nameEvent`)");
             database.execSQL("CREATE INDEX `index_Events_idOrganizer` ON `Events` (`idOrganizer`)");
+        }
+    };
+
+    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE `Events` "
+                    + " ADD COLUMN `descriptionEvent` TEXT");
         }
     };
 

@@ -40,8 +40,8 @@ public class Presenter implements IPresenter{
     }
 
     @Override
-    public void createEvent(int idUser, String photoURI, String editNameEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
-        iModel.createEvent(idUser, photoURI, editNameEvent, dateEvent, typeEvent, addressEvent, latitude, longitude);
+    public void createEvent(int idUser, String photoURI, String editNameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
+        iModel.createEvent(idUser, photoURI, editNameEvent, descriptionEvent, dateEvent, typeEvent, addressEvent, latitude, longitude);
     }
 
     @Override

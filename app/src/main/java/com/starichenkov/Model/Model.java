@@ -107,12 +107,12 @@ public class Model implements IModel {
     }
 
     @Override
-    public void createEvent(final int idUser, final String photoURI, final String editNameEvent, final String dateEvent, final String typeEvent,
+    public void createEvent(final int idUser, final String photoURI, final String editNameEvent, final String descriptionEvent, final String dateEvent, final String typeEvent,
                             final String addressEvent, final double latitude, final double longitude){
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                eventsDao.insert(new Events(idUser, photoURI, editNameEvent, dateEvent, typeEvent, addressEvent, latitude, longitude));
+                eventsDao.insert(new Events(idUser, photoURI, editNameEvent, descriptionEvent, dateEvent, typeEvent, addressEvent, latitude, longitude));
             }
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

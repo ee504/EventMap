@@ -324,6 +324,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     @Override
     public boolean onMarkerClick(final Marker marker) {
         Log.e(TAG, "Marker: " + ((Events)marker.getTag()).nameEvent);
+        Log.e(TAG, "Marker description: " + ((Events)marker.getTag()).descriptionEvent);
         return false;
     }
 

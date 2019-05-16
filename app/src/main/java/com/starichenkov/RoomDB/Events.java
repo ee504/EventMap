@@ -20,6 +20,8 @@ public class Events {
 
     public String nameEvent;
 
+    public String descriptionEvent;
+
     public String dateEvent;
 
     public String typeEvent;
@@ -30,10 +32,11 @@ public class Events {
 
     public double longitude;
 
-    public Events(long idOrganizer, String photoEvent, String nameEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
+    public Events(long idOrganizer, String photoEvent, String nameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
         this.idOrganizer = idOrganizer;
         this.photoEvent = photoEvent;
         this.nameEvent = nameEvent;
+        this.descriptionEvent = descriptionEvent;
         this.dateEvent = dateEvent;
         this.typeEvent = typeEvent;
         this.addressEvent = addressEvent;

@@ -13,7 +13,7 @@ public interface IPresenter {
 
     boolean findUser(String mail, String password);
 
-    void createEvent(int idUser, String photoURI, String editNameEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude);
+    void createEvent(int idUser, String photoURI, String editNameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude);
 
     void sendEvents(List<Events> events);
 }
