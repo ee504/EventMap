@@ -62,4 +62,8 @@ public class Presenter implements IPresenter{
         Log.e(TAG, "Presenter getAllEvents()");
         iModel.getAllEvents();
     }
+
+    public void createBookMark(long idOrganizer, long id){
+        iModel.createBookMark(idOrganizer, id);
+    }
 }

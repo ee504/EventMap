@@ -81,10 +81,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private TextView textDateEvent;
     private TextView textAddressEvent;
     private TextView textDescriptionEvent;
+    private ImageButton ibtnBookMark;
 
     private FloatingActionButton btnFloatingAction;
 
     private List<Events> events;
+    private Events currentEvent;
 
     private BottomSheetBehavior bottomSheetBehavior;
 
@@ -176,6 +178,9 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         textAddressEvent = (TextView) findViewById(R.id.textAddressEvent);
         textDescriptionEvent = (TextView) findViewById(R.id.textDescriptionEvent);
 
+        ibtnBookMark = (ImageButton) findViewById(R.id.ibtnBookMark);
+        ibtnBookMark.setOnClickListener(this);
+
 
     }
 
@@ -240,6 +245,24 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 new AccountAuthorization(this).deleteAuthorization();
                 Intent intentExit = new Intent(this, MapsActivity.class);
                 startActivity(intentExit);
+                break;
+
+            case R.id.ibtnBookMark:
+                Log.d(TAG, "Click ibtnBookMark");
+                if(ibtnBookMark.getTag() == this.getString(R.string.ic_bookmark_border_black_24dp)){
+                    ibtnBookMark.setImageDrawable(this.getDrawable(R.drawable.ic_bookmark_black_24dp));
+                    ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_black_24dp));
+                    Toast toast = Toast.makeText(this, "Закладка сохранена",Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.BOTTOM,0,0);
+                    toast.show();
+                    //presenter.createBookMark(currentEvent.idOrganizer, currentEvent.id);
+                }else if(ibtnBookMark.getTag() == this.getString(R.string.ic_bookmark_black_24dp)){
+                    ibtnBookMark.setImageDrawable(this.getDrawable(R.drawable.ic_bookmark_border_black_24dp));
+                    ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_border_black_24dp));
+                    Toast toast = Toast.makeText(this, "Закладка удалена",Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.BOTTOM,0,0);
+                    toast.show();
+                }
                 break;
         }
     }
@@ -376,12 +399,13 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         Log.e(TAG, "Marker: " + ((Events)marker.getTag()).nameEvent);
         Log.e(TAG, "Marker description: " + ((Events)marker.getTag()).descriptionEvent);
-        imageEvent.setImageURI(Uri.parse(((Events)marker.getTag()).photoEvent));
-        textNameEvent.setText(((Events)marker.getTag()).nameEvent);
-        textTypeEvent.setText(((Events)marker.getTag()).typeEvent);
-        textDateEvent.setText(((Events)marker.getTag()).dateEvent);
-        textAddressEvent.setText(((Events)marker.getTag()).addressEvent);
-        textDescriptionEvent.setText(((Events)marker.getTag()).descriptionEvent);
+        currentEvent = (Events)marker.getTag();
+        imageEvent.setImageURI(Uri.parse(currentEvent.photoEvent));
+        textNameEvent.setText(currentEvent.nameEvent);
+        textTypeEvent.setText(currentEvent.typeEvent);
+        textDateEvent.setText(currentEvent.dateEvent);
+        textAddressEvent.setText(currentEvent.addressEvent);
+        textDescriptionEvent.setText(currentEvent.descriptionEvent);
         return false;
     }
 

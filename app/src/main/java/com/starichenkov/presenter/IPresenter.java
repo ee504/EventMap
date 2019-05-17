@@ -18,4 +18,6 @@ public interface IPresenter {
     void sendEvents(List<Events> events);
 
     void getAllEvents();
+
+    void createBookMark(long idOrganizer, long id);
 }

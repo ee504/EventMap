@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.starichenkov.RoomDB.App;
 import com.starichenkov.RoomDB.AppDataBase;
+import com.starichenkov.RoomDB.BookMarks;
+import com.starichenkov.RoomDB.BookMarksDao;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.EventsDao;
 import com.starichenkov.RoomDB.Users;
@@ -32,6 +34,7 @@ public class Model implements IModel {
     private AppDataBase db;
     private UsersDao userDao;
     private EventsDao eventsDao;
+    private BookMarksDao bookMarksDao;
     private static final String TAG = "MyLog";
     private IView iView;
 
@@ -40,6 +43,7 @@ public class Model implements IModel {
         db = App.getInstance().getDatabase();
         userDao = db.usersDao();
         eventsDao = db.eventsDao();
+        bookMarksDao = db.bookMarksDao();
         this.iView = iView;
 
     }
@@ -160,5 +164,38 @@ public class Model implements IModel {
                         Log.d(TAG, e.getMessage());
                     }
                 });
+    }
+
+    @Override
+    public void createBookMark(final long idOrganizer, final long id){
+
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                bookMarksDao.insert(new BookMarks(idOrganizer, id));
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // just like with a Single
+                        Log.d(TAG, "createBookMark() onSubscribe");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        // action was completed successfully
+                        Log.d(TAG, "createBookMark() onComplete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // something went wrong
+                        Log.d(TAG, "createBookMark() onError");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+
     }
 }

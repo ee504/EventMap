@@ -11,4 +11,6 @@ public interface IModel {
     void createEvent(int idUser, String photoURI, String editNameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude);
 
     void getAllEvents();
+
+    void createBookMark(long idOrganizer, long id);
 }
