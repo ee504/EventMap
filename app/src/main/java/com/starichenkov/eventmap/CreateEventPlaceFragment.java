@@ -143,6 +143,7 @@ public class CreateEventPlaceFragment extends Fragment implements OnMapReadyCall
                 mListener.SetEventAddress(addresses.get(0), latLng);
             }catch (IOException e) {
                     e.printStackTrace();
+                Log.d(TAG, "e.getMessage(): " + e.getMessage());
             }
     }
 

@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -115,14 +116,14 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         btnDrawerOpener = (Button) findViewById(R.id.btnDrawerOpener);
         btnDrawerOpener.setOnClickListener(this);
-        btnDrawerOpener.setVisibility(View.GONE);
+        //btnDrawerOpener.setVisibility(View.GONE);
 
         ibtnDrawerOpener = (ImageButton) findViewById(R.id.ibtnDrawerOpener);
         ibtnDrawerOpener.setOnClickListener(this);
 
         btnUsersData = (Button) findViewById(R.id.btnUsersData);
         btnUsersData.setOnClickListener(this);
-        btnUsersData.setVisibility(View.GONE);
+        //btnUsersData.setVisibility(View.GONE);
 
         btnFloatingAction = (FloatingActionButton) findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
@@ -202,8 +203,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             case R.id.btnUsersData:
                 Log.d(TAG, "Click btnUsersData");
                 Log.d(TAG, "this.getLocalClassName(): " + this.getLocalClassName());
-                //Intent intentUsersData = new Intent(this, UsersDataActivity.class);
-                //startActivity(intentUsersData);
+                Intent intentUsersData = new Intent(this, UsersDataActivity.class);
+                startActivity(intentUsersData);
                 //View frgm = findViewById(R.id.map);
                 //frgm.setClickable(false);
                 //bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -406,6 +407,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         textDateEvent.setText(currentEvent.dateEvent);
         textAddressEvent.setText(currentEvent.addressEvent);
         textDescriptionEvent.setText(currentEvent.descriptionEvent);
+
+
         return false;
     }
 

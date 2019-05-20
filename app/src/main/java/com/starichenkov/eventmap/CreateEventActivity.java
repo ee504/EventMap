@@ -88,6 +88,8 @@ public class CreateEventActivity extends Activity implements CallBackInterfaceCr
         //fTrans.replace(R.id.frgmCreateEvent, createEventMainFragment).commit();
         //getFragmentManager().popBackStack();
         getFragmentManager().popBackStackImmediate();
+        getFragmentManager().popBackStackImmediate();
+        //fTrans.replace(R.id.frgmCreateEvent, createEventMainFragment).commit();
         CreateEventMainFragment createEventMainFragment1 = (CreateEventMainFragment)
                 getFragmentManager().findFragmentById(R.id.frgmCreateEvent);
         Log.d(TAG, "Change fragment");
