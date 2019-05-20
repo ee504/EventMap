@@ -198,4 +198,95 @@ public class Model implements IModel {
                 });
 
     }
+
+    /*@Override
+    public void deleteBookMark(final long idClient, final long id){
+        Log.d(TAG, "deleteBookMark(): idClient="+ idClient+" idEvent=" + id);
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                bookMarksDao.delete(new BookMarks(idClient, id));
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // just like with a Single
+                        Log.d(TAG, "deleteBookMark() onSubscribe");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        // action was completed successfully
+                        Log.d(TAG, "deleteBookMark() onComplete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // something went wrong
+                        Log.d(TAG, "deleteBookMark() onError");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+
+    }*/
+
+    @Override
+    public void deleteBookMark(final long idClient, final long id){
+        Log.d(TAG, "deleteBookMark(): idClient="+ idClient+" idEvent=" + id);
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                bookMarksDao.deleteBookMark(idClient, id);
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // just like with a Single
+                        Log.d(TAG, "deleteBookMark() onSubscribe");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        // action was completed successfully
+                        Log.d(TAG, "deleteBookMark() onComplete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // something went wrong
+                        Log.d(TAG, "deleteBookMark() onError");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+
+    }
+
+    @Override
+    public void getAllBookmarks(){
+
+        bookMarksDao.getAll(new AccountAuthorization((Context)iView).getIdUser())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<BookMarks>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // add it to a CompositeDisposable
+                        Log.d(TAG, "Model getAllBookmarks() onSubscribe");
+                    }
+                    @Override
+                    public void onSuccess(List<BookMarks> bookMarks) {
+                        Log.d(TAG, "Model getAllBookmarks() onSuccess");
+                        new Presenter(iView, "Model").sendBookMarks(bookMarks);
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "Model getAllBookmarks() Some error");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+    }
 }

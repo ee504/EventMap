@@ -13,4 +13,8 @@ public interface IModel {
     void getAllEvents();
 
     void createBookMark(long idOrganizer, long id);
+
+    void deleteBookMark(long idClient, long id);
+
+    void getAllBookmarks();
 }

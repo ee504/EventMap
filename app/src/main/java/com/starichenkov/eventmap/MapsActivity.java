@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.starichenkov.RoomDB.App;
+import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
 import com.starichenkov.customClasses.AccountAuthorization;
@@ -88,6 +89,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private List<Events> events;
     private Events currentEvent;
+    private List<BookMarks> bookMarks;
 
     private BottomSheetBehavior bottomSheetBehavior;
 
@@ -104,10 +106,11 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        initView();
+
         presenter = new Presenter(this, this.getLocalClassName());
         presenter.getAllEvents();
 
+        initView();
         Log.d(TAG, "Hello");
 
     }
@@ -152,6 +155,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         if(new AccountAuthorization(this).checkAuthorization()) {
             navigationView.addHeaderView(header_authorized);
+            presenter.getAllBookmarks();
+
         }else{
             navigationView.addHeaderView(header_not_authorized);
         }
@@ -191,8 +196,9 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         //Log.d(TAG, "по id определяем кнопку, вызвавшую этот обработчик");
         switch (v.getId()) {
             case R.id.btnDrawerOpener:
-                drawerLayout.openDrawer(GravityCompat.START);
+                //drawerLayout.openDrawer(GravityCompat.START);
                 Log.d(TAG, "Click Menu");
+                presenter.getAllBookmarks();
                 break;
 
             case R.id.ibtnDrawerOpener:
@@ -256,13 +262,16 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                     Toast toast = Toast.makeText(this, "Закладка сохранена",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM,0,0);
                     toast.show();
-                    //presenter.createBookMark(currentEvent.idOrganizer, currentEvent.id);
+                    presenter.createBookMark(new AccountAuthorization(this).getIdUser(), currentEvent.id);
+                    presenter.getAllBookmarks();
                 }else if(ibtnBookMark.getTag() == this.getString(R.string.ic_bookmark_black_24dp)){
                     ibtnBookMark.setImageDrawable(this.getDrawable(R.drawable.ic_bookmark_border_black_24dp));
                     ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_border_black_24dp));
                     Toast toast = Toast.makeText(this, "Закладка удалена",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM,0,0);
                     toast.show();
+                    presenter.deleteBookMark(new AccountAuthorization(this).getIdUser(), currentEvent.id);
+                    presenter.getAllBookmarks();
                 }
                 break;
         }
@@ -279,9 +288,9 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {this.mMap = googleMap;};
+    public void onMapReady(GoogleMap googleMap) {//this.mMap = googleMap;};
 
-    public void onMap(GoogleMap googleMap) {
+    //public void onMap(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady()");
         mMap = googleMap;
         UiSettings uiSettings = mMap.getUiSettings();
@@ -383,24 +392,35 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                     }
                 });*/
 
-        Log.e(TAG, "OnMapReady for");
+        /*Log.e(TAG, "OnMapReady for");
         for(Events event : events) {
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(event.latitude, event.longitude)));
                     //.title(event.nameEvent));
             marker.setTag(event);
         }
-        mMap.setOnMarkerClickListener(this);
+        mMap.setOnMarkerClickListener(this);*/
 
     }
 
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        Log.e(TAG, "Marker: " + ((Events)marker.getTag()).nameEvent);
-        Log.e(TAG, "Marker description: " + ((Events)marker.getTag()).descriptionEvent);
         currentEvent = (Events)marker.getTag();
+
+        if(checkBookMark(currentEvent.id)){
+            Log.d(TAG, "checkBookMark(): " + currentEvent.id);
+            ibtnBookMark.setImageDrawable(this.getDrawable(R.drawable.ic_bookmark_black_24dp));
+            ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_black_24dp));
+        }else{
+            ibtnBookMark.setImageDrawable(this.getDrawable(R.drawable.ic_bookmark_border_black_24dp));
+            ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_border_black_24dp));
+        }
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        Log.e(TAG, "Marker id: " + currentEvent.id);
+        Log.e(TAG, "Marker name: " + currentEvent.nameEvent);
+
         imageEvent.setImageURI(Uri.parse(currentEvent.photoEvent));
         textNameEvent.setText(currentEvent.nameEvent);
         textTypeEvent.setText(currentEvent.typeEvent);
@@ -415,7 +435,36 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     @Override
     public void sendEvents(List<Events> events){
         this.events = events;
-        onMap(mMap);
+        //onMap(mMap);
+        for(Events event : this.events) {
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(event.latitude, event.longitude)));
+            //.title(event.nameEvent));
+            marker.setTag(event);
+        }
+        mMap.setOnMarkerClickListener(this);
+    }
+
+    @Override
+    public void sendBookMarks(List<BookMarks> bookMarks){
+        this.bookMarks = bookMarks;
+        for(BookMarks bookMark : bookMarks){
+            Log.d(TAG, "bookMark id: " + bookMark.id);
+            Log.d(TAG, "bookMark idOrganizer: " + bookMark.idOrganizer);
+            Log.d(TAG, "bookMark idEvent: " + bookMark.idEvent);
+        }
+    }
+
+    public boolean checkBookMark(long idEvent){
+        if(bookMarks == null){
+            return false;
+        }
+        for(BookMarks bookMark: bookMarks){
+            if(idEvent == bookMark.idEvent){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

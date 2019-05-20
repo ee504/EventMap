@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Address;
 import android.util.Log;
 
+import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.customClasses.AccountAuthorization;
 import com.starichenkov.eventmap.CallBackFromDB;
@@ -58,12 +59,30 @@ public class Presenter implements IPresenter{
 
     }
 
+    @Override
     public void getAllEvents() {
         Log.e(TAG, "Presenter getAllEvents()");
         iModel.getAllEvents();
     }
 
+    @Override
     public void createBookMark(long idOrganizer, long id){
         iModel.createBookMark(idOrganizer, id);
+    }
+
+    @Override
+    public void deleteBookMark(int idUser, long id){
+        iModel.deleteBookMark(idUser, id);
+    }
+
+    @Override
+    public void getAllBookmarks(){
+        iModel.getAllBookmarks();
+    }
+
+    @Override
+    public void sendBookMarks(List<BookMarks> bookMarks){
+        Log.e(TAG, "Presenter sendBookMarks()");
+        mListener.sendBookMarks(bookMarks);
     }
 }
