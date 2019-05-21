@@ -289,4 +289,28 @@ public class Model implements IModel {
                     }
                 });
     }
+
+    @Override
+    public void getEventsFromBookmarks(){
+        Log.e(TAG, "Model getEventsFromBookmarks()");
+        eventsDao.getEventsFromBookmarks(new AccountAuthorization((Context)iView).getIdUser())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Events>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // add it to a CompositeDisposable
+                    }
+                    @Override
+                    public void onSuccess(List<Events> events) {
+                        Log.d(TAG, "Model getAllEvents() onSuccess");
+                        new Presenter(iView, "Model").sendEvents(events);
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "Some error");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+    }
 }

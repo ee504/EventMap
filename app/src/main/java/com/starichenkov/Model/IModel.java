@@ -17,4 +17,6 @@ public interface IModel {
     void deleteBookMark(long idClient, long id);
 
     void getAllBookmarks();
+
+    void getEventsFromBookmarks();
 }

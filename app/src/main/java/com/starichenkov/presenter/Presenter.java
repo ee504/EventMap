@@ -85,4 +85,9 @@ public class Presenter implements IPresenter{
         Log.e(TAG, "Presenter sendBookMarks()");
         mListener.sendBookMarks(bookMarks);
     }
+
+    @Override
+    public void getEventsFromBookmarks(){
+        iModel.getEventsFromBookmarks();
+    }
 }

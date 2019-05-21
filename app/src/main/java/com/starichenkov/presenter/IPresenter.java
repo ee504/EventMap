@@ -27,4 +27,6 @@ public interface IPresenter {
     void getAllBookmarks();
 
     void sendBookMarks(List<BookMarks> bookMarks);
+
+    void getEventsFromBookmarks();
 }

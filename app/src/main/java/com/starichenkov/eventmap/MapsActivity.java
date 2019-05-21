@@ -139,10 +139,19 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
                         // Handle navigation view item clicks here.
-                        int id = item.getItemId();
+                        switch (item.getItemId()) {
+                            //int id = item.getItemId();
+                            //if (id == R.id.nav_search) {
 
-                        if (id == R.id.nav_search) {
-                            Log.d(TAG, "Click nav_search");
+                            case R.id.nav_search:
+                                Log.d(TAG, "Click nav_search");
+                                break;
+
+                            case R.id.nav_bookmarks:
+                                Log.d(TAG, "Click nav_bookmarks");
+                                Intent intentBookMarks = new Intent(getApplicationContext(), BookMarksList.class);
+                                startActivity(intentBookMarks);
+                                break;
                         }
                         return true;
                     }

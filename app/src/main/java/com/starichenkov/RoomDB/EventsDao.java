@@ -17,4 +17,7 @@ public interface EventsDao {
     @Insert
     void insert(Events events);
 
+    @Query("SELECT Events.* FROM Events INNER JOIN BookMarks ON BookMarks.idEvent = Events.id WHERE BookMarks.idOrganizer = :idOrganizer")
+    Single<List<Events>> getEventsFromBookmarks(long idOrganizer);
+
 }

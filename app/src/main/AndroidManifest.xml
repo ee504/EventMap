@@ -66,6 +66,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".BookMarksList"
+            android:label="BookMarksList"
+            android:screenOrientation="portrait">
+        </activity>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.starichenkov.eventmap.provider"
