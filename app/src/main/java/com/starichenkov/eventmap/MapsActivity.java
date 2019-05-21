@@ -149,6 +149,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 }
         );
 
+        ibtnBookMark = (ImageButton) findViewById(R.id.ibtnBookMark);
+        ibtnBookMark.setOnClickListener(this);
 
         header_authorized = LayoutInflater.from(this).inflate(R.layout.nav_header_authorized, navigationView, false);
         header_not_authorized = LayoutInflater.from(this).inflate(R.layout.nav_header_not_authorized, navigationView, false);
@@ -159,6 +161,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         }else{
             navigationView.addHeaderView(header_not_authorized);
+            ibtnBookMark.setEnabled(false);
         }
 
         btnRegistration = (Button) header_not_authorized.findViewById(R.id.btnRegistration);
@@ -183,10 +186,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         textDateEvent = (TextView) findViewById(R.id.textDateEvent);
         textAddressEvent = (TextView) findViewById(R.id.textAddressEvent);
         textDescriptionEvent = (TextView) findViewById(R.id.textDescriptionEvent);
-
-        ibtnBookMark = (ImageButton) findViewById(R.id.ibtnBookMark);
-        ibtnBookMark.setOnClickListener(this);
-
 
     }
 
@@ -448,11 +447,11 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
         this.bookMarks = bookMarks;
-        for(BookMarks bookMark : bookMarks){
+        /*for(BookMarks bookMark : bookMarks){
             Log.d(TAG, "bookMark id: " + bookMark.id);
             Log.d(TAG, "bookMark idOrganizer: " + bookMark.idOrganizer);
             Log.d(TAG, "bookMark idEvent: " + bookMark.idEvent);
-        }
+        }*/
     }
 
     public boolean checkBookMark(long idEvent){
