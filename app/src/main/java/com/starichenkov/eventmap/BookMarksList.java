@@ -6,6 +6,8 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.starichenkov.BookMarksListView.BookMarksListAdapter;
+import com.starichenkov.BookMarksListView.BookMarksListViewData;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.presenter.Presenter;
@@ -47,7 +49,7 @@ public class BookMarksList extends Activity implements IView, CallBackFromDB{
         setEvents(events);
     }
 
-    private void setEvents(List<Events> events) {
+    /*private void setEvents(List<Events> events) {
         // упаковываем данные в понятную для адаптера структуру
         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(events.size());
         Map<String, Object> m;
@@ -72,6 +74,20 @@ public class BookMarksList extends Activity implements IView, CallBackFromDB{
                 from, to);
 
         lvBookMarks.setAdapter(sAdapter);
+    }*/
+
+    private void setEvents(List<Events> events) {
+
+        ArrayList<BookMarksListViewData> eventsList = new ArrayList<>();
+        for (Events event : events) {
+
+            //Log.d(TAG, "event id: " + event.id);
+            //Log.d(TAG, "event name: " + event.nameEvent);
+            eventsList.add(new BookMarksListViewData(event.nameEvent, event.typeEvent, event.addressEvent));
+        }
+
+        BookMarksListAdapter adapter = new BookMarksListAdapter(this, R.layout.item_event, eventsList);
+        lvBookMarks.setAdapter(adapter);
     }
 
     public void sendBookMarks(List<BookMarks> bookMarks){

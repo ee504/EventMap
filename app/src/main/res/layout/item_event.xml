@@ -10,7 +10,8 @@
         android:layout_width="147dp"
         android:layout_height="147dp"
         android:scaleType="centerCrop"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:src="@drawable/event_map_logo"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +37,7 @@
                 android:id="@+id/imageDot"
                 android:layout_width="19dp"
                 android:layout_height="19dp"
-                app:srcCompat="@drawable/ic_fiber_manual_record_black_24dp" />
+                android:src="@drawable/ic_fiber_manual_record_black_24dp" />
             <TextView
                 android:id="@+id/textTypeEvent"
                 android:layout_width="match_parent"
