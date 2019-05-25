@@ -111,7 +111,7 @@ public class Model implements IModel {
     }
 
     @Override
-    public void createEvent(final int idUser, final String photoURI, final String editNameEvent, final String descriptionEvent, final String dateEvent, final String typeEvent,
+    public void createEvent(final int idUser, final String photoURI, final String photoEventFullSize, final String editNameEvent, final String descriptionEvent, final String dateEvent, final String typeEvent,
                             final String addressEvent, final double latitude, final double longitude){
         Completable.fromAction(new Action() {
             @Override

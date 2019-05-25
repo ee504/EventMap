@@ -17,6 +17,7 @@ public class Events {
     public long idOrganizer;
 
     public String photoEvent;
+    public String photoEventFullSize;
 
     public String nameEvent;
 
@@ -32,9 +33,10 @@ public class Events {
 
     public double longitude;
 
-    public Events(long idOrganizer, String photoEvent, String nameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
+    public Events(long idOrganizer, String photoEvent, String photoEventFullSize, String nameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
         this.idOrganizer = idOrganizer;
         this.photoEvent = photoEvent;
+        this.photoEventFullSize = photoEventFullSize;
         this.nameEvent = nameEvent;
         this.descriptionEvent = descriptionEvent;
         this.dateEvent = dateEvent;
@@ -42,5 +44,18 @@ public class Events {
         this.addressEvent = addressEvent;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public Events(Events event){
+        this.idOrganizer = event.idOrganizer;
+        this.photoEvent = event.photoEvent;
+        this.photoEventFullSize = event.photoEventFullSize;
+        this.nameEvent = event.nameEvent;
+        this.descriptionEvent = event.descriptionEvent;
+        this.dateEvent = event.dateEvent;
+        this.typeEvent = event.typeEvent;
+        this.addressEvent = event.addressEvent;
+        this.latitude = event.latitude;
+        this.longitude = event.longitude;
     }
 }
