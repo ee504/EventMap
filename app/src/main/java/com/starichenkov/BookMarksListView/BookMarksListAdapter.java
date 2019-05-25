@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.Resource;
@@ -26,6 +29,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
     private Context mContext;
     private int mResourse;
     private static final String TAG = "MyLog";
+    int lastPosition = -1;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -36,6 +40,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         TextView textTypeEvent;
         TextView textAddressEvent;
         ImageView imageEvent;
+        LinearLayout llBookMark;
 
 
         public MyViewHolder(View view) {
@@ -44,6 +49,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
             textTypeEvent = (TextView) view.findViewById(R.id.textTypeEvent);
             textAddressEvent = (TextView) view.findViewById(R.id.textAddressEvent);
             imageEvent = (ImageView) view.findViewById(R.id.imageEvent);
+            llBookMark = (LinearLayout) view.findViewById(R.id.llBookMark);
 
         }
 
@@ -64,7 +70,6 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
     @Override
     public BookMarksListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(mResourse, parent, false);
         return new MyViewHolder(view);
@@ -76,7 +81,6 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-
         Events event = events.get(position);
         holder.textNameEvent.setText(event.nameEvent);
         holder.textTypeEvent.setText(event.typeEvent);
@@ -85,6 +89,24 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         //Picasso.with(mContext).load(event.photoEvent).into(imageView);
         Log.d(TAG, "event.nameEvent: " + event.nameEvent);
         holder.loadImage(Uri.parse(event.photoEvent));
+        setAnimation(holder.llBookMark, position);
+
+    }
+
+    private void setAnimation(View itemView, int position) {
+        //Log.d(TAG, "position: " + position);
+        //Log.d(TAG, "lastPosition: " + lastPosition);
+        if (position > lastPosition){
+            //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.load_down_anim);
+            Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left);
+            //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.layout_animation_fall_down);
+            itemView.startAnimation(animation);
+            lastPosition = position;
+        }/*else{
+            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.load_up_anim);
+            itemView.startAnimation(animation);
+            lastPosition = position;
+        }*/
 
     }
 
