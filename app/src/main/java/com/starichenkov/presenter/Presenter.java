@@ -48,8 +48,8 @@ public class Presenter implements IPresenter{
     }
 
     @Override
-    public void createEvent(int idUser, String photoURI, String editNameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
-        iModel.createEvent(idUser, photoURI, editNameEvent, descriptionEvent, dateEvent, typeEvent, addressEvent, latitude, longitude);
+    public void createEvent(Events event){
+        iModel.createEvent(event);
     }
 
     @Override
@@ -90,4 +90,7 @@ public class Presenter implements IPresenter{
     public void getEventsFromBookmarks(){
         iModel.getEventsFromBookmarks();
     }
+
+    @Override
+    public void deleteAllEvents(){iModel.deleteAllEvents();};
 }

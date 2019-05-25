@@ -41,6 +41,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.starichenkov.RoomDB.Events;
 import com.starichenkov.customClasses.AccountAuthorization;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
@@ -80,6 +81,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     private Calendar dateAndTime= Calendar.getInstance();
 
     private Uri photoURI;
+    private Uri photoURIFullSize;
     private Bitmap bitmapPhoto;
     private String nameEvent;
     private String dateEvent;
@@ -149,8 +151,8 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             case R.id.buttonCreateEvent:
                 Log.d(TAG, "Click buttonCreateEvent");
                 Log.d(TAG, "Создать мероприятие");
-                iPresenter.createEvent(new AccountAuthorization(getActivity()).getIdUser(), photoURI.toString(), editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
-                        dateEvent, spinnerTypeEvent.getSelectedItem().toString(), addressEvent, latLngEvent.latitude, latLngEvent.longitude);
+                iPresenter.createEvent(new Events(new AccountAuthorization(getActivity()).getIdUser(), photoURI.toString(), photoURIFullSize.toString(), editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
+                        dateEvent, spinnerTypeEvent.getSelectedItem().toString(), addressEvent, latLngEvent.latitude, latLngEvent.longitude));
                 Log.d(TAG, "Список переменных");
                 Log.d(TAG,
                         "id = " + new AccountAuthorization(getActivity()).getIdUser() +
@@ -411,6 +413,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             bitmapPhoto = bitmap_300_300;
             getActivity().getContentResolver().delete(photoURI, null, null);
             photoURI = uri_300_300;
+            photoURIFullSize = uri_1920_1080;
 
             imageView.setImageBitmap(bitmap_300_300);
 

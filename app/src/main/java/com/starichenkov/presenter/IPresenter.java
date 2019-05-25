@@ -14,7 +14,8 @@ public interface IPresenter {
 
     boolean findUser(String mail, String password);
 
-    void createEvent(int idUser, String photoURI, String editNameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude);
+    //void createEvent(int idUser, String photoURI, String editNameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude);
+    void createEvent(Events event);
 
     void sendEvents(List<Events> events);
 
@@ -29,4 +30,6 @@ public interface IPresenter {
     void sendBookMarks(List<BookMarks> bookMarks);
 
     void getEventsFromBookmarks();
+
+    void deleteAllEvents();
 }

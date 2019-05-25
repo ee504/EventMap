@@ -5,8 +5,10 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(foreignKeys = {@ForeignKey(entity = Users.class, parentColumns = "id", childColumns = "idOrganizer"),
-            @ForeignKey(entity = Events.class, parentColumns = "id", childColumns = "idEvent")},
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(foreignKeys = {@ForeignKey(onDelete = CASCADE, entity = Users.class, parentColumns = "id", childColumns = "idOrganizer"),
+            @ForeignKey(onDelete = CASCADE, entity = Events.class, parentColumns = "id", childColumns = "idEvent")},
             indices = {@Index("idEvent"), @Index("idOrganizer")})
 public class BookMarks {
 

@@ -49,7 +49,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
 
         public void loadImage(Uri uri){
             //Picasso.with(context).load(url).placeholder(R.drawable.placeholder).error(R.drawable.error_ph).into(this.image);
-            Picasso.get().load(uri).transform(new CropSquareTransformation()).placeholder(R.drawable.event_map_logo).into(imageEvent);
+            Picasso.get().load(uri).error(R.drawable.event_map_logo).into(imageEvent);
         }
     }
 

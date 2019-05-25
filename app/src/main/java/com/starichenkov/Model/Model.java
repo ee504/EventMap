@@ -111,12 +111,11 @@ public class Model implements IModel {
     }
 
     @Override
-    public void createEvent(final int idUser, final String photoURI, final String photoEventFullSize, final String editNameEvent, final String descriptionEvent, final String dateEvent, final String typeEvent,
-                            final String addressEvent, final double latitude, final double longitude){
+    public void createEvent(final Events event){
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                eventsDao.insert(new Events(idUser, photoURI, editNameEvent, descriptionEvent, dateEvent, typeEvent, addressEvent, latitude, longitude));
+                eventsDao.insert(new Events(event));
             }
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -309,6 +308,38 @@ public class Model implements IModel {
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "Some error");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void deleteAllEvents(){
+
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                eventsDao.deleteAllEvents();
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // just like with a Single
+                        Log.d(TAG, "deleteAllEvents() onSubscribe");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        // action was completed successfully
+                        Log.d(TAG, "deleteAllEvents() onComplete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // something went wrong
+                        Log.d(TAG, "deleteBookMark() onError");
                         Log.d(TAG, e.getMessage());
                     }
                 });
