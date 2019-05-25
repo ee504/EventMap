@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
     private List<Events> events;
     private Context mContext;
     private int mResourse;
+    private static final String TAG = "MyLog";
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -81,6 +83,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         holder.textAddressEvent.setText(event.addressEvent);
         //holder.imageEvent.setImageURI(Uri.parse(event.photoEvent));
         //Picasso.with(mContext).load(event.photoEvent).into(imageView);
+        Log.d(TAG, "event.nameEvent: " + event.nameEvent);
         holder.loadImage(Uri.parse(event.photoEvent));
 
     }

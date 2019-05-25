@@ -8,6 +8,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -44,9 +45,12 @@ import com.starichenkov.customClasses.AccountAuthorization;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -259,7 +263,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             // Create the File where the photo should go
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                photoFile = createTempImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
@@ -278,7 +282,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         }
     }
 
-    private File createImageFile() throws IOException{
+    private File createTempImageFile() throws IOException{
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -291,6 +295,15 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         );
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private File createImageFile() throws IOException{
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_.jpg";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = new File(storageDir, imageFileName);
         return image;
     }
 
@@ -315,53 +328,92 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             Log.d(TAG, "intent is not null");
             Log.d(TAG, "photoURI: " + photoURI);
             //imageView.setImageURI(photoURI);
-            try{
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), photoURI);
-                setImage(bitmap);
-            }catch (IOException ex) {
+            //try{
+                //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), photoURI);
+                setImage(photoURI);
+            /*}catch (IOException ex) {
                 // Error occurred while creating the File
                 Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Error: " + ex.getMessage());
-            }
+            }*/
 
             //setPic();
             //performCrop();
         }
     }
 
-    private void setImage(Bitmap bitmap) {
+    private void setImage(Uri uri) {
 
         try{
-            ExifInterface ei = new ExifInterface(mCurrentPhotoPath);
-            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_UNDEFINED);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), photoURI);
+            Log.d(TAG, "bitmap_origin.getWidth(): " + bitmap.getWidth());
+            Log.d(TAG, "bitmap_origin.getHeight(): " + bitmap.getHeight());
+            Log.d(TAG, "bitmap_origin.getByteCount(): " + bitmap.getByteCount());
+            Log.d(TAG, "photoURI.getPath(): " + photoURI);
+            try(InputStream inputStream = getActivity().getContentResolver().openInputStream(photoURI)){
+                ExifInterface ei = new ExifInterface(inputStream);
+                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_UNDEFINED);
 
-            switch(orientation) {
+                switch(orientation) {
 
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    bitmap = rotateImage(bitmap, 90);
-                    break;
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        bitmap = rotateImage(bitmap, 90);
+                        Log.d(TAG, "ORIENTATION_ROTATE_90");
+                        break;
 
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    bitmap = rotateImage(bitmap, 180);
-                    break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        Log.d(TAG, "ORIENTATION_ROTATE_180");
+                        bitmap = rotateImage(bitmap, 180);
+                        break;
 
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    bitmap = rotateImage(bitmap, 270);
-                    break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        Log.d(TAG, "ORIENTATION_ROTATE_270");
+                        bitmap = rotateImage(bitmap, 270);
+                        break;
 
-                //case ExifInterface.ORIENTATION_NORMAL:
-                //default:
+                    //case ExifInterface.ORIENTATION_NORMAL:
+                    //default:
                     //bitmap = bitmap;
+                }
+
+            }catch (IOException ex) {
+                // Error occurred while creating the File
+                Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Error: " + ex.getMessage());
             }
+
+
+            Bitmap bitmap_1920_1080 = decodeSampledBitmapFromResource(photoURI, 1920, 1080);
+            Log.d(TAG, "bitmap_1920_1080.getWidth(): " + bitmap_1920_1080.getWidth());
+            Log.d(TAG, "bitmap_1920_1080.getHeight(): " + bitmap_1920_1080.getHeight());
+            Log.d(TAG, "bitmap_1920_1080.getByteCount(): " + bitmap_1920_1080.getByteCount());
+            File file_1920_1080 = createImageFile();
+            setBitMapToFile(bitmap_1920_1080, file_1920_1080);
+            Uri uri_1920_1080 = Uri.fromFile(file_1920_1080);
+            Log.d(TAG, "uri_1920_1080.getPath(): " + uri_1920_1080);
+
+            Bitmap bitmap_300_300 = decodeSampledBitmapFromResource(photoURI, 300, 300);
+            Log.d(TAG, "bitmap_300_300.getWidth(): " + bitmap_300_300.getWidth());
+            Log.d(TAG, "bitmap_300_300.getHeight(): " + bitmap_300_300.getHeight());
+            Log.d(TAG, "bitmap_300_300.getByteCount(): " + bitmap_300_300.getByteCount());
+
+            File file_300_300 = createImageFile();
+            setBitMapToFile(bitmap_300_300, file_300_300);
+            Uri uri_300_300 = Uri.fromFile(file_300_300);
+            Log.d(TAG, "uri_1920_1080.getPath(): " + uri_300_300);
+
+            bitmapPhoto = bitmap_300_300;
+            getActivity().getContentResolver().delete(photoURI, null, null);
+            photoURI = uri_300_300;
+
+            imageView.setImageBitmap(bitmap_300_300);
 
         }catch (IOException ex) {
             // Error occurred while creating the File
             Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Error: " + ex.getMessage());
         }
-        bitmapPhoto = bitmap;
-        imageView.setImageBitmap(bitmap);
 
     }
 
@@ -376,6 +428,65 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         addressEvent = address.getLocality() + ", " + address.getThoroughfare() + ", " + address.getFeatureName();
         latLngEvent = latLng;
         editAddressEvent.setText(addressEvent);
+
+    }
+
+    public int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        Log.d(TAG, "calculateInSampleSize height: " + height);
+        final int width = options.outWidth;
+        Log.d(TAG, "calculateInSampleSize width: " + width);
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        Log.d(TAG, "calculateInSampleSize inSampleSize: " + inSampleSize);
+        return inSampleSize;
+    }
+
+    public Bitmap decodeSampledBitmapFromResource(Uri uri,
+                                                         int reqWidth, int reqHeight) throws IOException{
+
+        InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        //BitmapFactory.decodeResource(res, resId, options);
+        BitmapFactory.decodeStream(inputStream, null, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+
+        //return BitmapFactory.decodeResource(res, resId, options);
+        InputStream inputStream2 = getActivity().getContentResolver().openInputStream(uri);
+        return BitmapFactory.decodeStream(inputStream2, null, options);
+
+    }
+
+    public void setBitMapToFile(Bitmap bitMap, File file) throws IOException {
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitMap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        file.createNewFile();
+        FileOutputStream fo = new FileOutputStream(file);
+        fo.write(bytes.toByteArray());
+        fo.close();
 
     }
 
