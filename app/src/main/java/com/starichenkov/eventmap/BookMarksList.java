@@ -1,24 +1,20 @@
 package com.starichenkov.eventmap;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import com.starichenkov.BookMarksListView.BookMarksListAdapter;
-import com.starichenkov.BookMarksListView.BookMarksListViewData;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.presenter.Presenter;
+import com.starichenkov.view.CallBackFromDB;
+import com.starichenkov.view.IView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class BookMarksList extends Activity implements IView, CallBackFromDB, BookMarksListAdapter.OnEventListener {

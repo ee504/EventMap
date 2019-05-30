@@ -8,8 +8,11 @@ import android.util.Log;
 
 import com.starichenkov.RoomDB.App;
 import com.starichenkov.RoomDB.AppDataBase;
+import com.starichenkov.RoomDB.BookMarks;
+import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
 import com.starichenkov.account.AccountAuthorization;
+import com.starichenkov.view.IView;
 
 import java.util.List;
 
@@ -67,5 +70,11 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
         // закрываем подключение при выходе
     }
 
+    @Override
+    public void sendEvents(List<Events> events){
+    }
 
+    @Override
+    public void sendBookMarks(List<BookMarks> bookMarks){
+    }
 }

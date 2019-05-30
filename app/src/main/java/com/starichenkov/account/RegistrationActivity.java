@@ -9,11 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.view.View.OnClickListener;
 
-import com.starichenkov.eventmap.IView;
+import com.starichenkov.RoomDB.BookMarks;
+import com.starichenkov.RoomDB.Events;
+import com.starichenkov.view.IView;
 import com.starichenkov.eventmap.MapsActivity;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
+
+import java.util.List;
 
 //import static com.google.android.gms.wearable.DataMap.TAG;
 
@@ -63,5 +67,13 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    public void sendEvents(List<Events> events){
+    }
+
+    @Override
+    public void sendBookMarks(List<BookMarks> bookMarks){
     }
 }

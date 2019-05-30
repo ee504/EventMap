@@ -6,8 +6,8 @@ import android.util.Log;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.account.AccountAuthorization;
-import com.starichenkov.eventmap.CallBackFromDB;
-import com.starichenkov.eventmap.IView;
+import com.starichenkov.view.CallBackFromDB;
+import com.starichenkov.view.IView;
 
 import com.starichenkov.Model.IModel;
 import com.starichenkov.Model.Model;
@@ -20,13 +20,15 @@ public class Presenter implements IPresenter{
     private IView iView;
     private IModel iModel;
 
-    private CallBackFromDB mListener;
+    //private CallBackFromDB mListener;
+    //private IView mListener;
 
     public Presenter(IView iView, String nameActivity){
         this.iView = iView;
         iModel = new Model(iView);
         if (nameActivity == "MapsActivity" || nameActivity ==  "Model") {
-            mListener = (CallBackFromDB) iView;
+            //mListener = (CallBackFromDB) iView;
+            //mListener = (iView) iView;
         }
     }
 
@@ -54,7 +56,8 @@ public class Presenter implements IPresenter{
     @Override
     public void sendEvents(List<Events> events){
         Log.e(TAG, "Presenter sendEvents()");
-        mListener.sendEvents(events);
+        //mListener.sendEvents(events);
+        iView.sendEvents(events);
 
     }
 
@@ -82,7 +85,8 @@ public class Presenter implements IPresenter{
     @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
         Log.e(TAG, "Presenter sendBookMarks()");
-        mListener.sendBookMarks(bookMarks);
+        //mListener.sendBookMarks(bookMarks);
+        iView.sendBookMarks(bookMarks);
     }
 
     @Override

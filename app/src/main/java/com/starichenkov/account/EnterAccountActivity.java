@@ -9,11 +9,18 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.starichenkov.eventmap.IView;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.starichenkov.RoomDB.BookMarks;
+import com.starichenkov.RoomDB.Events;
+import com.starichenkov.view.IView;
 import com.starichenkov.eventmap.MapsActivity;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
+
+import java.util.List;
 
 public class EnterAccountActivity extends Activity implements IView, OnClickListener {
 
@@ -57,6 +64,14 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
                 break;
 
         }
+    }
+
+    @Override
+    public void sendEvents(List<Events> events){
+    }
+
+    @Override
+    public void sendBookMarks(List<BookMarks> bookMarks){
     }
 
 }

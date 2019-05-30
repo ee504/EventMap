@@ -33,10 +33,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.eventmap.BuildConfig;
-import com.starichenkov.eventmap.IView;
+import com.starichenkov.view.IView;
 import com.starichenkov.eventmap.MapsActivity;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
@@ -50,6 +51,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -489,6 +491,14 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         fo.write(bytes.toByteArray());
         fo.close();
 
+    }
+
+    @Override
+    public void sendEvents(List<Events> events){
+    }
+
+    @Override
+    public void sendBookMarks(List<BookMarks> bookMarks){
     }
 
 }

@@ -12,7 +12,7 @@ import com.starichenkov.RoomDB.EventsDao;
 import com.starichenkov.RoomDB.Users;
 import com.starichenkov.RoomDB.UsersDao;
 import com.starichenkov.account.AccountAuthorization;
-import com.starichenkov.eventmap.IView;
+import com.starichenkov.view.IView;
 import com.starichenkov.presenter.Presenter;
 
 import java.util.List;

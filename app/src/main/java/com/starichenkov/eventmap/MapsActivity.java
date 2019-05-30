@@ -45,6 +45,8 @@ import com.starichenkov.account.RegistrationActivity;
 import com.starichenkov.createEvent.CreateEventActivity;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.presenter.Presenter;
+import com.starichenkov.view.CallBackFromDB;
+import com.starichenkov.view.IView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +56,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private GoogleMap mMap;
     private static final String TAG = "MyLog";
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private SomeEvet someEvent = new SomeEvet();
     private Button btnDrawerOpener;
     private ImageButton ibtnDrawerOpener;
     private Button btnUsersData;
