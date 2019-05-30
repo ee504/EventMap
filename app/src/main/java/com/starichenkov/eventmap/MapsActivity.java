@@ -9,6 +9,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -29,6 +31,7 @@ import android.view.Gravity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -51,9 +54,10 @@ import com.starichenkov.view.IView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener, CallBackFromDB, IView {
+public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener, CallBackFromDB, IView {
 
     private GoogleMap mMap;
+    private MapView mapView;
     private static final String TAG = "MyLog";
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private Button btnDrawerOpener;
@@ -90,44 +94,51 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+        View view = inflater.inflate(R.layout.activity_main_view, null);
+        //super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_maps);
-        setContentView(R.layout.activity_main_view);
+        //setContentView(R.layout.activity_main_view);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapView = (MapView) view.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+        mapView.getMapAsync(this);//when you already implement OnMapReadyCallback in your fragment
+        /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);*/
 
 
-        presenter = new Presenter(this, this.getLocalClassName());
+        presenter = new Presenter(this, getActivity().getLocalClassName());
         presenter.getAllEvents();
 
-        initView();
+        initView(view);
         Log.d(TAG, "Hello");
+        return view;
 
     }
 
-    private void initView() {
+    private void initView(View view) {
 
-        btnDrawerOpener = (Button) findViewById(R.id.btnDrawerOpener);
+        btnDrawerOpener = (Button) view.findViewById(R.id.btnDrawerOpener);
         btnDrawerOpener.setOnClickListener(this);
         //btnDrawerOpener.setVisibility(View.GONE);
 
-        ibtnDrawerOpener = (ImageButton) findViewById(R.id.ibtnDrawerOpener);
+        ibtnDrawerOpener = (ImageButton) view.findViewById(R.id.ibtnDrawerOpener);
         ibtnDrawerOpener.setOnClickListener(this);
 
-        btnUsersData = (Button) findViewById(R.id.btnUsersData);
+        btnUsersData = (Button) view.findViewById(R.id.btnUsersData);
         btnUsersData.setOnClickListener(this);
         //btnUsersData.setVisibility(View.GONE);
 
-        btnFloatingAction = (FloatingActionButton) findViewById(R.id.btnFloatingAction);
+        btnFloatingAction = (FloatingActionButton) view.findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
 
-        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = view.findViewById(R.id.drawer_layout);
 
-        navigationView = findViewById(R.id.nav_view);
+        navigationView = view.findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -143,7 +154,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
                             case R.id.nav_bookmarks:
                                 Log.d(TAG, "Click nav_bookmarks");
-                                Intent intentBookMarks = new Intent(getApplicationContext(), BookMarksList.class);
+                                Intent intentBookMarks = new Intent(getActivity().getApplicationContext(), BookMarksList.class);
                                 startActivity(intentBookMarks);
                                 break;
                         }
@@ -152,13 +163,13 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 }
         );
 
-        ibtnBookMark = (ImageButton) findViewById(R.id.ibtnBookMark);
+        ibtnBookMark = (ImageButton) view.findViewById(R.id.ibtnBookMark);
         ibtnBookMark.setOnClickListener(this);
 
-        header_authorized = LayoutInflater.from(this).inflate(R.layout.nav_header_authorized, navigationView, false);
-        header_not_authorized = LayoutInflater.from(this).inflate(R.layout.nav_header_not_authorized, navigationView, false);
+        header_authorized = LayoutInflater.from(getActivity()).inflate(R.layout.nav_header_authorized, navigationView, false);
+        header_not_authorized = LayoutInflater.from(getActivity()).inflate(R.layout.nav_header_not_authorized, navigationView, false);
 
-        if(new AccountAuthorization(this).checkAuthorization()) {
+        if(new AccountAuthorization(getActivity()).checkAuthorization()) {
             navigationView.addHeaderView(header_authorized);
             presenter.getAllBookmarks();
 
@@ -179,16 +190,16 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         btnAccount = (Button) header_authorized.findViewById(R.id.btnAccount);
         btnAccount.setOnClickListener(this);
 
-        LinearLayout llBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
+        LinearLayout llBottomSheet = (LinearLayout) view.findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
-        imageEvent = (ImageView) findViewById(R.id.imageEvent);
-        textNameEvent = (TextView) findViewById(R.id.textNameEvent);
-        textTypeEvent = (TextView) findViewById(R.id.textTypeEvent);
-        textDateEvent = (TextView) findViewById(R.id.textDateEvent);
-        textAddressEvent = (TextView) findViewById(R.id.textAddressEvent);
-        textDescriptionEvent = (TextView) findViewById(R.id.textDescriptionEvent);
+        imageEvent = (ImageView) view.findViewById(R.id.imageEvent);
+        textNameEvent = (TextView) view.findViewById(R.id.textNameEvent);
+        textTypeEvent = (TextView) view.findViewById(R.id.textTypeEvent);
+        textDateEvent = (TextView) view.findViewById(R.id.textDateEvent);
+        textAddressEvent = (TextView) view.findViewById(R.id.textAddressEvent);
+        textDescriptionEvent = (TextView) view.findViewById(R.id.textDescriptionEvent);
 
         listMarkers = new ArrayList<Marker>();
 
@@ -212,8 +223,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
             case R.id.btnUsersData:
                 Log.d(TAG, "Click btnUsersData");
-                Log.d(TAG, "this.getLocalClassName(): " + this.getLocalClassName());
-                Intent intentUsersData = new Intent(this, UsersDataActivity.class);
+                Log.d(TAG, "this.getLocalClassName(): " + getActivity().getLocalClassName());
+                Intent intentUsersData = new Intent(getActivity(), UsersDataActivity.class);
                 startActivity(intentUsersData);
                 //View frgm = findViewById(R.id.map);
                 //frgm.setClickable(false);
@@ -222,12 +233,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 break;
 
             case R.id.btnFloatingAction:
-                if(new AccountAuthorization(this).checkAuthorization()) {
+                if(new AccountAuthorization(getActivity()).checkAuthorization()) {
                     Log.d(TAG, "Click btnFloatingAction");
-                    Intent intentCreateEvent = new Intent(this, CreateEventActivity.class);
+                    Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
                     startActivity(intentCreateEvent);
                 }else{
-                    Toast toast = Toast.makeText(this, "Требуется регистрация",Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getActivity(), "Требуется регистрация",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER,0,0);
                     toast.show();
                 }
@@ -235,13 +246,13 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
             case R.id.btnEnterAccount:
                 Log.d(TAG, "Click btnEnterAccount");
-                Intent intentEnterAccount = new Intent(this, EnterAccountActivity.class);
+                Intent intentEnterAccount = new Intent(getActivity(), EnterAccountActivity.class);
                 startActivity(intentEnterAccount);
                 break;
 
             case R.id.btnRegistration:
                 Log.d(TAG, "Click btnRegistration");
-                Intent intentRegistration = new Intent(this, RegistrationActivity.class);
+                Intent intentRegistration = new Intent(getActivity(), RegistrationActivity.class);
                 startActivity(intentRegistration);
                 break;
 
@@ -253,28 +264,28 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
             case R.id.btnExit:
                 Log.d(TAG, "Click btnExit");
-                new AccountAuthorization(this).deleteAuthorization();
-                Intent intentExit = new Intent(this, MapsActivity.class);
+                new AccountAuthorization(getActivity()).deleteAuthorization();
+                Intent intentExit = new Intent(getActivity(), MapsActivity.class);
                 startActivity(intentExit);
                 break;
 
             case R.id.ibtnBookMark:
                 Log.d(TAG, "Click ibtnBookMark");
                 if(ibtnBookMark.getTag() == this.getString(R.string.ic_bookmark_border_black_24dp)){
-                    ibtnBookMark.setImageDrawable(this.getDrawable(R.drawable.ic_bookmark_black_24dp));
+                    ibtnBookMark.setImageDrawable(getActivity().getDrawable(R.drawable.ic_bookmark_black_24dp));
                     ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_black_24dp));
-                    Toast toast = Toast.makeText(this, "Закладка сохранена",Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getActivity(), "Закладка сохранена",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM,0,0);
                     toast.show();
-                    presenter.createBookMark(new AccountAuthorization(this).getIdUser(), currentEvent.id);
+                    presenter.createBookMark(new AccountAuthorization(getActivity()).getIdUser(), currentEvent.id);
                     presenter.getAllBookmarks();
                 }else if(ibtnBookMark.getTag() == this.getString(R.string.ic_bookmark_black_24dp)){
-                    ibtnBookMark.setImageDrawable(this.getDrawable(R.drawable.ic_bookmark_border_black_24dp));
+                    ibtnBookMark.setImageDrawable(getActivity().getDrawable(R.drawable.ic_bookmark_border_black_24dp));
                     ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_border_black_24dp));
-                    Toast toast = Toast.makeText(this, "Закладка удалена",Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getActivity(), "Закладка удалена",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM,0,0);
                     toast.show();
-                    presenter.deleteBookMark(new AccountAuthorization(this).getIdUser(), currentEvent.id);
+                    presenter.deleteBookMark(new AccountAuthorization(getActivity()).getIdUser(), currentEvent.id);
                     presenter.getAllBookmarks();
                 }
                 break;
@@ -300,11 +311,11 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
 
-        if (ContextCompat.checkSelfPermission(this,
+        if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
 
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
@@ -326,7 +337,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             // in a raw resource file.
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
-                            this, R.raw.map_style));
+                            getActivity(), R.raw.map_style));
 
             if (!success) {
                 Log.e(TAG, "Style parsing failed.");
@@ -378,10 +389,10 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         if(checkBookMark(currentEvent.id)){
             Log.d(TAG, "checkBookMark(): " + currentEvent.id);
-            ibtnBookMark.setImageDrawable(this.getDrawable(R.drawable.ic_bookmark_black_24dp));
+            ibtnBookMark.setImageDrawable(getActivity().getDrawable(R.drawable.ic_bookmark_black_24dp));
             ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_black_24dp));
         }else{
-            ibtnBookMark.setImageDrawable(this.getDrawable(R.drawable.ic_bookmark_border_black_24dp));
+            ibtnBookMark.setImageDrawable(getActivity().getDrawable(R.drawable.ic_bookmark_border_black_24dp));
             ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_border_black_24dp));
         }
 
@@ -440,7 +451,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
 
-                    if (ContextCompat.checkSelfPermission(this,
+                    if (ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
                         mMap.setMyLocationEnabled(true);

@@ -36,7 +36,7 @@
 
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".MainMapActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait">
             <intent-filter>

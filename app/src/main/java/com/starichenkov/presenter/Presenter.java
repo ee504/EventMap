@@ -26,10 +26,10 @@ public class Presenter implements IPresenter{
     public Presenter(IView iView, String nameActivity){
         this.iView = iView;
         iModel = new Model(iView);
-        if (nameActivity == "MapsActivity" || nameActivity ==  "Model") {
+        //if (nameActivity == "MapsActivity" || nameActivity ==  "Model") {
             //mListener = (CallBackFromDB) iView;
             //mListener = (iView) iView;
-        }
+        //}
     }
 
 
