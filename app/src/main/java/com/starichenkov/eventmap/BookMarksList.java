@@ -1,6 +1,7 @@
 package com.starichenkov.eventmap;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class BookMarksList extends Activity implements IView, CallBackFromDB{
+public class BookMarksList extends Activity implements IView, CallBackFromDB, BookMarksListAdapter.OnEventListener {
 
     private static final String TAG = "MyLog";
 
@@ -106,4 +107,11 @@ public class BookMarksList extends Activity implements IView, CallBackFromDB{
 
     }
 
+    @Override
+    public void onEventClick(int position) {
+        Log.d(TAG, "events.get(position).id: " + events.get(position).id);
+        //events.get(position).nameEvent;
+        //Intent intentBookMarks = new Intent(this, MapsActivity.class);
+        //startActivity(intentBookMarks);
+    }
 }

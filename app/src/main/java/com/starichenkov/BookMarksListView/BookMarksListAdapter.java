@@ -31,10 +31,12 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
     private static final String TAG = "MyLog";
     int lastPosition = -1;
 
+    private OnEventListener mOnEventListener;
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
         TextView textNameEvent;
         TextView textTypeEvent;
@@ -42,8 +44,9 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         ImageView imageEvent;
         LinearLayout llBookMark;
 
+        OnEventListener onEventListener;
 
-        public MyViewHolder(View view) {
+        public MyViewHolder(View view, OnEventListener onEventListener) {
             super(view);
             textNameEvent = (TextView) view.findViewById(R.id.textNameEvent);
             textTypeEvent = (TextView) view.findViewById(R.id.textTypeEvent);
@@ -51,12 +54,23 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
             imageEvent = (ImageView) view.findViewById(R.id.imageEvent);
             llBookMark = (LinearLayout) view.findViewById(R.id.llBookMark);
 
+            this.onEventListener = onEventListener;
+            itemView.setOnClickListener(this);
         }
 
         public void loadImage(Uri uri){
             //Picasso.with(context).load(url).placeholder(R.drawable.placeholder).error(R.drawable.error_ph).into(this.image);
             Picasso.get().load(uri).error(R.drawable.event_map_logo).into(imageEvent);
         }
+
+        @Override
+        public void onClick(View v) {
+            onEventListener.onEventClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnEventListener{
+        void onEventClick(int position);
     }
 
     //Constructor
@@ -64,6 +78,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         this.mContext = mContext;
         this.mResourse = resource;
         this.events = events;
+        this.mOnEventListener = (OnEventListener)mContext;
     }
 
     // Create new views (invoked by the layout manager)
@@ -72,7 +87,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         // create a new view
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(mResourse, parent, false);
-        return new MyViewHolder(view);
+        return new MyViewHolder(view, mOnEventListener);
 
     }
 
@@ -116,40 +131,4 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         return events.size();
     }
 
-
-    /*private Context mContext;
-    private int mResourse;
-
-    public BookMarksListAdapter(Context context, int resource, ArrayList<BookMarksListViewData> objects) {
-        super(context, resource, objects);
-
-        this.mContext = context;
-        this.mResourse = resource;
-    }
-
-
-    @NonNull
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //return super.getView(position, convertView, parent);
-
-        String nameEvent = getItem(position).getNameEvent();
-        String typeEvent = getItem(position).getTypeEvent();
-        String addressEvent = getItem(position).getAddressEvent();
-
-        BookMarksListViewData bookMarksListViewData= new BookMarksListViewData(nameEvent, typeEvent, addressEvent);
-
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(mResourse, parent, false);
-
-        TextView textNameEvent = (TextView) convertView.findViewById(R.id.textNameEvent);
-        TextView textTypeEvent = (TextView) convertView.findViewById(R.id.textTypeEvent);
-        TextView textAddressEvent = (TextView) convertView.findViewById(R.id.textAddressEvent);
-
-        textNameEvent.setText(nameEvent);
-        textTypeEvent.setText(typeEvent);
-        textAddressEvent.setText(addressEvent);
-
-        return convertView;
-    }*/
 }

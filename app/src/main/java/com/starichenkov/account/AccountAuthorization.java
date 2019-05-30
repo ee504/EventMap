@@ -1,4 +1,4 @@
-package com.starichenkov.customClasses;
+package com.starichenkov.account;
 
 import android.content.Context;
 import android.content.SharedPreferences;

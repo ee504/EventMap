@@ -1,7 +1,6 @@
 package com.starichenkov.Model;
 
 import android.content.Context;
-import android.location.Address;
 import android.util.Log;
 
 import com.starichenkov.RoomDB.App;
@@ -12,7 +11,7 @@ import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.EventsDao;
 import com.starichenkov.RoomDB.Users;
 import com.starichenkov.RoomDB.UsersDao;
-import com.starichenkov.customClasses.AccountAuthorization;
+import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.eventmap.IView;
 import com.starichenkov.presenter.Presenter;
 
@@ -20,12 +19,10 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
-import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 

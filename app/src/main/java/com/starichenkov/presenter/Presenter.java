@@ -1,12 +1,11 @@
 package com.starichenkov.presenter;
 
 import android.content.Context;
-import android.location.Address;
 import android.util.Log;
 
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
-import com.starichenkov.customClasses.AccountAuthorization;
+import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.eventmap.CallBackFromDB;
 import com.starichenkov.eventmap.IView;
 

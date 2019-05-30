@@ -1,18 +1,13 @@
-package com.starichenkov.eventmap;
+package com.starichenkov.createEvent;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -20,10 +15,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -42,22 +34,23 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.starichenkov.RoomDB.Events;
-import com.starichenkov.customClasses.AccountAuthorization;
+import com.starichenkov.account.AccountAuthorization;
+import com.starichenkov.eventmap.BuildConfig;
+import com.starichenkov.eventmap.IView;
+import com.starichenkov.eventmap.MapsActivity;
+import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class CreateEventMainFragment extends Fragment implements OnClickListener, OnTouchListener, IView {

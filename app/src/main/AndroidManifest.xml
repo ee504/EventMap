@@ -46,12 +46,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RegistrationActivity"
+        <activity android:name="com.starichenkov.account.RegistrationActivity"
             android:label="Registration"
             android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".EnterAccountActivity"
+        <activity android:name="com.starichenkov.account.EnterAccountActivity"
             android:label="EnterAccountActivity"
             android:screenOrientation="portrait">
         </activity>
@@ -61,7 +61,7 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".CreateEventActivity"
+        <activity android:name="com.starichenkov.createEvent.CreateEventActivity"
             android:label="CreateEventActivity"
             android:screenOrientation="portrait">
         </activity>

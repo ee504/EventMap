@@ -9,7 +9,7 @@ import android.util.Log;
 import com.starichenkov.RoomDB.App;
 import com.starichenkov.RoomDB.AppDataBase;
 import com.starichenkov.RoomDB.Users;
-import com.starichenkov.customClasses.AccountAuthorization;
+import com.starichenkov.account.AccountAuthorization;
 
 import java.util.List;
 

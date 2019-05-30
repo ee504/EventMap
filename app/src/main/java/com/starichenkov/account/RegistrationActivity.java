@@ -1,4 +1,4 @@
-package com.starichenkov.eventmap;
+package com.starichenkov.account;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.view.View.OnClickListener;
 
+import com.starichenkov.eventmap.IView;
+import com.starichenkov.eventmap.MapsActivity;
+import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
 

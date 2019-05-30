@@ -4,7 +4,9 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id = "@+id/llBookMark">
+    android:id = "@+id/llBookMark"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/imageEvent"

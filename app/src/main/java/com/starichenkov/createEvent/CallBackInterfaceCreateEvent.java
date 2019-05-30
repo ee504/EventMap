@@ -1,4 +1,4 @@
-package com.starichenkov.eventmap;
+package com.starichenkov.createEvent;
 
 import android.location.Address;
 

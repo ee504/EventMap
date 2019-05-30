@@ -1,7 +1,6 @@
 package com.starichenkov.eventmap;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -10,7 +9,6 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -20,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -32,7 +29,6 @@ import android.view.Gravity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -42,20 +38,16 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.starichenkov.RoomDB.App;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
-import com.starichenkov.customClasses.AccountAuthorization;
-import com.starichenkov.customClasses.SomeEvet;
+import com.starichenkov.account.EnterAccountActivity;
+import com.starichenkov.account.RegistrationActivity;
+import com.starichenkov.createEvent.CreateEventActivity;
+import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.presenter.Presenter;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener, CallBackFromDB, IView {
 
@@ -88,6 +80,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private FloatingActionButton btnFloatingAction;
 
     private List<Events> events;
+    private List<Marker> listMarkers;
     private Events currentEvent;
     private List<BookMarks> bookMarks;
 
@@ -195,6 +188,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         textDateEvent = (TextView) findViewById(R.id.textDateEvent);
         textAddressEvent = (TextView) findViewById(R.id.textAddressEvent);
         textDescriptionEvent = (TextView) findViewById(R.id.textDescriptionEvent);
+
+        listMarkers = new ArrayList<Marker>();
 
     }
 
@@ -373,42 +368,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
         mMap.setMinZoomPreference(mMap.getCameraPosition().zoom);
 
-        /*App.getInstance().getDatabase().eventsDao().getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Events>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        // add it to a CompositeDisposable
-                    }
-                    @Override
-                    public void onSuccess(List<Events> events) {
-                        Log.d(TAG, "onSuccess");
-                        setEvents(events);
-                        for(Events event : events){
-                            Marker  marker  = mMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(event.latitude, event.longitude))
-                                    .title(event.nameEvent));
-                            marker.setTag(event);
-                        }
-
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "Some error");
-                        Log.d(TAG, e.getMessage());
-                    }
-                });*/
-
-        /*Log.e(TAG, "OnMapReady for");
-        for(Events event : events) {
-            Marker marker = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(event.latitude, event.longitude)));
-                    //.title(event.nameEvent));
-            marker.setTag(event);
-        }
-        mMap.setOnMarkerClickListener(this);*/
-
     }
 
 
@@ -436,19 +395,17 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         textAddressEvent.setText(currentEvent.addressEvent);
         textDescriptionEvent.setText(currentEvent.descriptionEvent);
 
-
         return false;
     }
 
     @Override
     public void sendEvents(List<Events> events){
         this.events = events;
-        //onMap(mMap);
         for(Events event : this.events) {
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(event.latitude, event.longitude)));
-            //.title(event.nameEvent));
             marker.setTag(event);
+            listMarkers.add(marker);
         }
         mMap.setOnMarkerClickListener(this);
     }
@@ -456,11 +413,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
         this.bookMarks = bookMarks;
-        /*for(BookMarks bookMark : bookMarks){
-            Log.d(TAG, "bookMark id: " + bookMark.id);
-            Log.d(TAG, "bookMark idOrganizer: " + bookMark.idOrganizer);
-            Log.d(TAG, "bookMark idEvent: " + bookMark.idEvent);
-        }*/
     }
 
     public boolean checkBookMark(long idEvent){
