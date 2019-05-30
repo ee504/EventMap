@@ -97,6 +97,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //View view = inflater.inflate(R.layout.activity_main_view, container, false);
         View view = inflater.inflate(R.layout.activity_main_view, null);
         //super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_maps);
@@ -122,7 +123,9 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
 
     private void initView(View view) {
 
+
         btnDrawerOpener = (Button) view.findViewById(R.id.btnDrawerOpener);
+        Log.d(TAG, "btnDrawerOpener:" + btnDrawerOpener);
         btnDrawerOpener.setOnClickListener(this);
         //btnDrawerOpener.setVisibility(View.GONE);
 

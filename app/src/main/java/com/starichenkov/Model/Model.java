@@ -290,6 +290,7 @@ public class Model implements IModel {
     public void getEventsFromBookmarks(){
         Log.e(TAG, "Model getEventsFromBookmarks()");
         eventsDao.getEventsFromBookmarks(new AccountAuthorization((Context)iView).getIdUser())
+        //eventsDao.getEventsFromBookmarks(new AccountAuthorization().getIdUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Events>>() {
