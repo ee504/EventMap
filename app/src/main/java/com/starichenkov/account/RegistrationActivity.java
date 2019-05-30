@@ -37,7 +37,7 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
         setContentView(R.layout.activity_registration);
 
         initView();
-        iPresenter = new Presenter(this, this.getLocalClassName());
+        iPresenter = new Presenter(this);
     }
 
     private void initView() {
@@ -75,5 +75,16 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
 
     @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
+    }
+
+    @Override
+    public void detachView(){
+        iPresenter.detachView();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        detachView();
     }
 }

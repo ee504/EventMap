@@ -1,6 +1,7 @@
 package com.starichenkov.eventmap;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -91,6 +92,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
 
     private BottomSheetBehavior bottomSheetBehavior;
 
+    private CallBackInterfaceMap mListener;
+
 
 
     @Override
@@ -112,7 +115,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
         mapFragment.getMapAsync(this);*/
 
 
-        presenter = new Presenter(this, getActivity().getLocalClassName());
+        presenter = new Presenter(this);
         presenter.getAllEvents();
 
         initView(view);
@@ -157,8 +160,11 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
 
                             case R.id.nav_bookmarks:
                                 Log.d(TAG, "Click nav_bookmarks");
-                                Intent intentBookMarks = new Intent(getActivity().getApplicationContext(), BookMarksList.class);
-                                startActivity(intentBookMarks);
+                                drawerLayout.closeDrawer(GravityCompat.START);
+                                //drawerLayout.openDrawer(GravityCompat.START);
+                                //Intent intentBookMarks = new Intent(getActivity().getApplicationContext(), BookMarksList.class);
+                                //startActivity(intentBookMarks);
+                                mListener.openBookMarksList();
                                 break;
                         }
                         return true;
@@ -172,7 +178,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
         header_authorized = LayoutInflater.from(getActivity()).inflate(R.layout.nav_header_authorized, navigationView, false);
         header_not_authorized = LayoutInflater.from(getActivity()).inflate(R.layout.nav_header_not_authorized, navigationView, false);
 
-        if(new AccountAuthorization(getActivity()).checkAuthorization()) {
+        if(new AccountAuthorization().checkAuthorization()) {
             navigationView.addHeaderView(header_authorized);
             presenter.getAllBookmarks();
 
@@ -216,7 +222,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
             case R.id.btnDrawerOpener:
                 //drawerLayout.openDrawer(GravityCompat.START);
                 Log.d(TAG, "Click Menu");
-                presenter.getAllBookmarks();
+                //presenter.getAllBookmarks();
                 break;
 
             case R.id.ibtnDrawerOpener:
@@ -236,7 +242,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
                 break;
 
             case R.id.btnFloatingAction:
-                if(new AccountAuthorization(getActivity()).checkAuthorization()) {
+                if(new AccountAuthorization().checkAuthorization()) {
                     Log.d(TAG, "Click btnFloatingAction");
                     Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
                     startActivity(intentCreateEvent);
@@ -267,7 +273,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
 
             case R.id.btnExit:
                 Log.d(TAG, "Click btnExit");
-                new AccountAuthorization(getActivity()).deleteAuthorization();
+                new AccountAuthorization().deleteAuthorization();
                 Intent intentExit = new Intent(getActivity(), MapsActivity.class);
                 startActivity(intentExit);
                 break;
@@ -280,7 +286,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
                     Toast toast = Toast.makeText(getActivity(), "Закладка сохранена",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM,0,0);
                     toast.show();
-                    presenter.createBookMark(new AccountAuthorization(getActivity()).getIdUser(), currentEvent.id);
+                    presenter.createBookMark(new AccountAuthorization().getIdUser(), currentEvent.id);
                     presenter.getAllBookmarks();
                 }else if(ibtnBookMark.getTag() == this.getString(R.string.ic_bookmark_black_24dp)){
                     ibtnBookMark.setImageDrawable(getActivity().getDrawable(R.drawable.ic_bookmark_border_black_24dp));
@@ -288,7 +294,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
                     Toast toast = Toast.makeText(getActivity(), "Закладка удалена",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM,0,0);
                     toast.show();
-                    presenter.deleteBookMark(new AccountAuthorization(getActivity()).getIdUser(), currentEvent.id);
+                    presenter.deleteBookMark(new AccountAuthorization().getIdUser(), currentEvent.id);
                     presenter.getAllBookmarks();
                 }
                 break;
@@ -413,6 +419,17 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
         return false;
     }
 
+    public void setMarker(long idEvent){
+        Log.e(TAG, "setMarker(): " + idEvent);
+        for(Marker marker : listMarkers){
+            if(idEvent == ((Events)marker.getTag()).id){
+                Log.e(TAG, "find");
+                onMarkerClick(marker);
+            }
+        }
+
+    }
+
     @Override
     public void sendEvents(List<Events> events){
         this.events = events;
@@ -469,6 +486,27 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
 
             // other 'case' lines to check for other
             // permissions this app might request.
+        }
+    }
+
+    @Override
+    public void detachView(){
+        presenter.detachView();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        detachView();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (CallBackInterfaceMap) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement CallBackInterfaceMap");
         }
     }
 

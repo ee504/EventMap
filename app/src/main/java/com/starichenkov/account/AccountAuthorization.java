@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.starichenkov.RoomDB.App;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class AccountAuthorization {
@@ -12,9 +14,10 @@ public class AccountAuthorization {
     private String namePreference = "Authorization";
     private int idUser;
 
-    public AccountAuthorization(Context con){
+    public AccountAuthorization(){
 
-        sPref = con.getSharedPreferences("AccountPreference", MODE_PRIVATE);
+        sPref = App.getAppContext().getSharedPreferences("AccountPreference", MODE_PRIVATE);
+       // sPref = con.getSharedPreferences(App.getAppContext(), MODE_PRIVATE);
 
     }
 

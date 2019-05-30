@@ -30,12 +30,12 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users_data);
-        Log.d(TAG, "ID: " + new AccountAuthorization(this).getIdUser());
+        Log.d(TAG, "ID: " + new AccountAuthorization().getIdUser());
         Log.d(TAG, "--- Rows in mytable: ---");
 
         AppDataBase db = App.getInstance().getDatabase();
 
-        boolean test = new AccountAuthorization(this).checkAuthorization();
+        boolean test = new AccountAuthorization().checkAuthorization();
         Log.d(TAG, "authorized = " + test);
 
         db.usersDao().getAll()
@@ -77,4 +77,9 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
     @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
     }
+
+    @Override
+    public void detachView(){
+    }
+
 }

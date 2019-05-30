@@ -32,4 +32,6 @@ public interface IPresenter {
     void getEventsFromBookmarks();
 
     void deleteAllEvents();
+
+    void detachView();
 }

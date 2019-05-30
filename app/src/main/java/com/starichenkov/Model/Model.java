@@ -83,7 +83,7 @@ public class Model implements IModel {
     @Override
     public void findUser(String mail, String password) {
 
-        final AccountAuthorization accountAuthorization = new AccountAuthorization((Context)this.iView);
+        final AccountAuthorization accountAuthorization = new AccountAuthorization();
 
         userDao.getId(mail, password)
                 .subscribeOn(Schedulers.io())
@@ -152,7 +152,8 @@ public class Model implements IModel {
                     @Override
                     public void onSuccess(List<Events> events) {
                         Log.d(TAG, "Model getAllEvents() onSuccess");
-                        new Presenter(iView, "Model").sendEvents(events);
+                        //new Presenter(iView, "Model").sendEvents(events);
+                        iView.sendEvents(events);
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -264,7 +265,7 @@ public class Model implements IModel {
     @Override
     public void getAllBookmarks(){
 
-        bookMarksDao.getAll(new AccountAuthorization((Context)iView).getIdUser())
+        bookMarksDao.getAll(new AccountAuthorization().getIdUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<BookMarks>>() {
@@ -276,7 +277,8 @@ public class Model implements IModel {
                     @Override
                     public void onSuccess(List<BookMarks> bookMarks) {
                         Log.d(TAG, "Model getAllBookmarks() onSuccess");
-                        new Presenter(iView, "Model").sendBookMarks(bookMarks);
+                        //new Presenter(iView, "Model").sendBookMarks(bookMarks);
+                        iView.sendBookMarks(bookMarks);
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -289,7 +291,7 @@ public class Model implements IModel {
     @Override
     public void getEventsFromBookmarks(){
         Log.e(TAG, "Model getEventsFromBookmarks()");
-        eventsDao.getEventsFromBookmarks(new AccountAuthorization((Context)iView).getIdUser())
+        eventsDao.getEventsFromBookmarks(new AccountAuthorization().getIdUser())
         //eventsDao.getEventsFromBookmarks(new AccountAuthorization().getIdUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -301,7 +303,8 @@ public class Model implements IModel {
                     @Override
                     public void onSuccess(List<Events> events) {
                         Log.d(TAG, "Model getAllEvents() onSuccess");
-                        new Presenter(iView, "Model").sendEvents(events);
+                        //new Presenter(iView, "Model").sendEvents(events);
+                        iView.sendEvents(events);
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -341,5 +344,10 @@ public class Model implements IModel {
                         Log.d(TAG, e.getMessage());
                     }
                 });
+    }
+
+    @Override
+    public void detachView(){
+        iView = null;
     }
 }

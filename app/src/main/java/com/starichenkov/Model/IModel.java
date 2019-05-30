@@ -24,4 +24,6 @@ public interface IModel {
     void getEventsFromBookmarks();
 
     void deleteAllEvents();
+
+    void detachView();
 }

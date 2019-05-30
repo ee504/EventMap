@@ -23,13 +23,9 @@ public class Presenter implements IPresenter{
     //private CallBackFromDB mListener;
     //private IView mListener;
 
-    public Presenter(IView iView, String nameActivity){
+    public Presenter(IView iView){
         this.iView = iView;
         iModel = new Model(iView);
-        //if (nameActivity == "MapsActivity" || nameActivity ==  "Model") {
-            //mListener = (CallBackFromDB) iView;
-            //mListener = (iView) iView;
-        //}
     }
 
 
@@ -44,7 +40,7 @@ public class Presenter implements IPresenter{
     public boolean findUser(String mail, String password){
 
         iModel.findUser(mail, password);
-        return new AccountAuthorization((Context)this.iView).checkAuthorization();
+        return new AccountAuthorization().checkAuthorization();
 
     }
 
@@ -95,5 +91,11 @@ public class Presenter implements IPresenter{
     }
 
     @Override
-    public void deleteAllEvents(){iModel.deleteAllEvents();};
+    public void deleteAllEvents(){iModel.deleteAllEvents();}
+
+    @Override
+    public void detachView(){
+        iModel.detachView();
+        iView = null;
+    }
 }

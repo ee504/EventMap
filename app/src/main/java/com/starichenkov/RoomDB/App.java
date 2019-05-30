@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.migration.Migration;
+import android.content.Context;
 
 public class App extends Application {
 
@@ -11,12 +12,19 @@ public class App extends Application {
 
     private AppDataBase database;
 
+    private static Context mContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        mContext = getApplicationContext();
         instance = this;
         database = Room.databaseBuilder(this, AppDataBase.class, "database")
                 .build();
+    }
+
+    public static Context getAppContext() {
+        return mContext;
     }
 
     public static App getInstance() {

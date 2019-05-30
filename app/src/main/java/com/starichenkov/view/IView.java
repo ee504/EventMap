@@ -11,4 +11,6 @@ public interface IView {
 
     void sendBookMarks(List<BookMarks> bookMarks);
 
+    void detachView();
+
 }

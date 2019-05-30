@@ -96,7 +96,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
         View view = inflater.inflate(R.layout.fragment_create_event, null);
 
-        iPresenter = new Presenter(this, getActivity().getLocalClassName());
+        iPresenter = new Presenter(this);
 
         Log.d(TAG, "start CreateEventMainFragment");
         Log.d(TAG, "photoURI: " + photoURI);
@@ -146,11 +146,11 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             case R.id.buttonCreateEvent:
                 Log.d(TAG, "Click buttonCreateEvent");
                 Log.d(TAG, "Создать мероприятие");
-                iPresenter.createEvent(new Events(new AccountAuthorization(getActivity()).getIdUser(), photoURI.toString(), photoURIFullSize.toString(), editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
+                iPresenter.createEvent(new Events(new AccountAuthorization().getIdUser(), photoURI.toString(), photoURIFullSize.toString(), editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
                         dateEvent, spinnerTypeEvent.getSelectedItem().toString(), addressEvent, latLngEvent.latitude, latLngEvent.longitude));
                 Log.d(TAG, "Список переменных");
                 Log.d(TAG,
-                        "id = " + new AccountAuthorization(getActivity()).getIdUser() +
+                        "id = " + new AccountAuthorization().getIdUser() +
                                 ", photoURI = " + photoURI.toString() +
                                 ", editNameEvent = " + editNameEvent.getText().toString() +
                                 ", dateEvent = " + dateEvent +
@@ -311,7 +311,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         try {
             mListener = (CallBackInterfaceCreateEvent) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnArticleSelectedListener");
+            throw new ClassCastException(context.toString() + " must implement CallBackInterfaceCreateEvent");
         }
     }
 
@@ -499,6 +499,17 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
     @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
+    }
+
+    @Override
+    public void detachView(){
+        iPresenter.detachView();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        detachView();
     }
 
 }
