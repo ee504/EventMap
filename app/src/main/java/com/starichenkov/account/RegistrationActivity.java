@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.view.IView;
-import com.starichenkov.eventmap.MapsActivity;
+import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
@@ -63,7 +63,7 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
                         "name = " + editFIO.getText().toString() +
                                 ", email = " + editMail.getText().toString() +
                                 ", passwordColIndex = " + editPassword.getText().toString());
-                Intent intent = new Intent(this, MapsActivity.class);
+                Intent intent = new Intent(this, MapFragment.class);
                 startActivity(intent);
                 break;
         }

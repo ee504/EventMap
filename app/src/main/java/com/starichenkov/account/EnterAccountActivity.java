@@ -9,13 +9,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.view.IView;
-import com.starichenkov.eventmap.MapsActivity;
+import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
@@ -59,7 +56,7 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
 
                 Log.d(TAG, "Click buttonEnterAcc");
                 Log.d(TAG, "authorized = " + test);
-                Intent intentMapsActivity = new Intent(this, MapsActivity.class);
+                Intent intentMapsActivity = new Intent(this, MapFragment.class);
                 startActivity(intentMapsActivity);
                 break;
 

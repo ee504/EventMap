@@ -22,17 +22,10 @@ import com.starichenkov.view.IView;
 import java.util.List;
 
 
-public class BookMarksList extends Fragment implements IView, CallBackFromDB {
+public class BookMarksListFragment extends Fragment implements IView, CallBackFromDB {
 
     private static final String TAG = "MyLog";
 
-    // имена атрибутов для Map
-    final String ATTRIBUTE_IMZGE_EVENT = "imageEvent";
-    final String ATTRIBUTE_NAME_EVENT = "textNameEvent";
-    final String ATTRIBUTE_TYPE_EVENT = "textTypeEvent";
-    final String ATTRIBUTE_ADDRESS_EVENT = "textAddressEvent";
-
-    private ListView lvBookMarks;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
 
@@ -48,18 +41,11 @@ public class BookMarksList extends Fragment implements IView, CallBackFromDB {
 
         //View view = inflater.inflate(R.layout.activity_main_view, container, false);
         View view = inflater.inflate(R.layout.activity_book_marks, null);
-        Log.d(TAG, "1");
-        //super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_book_marks);
-
-        //lvBookMarks = (ListView) findViewById(R.id.lvBookMarks);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        Log.d(TAG, "2");
         presenter = new Presenter(this);
-        Log.d(TAG, "3");
         presenter.getEventsFromBookmarks();
 
         return view;
@@ -72,7 +58,7 @@ public class BookMarksList extends Fragment implements IView, CallBackFromDB {
 
     private void setEvents(List<Events> events) {
 
-        Log.d(TAG, "BookMarksList setEvents()");
+        Log.d(TAG, "BookMarksListFragment setEvents()");
         BookMarksListAdapter adapter = new BookMarksListAdapter(getActivity(), R.layout.item_event, events);
         //lvBookMarks.setAdapter(adapter);
         recyclerView.setAdapter(adapter);

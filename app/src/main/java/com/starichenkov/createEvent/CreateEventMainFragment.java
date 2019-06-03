@@ -38,7 +38,7 @@ import com.starichenkov.RoomDB.Events;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.eventmap.BuildConfig;
 import com.starichenkov.view.IView;
-import com.starichenkov.eventmap.MapsActivity;
+import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
@@ -158,7 +158,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                                 ", addressEvent = " + addressEvent +
                                 ", latitude = " + latLngEvent.latitude +
                                 ", longitude = " + latLngEvent.longitude);
-                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                Intent intent = new Intent(getActivity(), MapFragment.class);
                 startActivity(intent);
                 break;
 

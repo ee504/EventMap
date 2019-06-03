@@ -11,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -34,7 +33,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -55,7 +53,7 @@ import com.starichenkov.view.IView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener, CallBackFromDB, IView {
+public class MapFragment extends Fragment implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener, CallBackFromDB {
 
     private GoogleMap mMap;
     private MapView mapView;
@@ -66,7 +64,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
     private Button btnUsersData;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private Presenter presenter;
+    //private Presenter presenter;
 
     private Button btnRegistration;
     private Button btnEnterAccount;
@@ -85,7 +83,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
 
     private FloatingActionButton btnFloatingAction;
 
-    private List<Events> events;
+    //private List<Events> events;
     private List<Marker> listMarkers;
     private Events currentEvent;
     private List<BookMarks> bookMarks;
@@ -93,6 +91,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
     private BottomSheetBehavior bottomSheetBehavior;
 
     private CallBackInterfaceMap mListener;
+
+    private AccountAuthorization account = new AccountAuthorization();
 
 
 
@@ -115,8 +115,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
         mapFragment.getMapAsync(this);*/
 
 
-        presenter = new Presenter(this);
-        presenter.getAllEvents();
+        //presenter = new Presenter(this);
+        //presenter.getAllEvents();
 
         initView(view);
         Log.d(TAG, "Hello");
@@ -162,7 +162,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
                                 Log.d(TAG, "Click nav_bookmarks");
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 //drawerLayout.openDrawer(GravityCompat.START);
-                                //Intent intentBookMarks = new Intent(getActivity().getApplicationContext(), BookMarksList.class);
+                                //Intent intentBookMarks = new Intent(getActivity().getApplicationContext(), BookMarksListFragment.class);
                                 //startActivity(intentBookMarks);
                                 mListener.openBookMarksList();
                                 break;
@@ -178,9 +178,9 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
         header_authorized = LayoutInflater.from(getActivity()).inflate(R.layout.nav_header_authorized, navigationView, false);
         header_not_authorized = LayoutInflater.from(getActivity()).inflate(R.layout.nav_header_not_authorized, navigationView, false);
 
-        if(new AccountAuthorization().checkAuthorization()) {
+        if(account.checkAuthorization()) {
             navigationView.addHeaderView(header_authorized);
-            presenter.getAllBookmarks();
+            mListener.getAllBookmarks();
 
         }else{
             navigationView.addHeaderView(header_not_authorized);
@@ -242,7 +242,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
                 break;
 
             case R.id.btnFloatingAction:
-                if(new AccountAuthorization().checkAuthorization()) {
+                if(account.checkAuthorization()) {
                     Log.d(TAG, "Click btnFloatingAction");
                     Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
                     startActivity(intentCreateEvent);
@@ -273,8 +273,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
 
             case R.id.btnExit:
                 Log.d(TAG, "Click btnExit");
-                new AccountAuthorization().deleteAuthorization();
-                Intent intentExit = new Intent(getActivity(), MapsActivity.class);
+                account.deleteAuthorization();
+                Intent intentExit = new Intent(getActivity(), MapFragment.class);
                 startActivity(intentExit);
                 break;
 
@@ -286,16 +286,18 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
                     Toast toast = Toast.makeText(getActivity(), "Закладка сохранена",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM,0,0);
                     toast.show();
-                    presenter.createBookMark(new AccountAuthorization().getIdUser(), currentEvent.id);
-                    presenter.getAllBookmarks();
+                    mListener.createBookMark(account.getIdUser(), currentEvent.id);
+                    //presenter.createBookMark(account.getIdUser(), currentEvent.id);
+                    //presenter.getAllBookmarks();
                 }else if(ibtnBookMark.getTag() == this.getString(R.string.ic_bookmark_black_24dp)){
                     ibtnBookMark.setImageDrawable(getActivity().getDrawable(R.drawable.ic_bookmark_border_black_24dp));
                     ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_border_black_24dp));
                     Toast toast = Toast.makeText(getActivity(), "Закладка удалена",Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM,0,0);
                     toast.show();
-                    presenter.deleteBookMark(new AccountAuthorization().getIdUser(), currentEvent.id);
-                    presenter.getAllBookmarks();
+                    mListener.deleteBookMark(account.getIdUser(), currentEvent.id);
+                    //presenter.deleteBookMark(account.getIdUser(), currentEvent.id);
+                    //presenter.getAllBookmarks();
                 }
                 break;
         }
@@ -389,6 +391,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
         //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
         mMap.setMinZoomPreference(mMap.getCameraPosition().zoom);
 
+        mListener.getAllEvents();
+
     }
 
 
@@ -430,10 +434,10 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
 
     }
 
-    @Override
+    //@Override
     public void sendEvents(List<Events> events){
-        this.events = events;
-        for(Events event : this.events) {
+        //this.events = events;
+        for(Events event : events) {
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(event.latitude, event.longitude)));
             marker.setTag(event);
@@ -442,7 +446,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
         mMap.setOnMarkerClickListener(this);
     }
 
-    @Override
+    //@Override
     public void sendBookMarks(List<BookMarks> bookMarks){
         this.bookMarks = bookMarks;
     }
@@ -489,7 +493,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
         }
     }
 
-    @Override
+    /*@Override
     public void detachView(){
         presenter.detachView();
     }
@@ -498,7 +502,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, OnClic
     public void onDestroy(){
         super.onDestroy();
         detachView();
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
