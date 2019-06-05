@@ -7,4 +7,5 @@
     <string name="account">Account</string>
     <string name="ic_bookmark_border_black_24dp">ic_bookmark_border_black_24dp</string>
     <string name="ic_bookmark_black_24dp">ic_bookmark_black_24dp</string>
+    <string name="TAG">MyLog</string>
 </resources>

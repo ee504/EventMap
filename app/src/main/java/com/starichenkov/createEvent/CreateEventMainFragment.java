@@ -37,6 +37,7 @@ import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.eventmap.BuildConfig;
+import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.view.IView;
 import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
@@ -158,7 +159,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                                 ", addressEvent = " + addressEvent +
                                 ", latitude = " + latLngEvent.latitude +
                                 ", longitude = " + latLngEvent.longitude);
-                Intent intent = new Intent(getActivity(), MapFragment.class);
+                Intent intent = new Intent(getActivity(), MainMapActivity.class);
                 startActivity(intent);
                 break;
 

@@ -3,7 +3,7 @@ package com.starichenkov.eventmap;
 public interface CallBackInterfaceMap {
 
     void openBookMarksList();
-    void openMapWithMarker(long idEvent);
+    void openMapWithMarker(int position);
 
     void getAllBookmarks();
 
@@ -12,4 +12,18 @@ public interface CallBackInterfaceMap {
     void deleteBookMark(int idUser, long id);
 
     void getAllEvents();
+
+    void getEventsFromBookmarks();
+
+    void openDrawer();
+
+    void OpenEventsList();
+
+    void getEvents();
+
+    void setCurrentFragment(String currentFragment);
+
+    void getSelectedMarker();
+
+    void filter(String query);
 }

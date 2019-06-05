@@ -26,6 +26,7 @@ import java.util.List;
 public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdapter.MyViewHolder> {
 
     private List<Events> events;
+    private List<Events> eventsCopy;
     private Context mContext;
     private int mResourse;
     private static final String TAG = "MyLog";
@@ -78,6 +79,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         this.mContext = mContext;
         this.mResourse = resource;
         this.events = events;
+        this.eventsCopy = events;
         this.mOnEventListener = (OnEventListener)mContext;
     }
 
@@ -129,6 +131,21 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
     @Override
     public int getItemCount() {
         return events.size();
+    }
+
+    public void filter(String text) {
+        events.clear();
+        if(text.isEmpty()){
+            events.addAll(eventsCopy);
+        } else{
+            text = text.toLowerCase();
+            for(Events event: eventsCopy){
+                if(event.nameEvent.toLowerCase().contains(text)){
+                    events.add(event);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
 }

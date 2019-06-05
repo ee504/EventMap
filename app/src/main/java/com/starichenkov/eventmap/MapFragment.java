@@ -53,14 +53,14 @@ import com.starichenkov.view.IView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener, CallBackFromDB {
+public class MapFragment extends Fragment implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private MapView mapView;
     private static final String TAG = "MyLog";
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private Button btnDrawerOpener;
-    private ImageButton ibtnDrawerOpener;
+    //private ImageButton ibtnDrawerOpener;
     private Button btnUsersData;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -94,6 +94,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     private AccountAuthorization account = new AccountAuthorization();
 
+    private final String nameFragment = "mapFragment";
+
 
 
     @Override
@@ -102,6 +104,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
         //View view = inflater.inflate(R.layout.activity_main_view, container, false);
         View view = inflater.inflate(R.layout.activity_main_view, null);
+
+        Log.d(TAG, "------------------------------------");
+        Log.d(TAG, "MapFragment onCreateView()");
+        Log.d(TAG, "------------------------------------");
         //super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_maps);
         //setContentView(R.layout.activity_main_view);
@@ -130,14 +136,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         btnDrawerOpener = (Button) view.findViewById(R.id.btnDrawerOpener);
         Log.d(TAG, "btnDrawerOpener:" + btnDrawerOpener);
         btnDrawerOpener.setOnClickListener(this);
-        //btnDrawerOpener.setVisibility(View.GONE);
+        btnDrawerOpener.setVisibility(View.GONE);
 
-        ibtnDrawerOpener = (ImageButton) view.findViewById(R.id.ibtnDrawerOpener);
-        ibtnDrawerOpener.setOnClickListener(this);
+        //ibtnDrawerOpener = (ImageButton) view.findViewById(R.id.ibtnDrawerOpener);
+        //ibtnDrawerOpener.setOnClickListener(this);
 
         btnUsersData = (Button) view.findViewById(R.id.btnUsersData);
         btnUsersData.setOnClickListener(this);
-        //btnUsersData.setVisibility(View.GONE);
+        btnUsersData.setVisibility(View.GONE);
 
         btnFloatingAction = (FloatingActionButton) view.findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
@@ -181,6 +187,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         if(account.checkAuthorization()) {
             navigationView.addHeaderView(header_authorized);
             mListener.getAllBookmarks();
+            //mListener.setCurrentFragment(nameFragment);
 
         }else{
             navigationView.addHeaderView(header_not_authorized);
@@ -391,7 +398,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
         mMap.setMinZoomPreference(mMap.getCameraPosition().zoom);
 
+        mListener.setCurrentFragment(nameFragment);
         mListener.getAllEvents();
+        Log.d(TAG, "MapFragment mListener.getAllEvents()");
 
     }
 
@@ -444,6 +453,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
             listMarkers.add(marker);
         }
         mMap.setOnMarkerClickListener(this);
+        mListener.getSelectedMarker();
     }
 
     //@Override
@@ -509,9 +519,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         super.onAttach(context);
         try {
             mListener = (CallBackInterfaceMap) context;
+            mListener.setCurrentFragment(nameFragment);
+            Log.d(TAG, nameFragment + " onAttach()");
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement CallBackInterfaceMap");
         }
     }
 
+    public void openDrawer() {
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
 }

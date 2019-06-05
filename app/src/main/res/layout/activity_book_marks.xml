@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/ibtnFilter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
-        android:padding="10dp"
-
-        android:background="@null"
-        android:src="@drawable/ic_reorder_black_24dp"
-        />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         xmlns:android="http://schemas.android.com/apk/res/android"
