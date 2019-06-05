@@ -79,7 +79,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         this.mContext = mContext;
         this.mResourse = resource;
         this.events = events;
-        this.eventsCopy = events;
+        this.eventsCopy = new ArrayList<Events>(events);
         this.mOnEventListener = (OnEventListener)mContext;
     }
 

@@ -36,7 +36,7 @@ public class TopSearchBarFragment extends Fragment implements View.OnClickListen
         editSearch = (SearchView) view.findViewById(R.id.editSearch);
         //editSearch.setOnTouchListener(this);
         //editSearch.setOnClickListener(this);
-        editSearch.setOnClickListener(new View.OnClickListener() {
+        editSearch.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Touch editSearch");
