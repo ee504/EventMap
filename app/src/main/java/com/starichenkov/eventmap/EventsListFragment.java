@@ -58,4 +58,10 @@ public class EventsListFragment extends Fragment {
                 getChildFragmentManager().findFragmentById(R.id.frgmEventsList);
         bookMarksListFragment.filter(query);
     }
+
+    public void onEventClick(int position) {
+        BookMarksListFragment bookMarksListFragment = (BookMarksListFragment)
+                getChildFragmentManager().findFragmentById(R.id.frgmEventsList);
+        bookMarksListFragment.onEventClick(position);
+    }
 }

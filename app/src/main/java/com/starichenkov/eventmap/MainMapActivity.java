@@ -63,10 +63,17 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
 
     @Override
     public void onEventClick(int position) {
-        Log.d(TAG, "position: " + position);
-        BookMarksListFragment catFragment = (BookMarksListFragment)
-                getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-        catFragment.onEventClick(position);
+        if(currentFragment == "bookMarksListFragment") {
+            Log.d(TAG, "position: " + position);
+            BookMarksListFragment bookMarksListFragment = (BookMarksListFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
+            bookMarksListFragment.onEventClick(position);
+        }else if(currentFragment == "eventsListFragment") {
+            Log.d(TAG, "position: " + position);
+            EventsListFragment eventsListFragment = (EventsListFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
+            eventsListFragment.onEventClick(position);
+        }
     }
 
     @Override
