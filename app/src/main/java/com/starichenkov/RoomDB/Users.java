@@ -1,6 +1,7 @@
 package com.starichenkov.RoomDB;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 
@@ -13,15 +14,44 @@ public class Users {
         this.password = password;
     }
 
+
+    public long getId() {
+        return id;
+    }
+
+    public String getFio() {
+        return fio;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     @PrimaryKey(autoGenerate = true)
-    public long id;
+    private long id;
 
-    public String fio;
+    private String fio;
 
-    public String mail;
+    private String mail;
 
-    public String password;
+    private String password;
 
-    public String photo;
+    private String photo;
 
 }

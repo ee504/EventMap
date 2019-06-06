@@ -12,6 +12,7 @@ import com.starichenkov.RoomDB.EventsDao;
 import com.starichenkov.RoomDB.Users;
 import com.starichenkov.RoomDB.UsersDao;
 import com.starichenkov.account.AccountAuthorization;
+import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.view.IView;
 import com.starichenkov.presenter.Presenter;
 
@@ -33,15 +34,19 @@ public class Model implements IModel {
     private EventsDao eventsDao;
     private BookMarksDao bookMarksDao;
     private static final String TAG = "MyLog";
-    private IView iView;
+    //private IView iView;
+    private IPresenter presenter;
+    private AccountAuthorization accountAuthorization;
 
-    public Model(IView iView) {
+    public Model(IPresenter presenter) {
 
         db = App.getInstance().getDatabase();
         userDao = db.usersDao();
         eventsDao = db.eventsDao();
         bookMarksDao = db.bookMarksDao();
-        this.iView = iView;
+        accountAuthorization = new AccountAuthorization();
+        this.presenter = presenter;
+        //this.iView = iView;
 
     }
 
@@ -83,7 +88,7 @@ public class Model implements IModel {
     @Override
     public void findUser(String mail, String password) {
 
-        final AccountAuthorization accountAuthorization = new AccountAuthorization();
+        //final AccountAuthorization accountAuthorization = new AccountAuthorization();
 
         userDao.getId(mail, password)
                 .subscribeOn(Schedulers.io())
@@ -153,7 +158,7 @@ public class Model implements IModel {
                     public void onSuccess(List<Events> events) {
                         Log.d(TAG, "Model getAllEvents() onSuccess");
                         //new Presenter(iView, "Model").sendEvents(events);
-                        iView.sendEvents(events);
+                        presenter.sendEvents(events);
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -278,7 +283,7 @@ public class Model implements IModel {
                     public void onSuccess(List<BookMarks> bookMarks) {
                         Log.d(TAG, "Model getAllBookmarks() onSuccess");
                         //new Presenter(iView, "Model").sendBookMarks(bookMarks);
-                        iView.sendBookMarks(bookMarks);
+                        presenter.sendBookMarks(bookMarks);
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -291,7 +296,8 @@ public class Model implements IModel {
     @Override
     public void getEventsFromBookmarks(){
         Log.e(TAG, "Model getEventsFromBookmarks()");
-        eventsDao.getEventsFromBookmarks(new AccountAuthorization().getIdUser())
+        //eventsDao.getEventsFromBookmarks(new AccountAuthorization().getIdUser())
+        eventsDao.getEventsFromBookmarks(accountAuthorization.getIdUser())
         //eventsDao.getEventsFromBookmarks(new AccountAuthorization().getIdUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -304,7 +310,7 @@ public class Model implements IModel {
                     public void onSuccess(List<Events> events) {
                         Log.d(TAG, "Model getAllEvents() onSuccess");
                         //new Presenter(iView, "Model").sendEvents(events);
-                        iView.sendEvents(events);
+                        presenter.sendEvents(events);
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -348,6 +354,60 @@ public class Model implements IModel {
 
     @Override
     public void detachView(){
-        iView = null;
+        presenter = null;
+        accountAuthorization = null;
+    }
+
+    @Override
+    public void getUserEvents(){
+
+        Log.e(TAG, "Model getUserEvents()");
+        //eventsDao.getUserEvents(new AccountAuthorization().getIdUser())
+        eventsDao.getUserEvents(accountAuthorization.getIdUser())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Events>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // add it to a CompositeDisposable
+                    }
+                    @Override
+                    public void onSuccess(List<Events> events) {
+                        Log.d(TAG, "Model getUserEvents() onSuccess");
+                        //new Presenter(iView, "Model").sendEvents(events);
+                        presenter.sendEvents(events);
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "getUserEvents Some error");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+
+    }
+
+    @Override
+    public void getCurrentUser(){
+
+        Log.e(TAG, "Model getCurrentUser()");
+
+        userDao.getById(accountAuthorization.getIdUser())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<Users>() {
+                    @Override
+                    public void onSuccess(Users user) {
+                        Log.d(TAG, "onSuccess");
+                        presenter.sendUser(user);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "Some error");
+                        Log.d(TAG, e.getMessage());
+
+                    }
+                });
+
     }
 }

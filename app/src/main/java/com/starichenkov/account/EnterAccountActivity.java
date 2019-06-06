@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.RoomDB.Users;
 import com.starichenkov.view.IView;
 import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
@@ -69,6 +70,10 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
 
     @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
+    }
+
+    @Override
+    public void sendUser(Users user){
     }
 
     @Override

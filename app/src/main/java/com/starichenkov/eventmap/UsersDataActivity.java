@@ -47,10 +47,10 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
                         Log.d(TAG, "onSuccess");
                         for(Users user: users){
                             Log.d(TAG,
-                                    "ID = " + user.id +
-                                            ", fio = " + user.fio +
-                                            ", email = " + user.mail +
-                                            ", password = " + user.password);
+                                    "ID = " + user.getId() +
+                                            ", fio = " + user.getFio() +
+                                            ", email = " + user.getMail() +
+                                            ", password = " + user.getPassword());
                         }
 
                     }
@@ -76,6 +76,10 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
 
     @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
+    }
+
+    @Override
+    public void sendUser(Users user){
     }
 
     @Override

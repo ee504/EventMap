@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.account.AccountActivity;
 import com.starichenkov.account.EnterAccountActivity;
 import com.starichenkov.account.RegistrationActivity;
 import com.starichenkov.createEvent.CreateEventActivity;
@@ -274,8 +275,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
             case R.id.btnAccount:
                 Log.d(TAG, "Click btnAccount");
-                //Intent intentAccount = new Intent(this, EnterAccountActivity.class);
-                //startActivity(intentAccount);
+                Intent intentAccount = new Intent(getActivity(), AccountActivity.class);
+                startActivity(intentAccount);
                 break;
 
             case R.id.btnExit:

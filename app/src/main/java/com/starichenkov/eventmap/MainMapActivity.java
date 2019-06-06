@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.starichenkov.BookMarksListView.BookMarksListAdapter;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.RoomDB.Users;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.presenter.Presenter;
 import com.starichenkov.view.IView;
@@ -189,6 +190,10 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
     @Override
     public void getEventsFromBookmarks(){
         presenter.getEventsFromBookmarks();
+    }
+
+    @Override
+    public void sendUser(Users user){
     }
 
     @Override

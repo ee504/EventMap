@@ -12,7 +12,9 @@ public class AccountAuthorization {
 
     private SharedPreferences sPref;
     private String namePreference = "Authorization";
-    private int idUser;
+
+    //private int idUser;
+    //private String mailUser;
 
     public AccountAuthorization(){
 
@@ -23,7 +25,7 @@ public class AccountAuthorization {
 
     public void saveAuthorization(int idUser){
 
-        this.idUser = idUser;
+        //this.idUser = idUser;
         Editor ed = sPref.edit();
         ed.putInt(namePreference, idUser);
         ed.commit();

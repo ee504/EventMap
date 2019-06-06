@@ -2,6 +2,7 @@ package com.starichenkov.view;
 
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.RoomDB.Users;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface IView {
 
     void detachView();
 
+    void sendUser(Users user);
 }

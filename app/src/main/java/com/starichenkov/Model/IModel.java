@@ -26,4 +26,8 @@ public interface IModel {
     void deleteAllEvents();
 
     void detachView();
+
+    void getUserEvents();
+
+    void getCurrentUser();
 }

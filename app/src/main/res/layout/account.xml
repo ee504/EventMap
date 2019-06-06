@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/a"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/b"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="147dp"
-        android:layout_height="147dp"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center_horizontal|top"
-        android:src="@drawable/event_map_logo"/>
+
+            <ImageView
+                android:id="@+id/imagePhoto"
+                android:layout_width="147dp"
+                android:layout_height="147dp"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/event_map_logo"/>
+
+            <ImageView
+                android:id="@+id/imageMore"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_more_vert_black_24dp"/>
+
+    </RelativeLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
@@ -27,19 +42,17 @@
                 android:id="@+id/textFio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Стариченков Егор Ильич"/>
+                android:layout_gravity="center_horizontal"/>
 
             <TextView
                 android:id="@+id/textMail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="eispro52@gmail.com"/>
+                android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>
 
-    </LinearLayout>
+
 
     <TextView
         android:layout_width="match_parent"

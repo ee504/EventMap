@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.RoomDB.Users;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.view.CallBackFromDB;
 import com.starichenkov.view.IView;
@@ -25,7 +26,7 @@ public class Presenter implements IPresenter{
 
     public Presenter(IView iView){
         this.iView = iView;
-        iModel = new Model(iView);
+        iModel = new Model(this);
     }
 
 
@@ -86,12 +87,23 @@ public class Presenter implements IPresenter{
     }
 
     @Override
+    public void sendUser(Users user){
+        iView.sendUser(user);
+    }
+
+    @Override
     public void getEventsFromBookmarks(){
         iModel.getEventsFromBookmarks();
     }
 
     @Override
     public void deleteAllEvents(){iModel.deleteAllEvents();}
+
+    @Override
+    public void getUserEvents(){iModel.getUserEvents();}
+
+    @Override
+    public void getCurrentUser(){iModel.getCurrentUser();}
 
     @Override
     public void detachView(){

@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.RoomDB.Users;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.eventmap.BuildConfig;
 import com.starichenkov.eventmap.MainMapActivity;
@@ -500,6 +501,10 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
     @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
+    }
+
+    @Override
+    public void sendUser(Users user){
     }
 
     @Override

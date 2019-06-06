@@ -17,8 +17,11 @@ public interface EventsDao {
     @Insert
     void insert(Events events);
 
-    @Query("SELECT Events.* FROM Events INNER JOIN BookMarks ON BookMarks.idEvent = Events.id WHERE BookMarks.idOrganizer = :idOrganizer")
+    @Query("SELECT Events.* FROM Events INNER JOIN BookMarks ON BookMarks.idEvent = Events.id WHERE BookMarks.idOrganizer = :idOrganizer ORDER BY Events.nameEvent")
     Single<List<Events>> getEventsFromBookmarks(long idOrganizer);
+
+    @Query("SELECT Events.* FROM Events WHERE idOrganizer = :idOrganizer")
+    Single<List<Events>> getUserEvents(long idOrganizer);
 
     @Query("DELETE FROM Events")
     void deleteAllEvents();

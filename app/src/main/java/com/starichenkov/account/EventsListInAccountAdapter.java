@@ -39,7 +39,7 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
         // each data item is just a string in this case
         TextView textNameEvent;
         TextView textTypeEvent;
-        TextView textAddressEvent;
+        //TextView textAddressEvent;
         ImageView imageEvent;
         LinearLayout llBookMark;
         Button buttonEdit;
@@ -51,12 +51,17 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
             super(view);
             textNameEvent = (TextView) view.findViewById(R.id.textNameEvent);
             textTypeEvent = (TextView) view.findViewById(R.id.textTypeEvent);
-            textAddressEvent = (TextView) view.findViewById(R.id.textAddressEvent);
+            //textAddressEvent = (TextView) view.findViewById(R.id.textAddressEvent);
             imageEvent = (ImageView) view.findViewById(R.id.imageEvent);
+
             llBookMark = (LinearLayout) view.findViewById(R.id.llBookMark);
 
+            buttonEdit = (Button) view.findViewById(R.id.buttonEdit);
+            buttonDelete = (Button) view.findViewById(R.id.buttonDelete);
+
             this.onEventListener = onEventListener;
-            itemView.setOnClickListener(this);
+            buttonEdit.setOnClickListener(this);
+            buttonDelete.setOnClickListener(this);
         }
 
         public void loadImage(Uri uri){
@@ -66,12 +71,21 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
 
         @Override
         public void onClick(View v) {
-            onEventListener.onEventClick(getAdapterPosition());
+            switch (v.getId()) {
+                case R.id.buttonEdit:
+                    onEventListener.onEditClick(getAdapterPosition());
+                    break;
+
+                case R.id.buttonDelete:
+                    onEventListener.onDeleteClick(getAdapterPosition());
+                    break;
+            }
         }
     }
 
     public interface OnEventListener{
-        void onEventClick(int position);
+        void onEditClick(int position);
+        void onDeleteClick(int position);
     }
 
     //Constructor
@@ -101,10 +115,10 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
         Events event = events.get(position);
         holder.textNameEvent.setText(event.nameEvent);
         holder.textTypeEvent.setText(event.typeEvent);
-        holder.textAddressEvent.setText(event.addressEvent);
+        //holder.textAddressEvent.setText(event.addressEvent);
         //holder.imageEvent.setImageURI(Uri.parse(event.photoEvent));
         //Picasso.with(mContext).load(event.photoEvent).into(imageView);
-        Log.d(TAG, "event.nameEvent: " + event.nameEvent);
+        //Log.d(TAG, "event.nameEvent: " + event.nameEvent);
         holder.loadImage(Uri.parse(event.photoEvent));
         setAnimation(holder.llBookMark, position);
 
@@ -131,21 +145,6 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
     @Override
     public int getItemCount() {
         return events.size();
-    }
-
-    public void filter(String text) {
-        events.clear();
-        if(text.isEmpty()){
-            events.addAll(eventsCopy);
-        } else{
-            text = text.toLowerCase();
-            for(Events event: eventsCopy){
-                if(event.nameEvent.toLowerCase().contains(text)){
-                    events.add(event);
-                }
-            }
-        }
-        notifyDataSetChanged();
     }
 
 }
