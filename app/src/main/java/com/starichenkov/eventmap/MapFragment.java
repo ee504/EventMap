@@ -144,7 +144,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
         btnUsersData = (Button) view.findViewById(R.id.btnUsersData);
         btnUsersData.setOnClickListener(this);
-        btnUsersData.setVisibility(View.GONE);
+        //btnUsersData.setVisibility(View.GONE);
 
         btnFloatingAction = (FloatingActionButton) view.findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
@@ -282,7 +282,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
             case R.id.btnExit:
                 Log.d(TAG, "Click btnExit");
                 account.deleteAuthorization();
-                Intent intentExit = new Intent(getActivity(), MapFragment.class);
+                Intent intentExit = new Intent(getActivity(), MainMapActivity.class);
                 startActivity(intentExit);
                 break;
 

@@ -24,6 +24,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
+import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -79,6 +80,34 @@ public class Model implements IModel {
                     public void onError(Throwable e) {
                         // something went wrong
                         Log.d(TAG, "onError");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+
+    }
+
+    @Override
+    public void updateUser(final Users user) {
+
+        //userDao.insert(new Users(fio, mail, password))
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                userDao.update(user);
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        // action was completed successfully
+                        Log.d(TAG, "updateUser() onComplete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // something went wrong
+                        Log.d(TAG, "updateUser() onError");
                         Log.d(TAG, e.getMessage());
                     }
                 });

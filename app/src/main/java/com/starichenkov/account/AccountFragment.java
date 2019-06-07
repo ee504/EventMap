@@ -1,6 +1,7 @@
 package com.starichenkov.account;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.RoomDB.Users;
 import com.starichenkov.eventmap.CallBackInterfaceMap;
+import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
 
 import java.util.List;
@@ -37,6 +40,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
     private CallBackInterfaceAccount mListener;
 
+    private String nameFragment = "AccountFragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,16 +54,18 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         imageMore.setOnClickListener(this);
 
         textFio = (TextView) view.findViewById(R.id.textFio);
-        textFio.setText("Тестовый юзер");
         textMail = (TextView) view.findViewById(R.id.textMail);
-        textMail.setText("тест@тест");
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
+        mListener.setCurrentFragment(nameFragment);
+
         mListener.getUserEvents();
+
+        mListener.getAccountData();
 
         return view;
     }
@@ -96,6 +103,10 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                                 return true;
                             case R.id.itemMenuExit:
                                 Log.d(TAG, "onClick() Выход");
+                                Log.d(TAG, "Click btnExit");
+                                new AccountAuthorization().deleteAuthorization();
+                                Intent intentExit = new Intent(getActivity(), MapFragment.class);
+                                startActivity(intentExit);
                                 return true;
                             default:
                                 return false;
@@ -117,4 +128,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public void setUser(Users user) {
+        textFio.setText(user.getFio());
+        textMail.setText(user.getMail());
+    }
 }

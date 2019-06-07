@@ -41,4 +41,6 @@ public interface IPresenter {
     void getCurrentUser();
 
     void sendUser(Users user);
+
+    void updateUser(Users user);
 }

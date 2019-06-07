@@ -1,6 +1,7 @@
 package com.starichenkov.account;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.starichenkov.RoomDB.Users;
+import com.starichenkov.eventmap.MainMapActivity;
+import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
 
 public class ChangeAccountFragment extends Fragment implements View.OnClickListener {
@@ -22,11 +25,13 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
     private EditText editMail;
     private EditText editPassword;
     private Button buttonCreateAcc;
-    private TextInputLayout etPasswordLayout;
+    private Users user;
 
     private static final String TAG = "MyLog";
 
     private CallBackInterfaceAccount mListener;
+
+    private String nameFragment = "ChangeAccountFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,14 +41,16 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
 
         textViewRegistration = (TextView) view.findViewById(R.id.textViewRegistration);
         textViewRegistration.setText("Редактирование профиля");
+
         editFIO = (EditText) view.findViewById(R.id.editFIO);
         editMail = (EditText) view.findViewById(R.id.editMail);
         editPassword = (EditText) view.findViewById(R.id.editPassword);
+
         buttonCreateAcc = (Button) view.findViewById(R.id.buttonCreateAcc);
         buttonCreateAcc.setText("Сохранить");
         buttonCreateAcc.setOnClickListener(this);
 
-        etPasswordLayout = (TextInputLayout) view.findViewById(R.id.etPasswordLayout);
+        mListener.setCurrentFragment(nameFragment);
 
         mListener.getAccountData();
 
@@ -55,6 +62,13 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
         switch (v.getId()) {
 
             case R.id.buttonCreateAcc:
+                Log.d(TAG, "onClick buttonCreateAcc()");
+                user.setFio(editFIO.getText().toString());
+                user.setMail(editMail.getText().toString());
+                user.setPassword(editPassword.getText().toString());
+                mListener.updateUser(user);
+                Intent intentExit = new Intent(getActivity(), MainMapActivity.class);
+                startActivity(intentExit);
                 break;
         }
     }
@@ -73,10 +87,10 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
 
     public void setUser(Users user) {
 
-        editFIO.setText(user.getFio());
-        editMail.setText(user.getMail());
-        editPassword.setText(user.getPassword());
-        etPasswordLayout.setTe
+        this.user = user;
+        editFIO.setText(this.user.getFio());
+        editMail.setText(this.user.getMail());
+        editPassword.setText(this.user.getPassword());
 
     }
 }

@@ -3,10 +3,13 @@ package com.starichenkov.Model;
 import android.location.Address;
 
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.RoomDB.Users;
 
 public interface IModel {
 
     void createUser(String fio, String mail, String password);
+
+    void updateUser(Users user);
 
     void findUser(String mail, String password);
 

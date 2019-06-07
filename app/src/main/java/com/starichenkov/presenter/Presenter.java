@@ -106,6 +106,11 @@ public class Presenter implements IPresenter{
     public void getCurrentUser(){iModel.getCurrentUser();}
 
     @Override
+    public void updateUser(Users user){
+        iModel.updateUser(user);
+    }
+
+    @Override
     public void detachView(){
         iModel.detachView();
         iView = null;

@@ -46,6 +46,18 @@ public class Users {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
+    public void setFio(String fio) {
+        this.fio = fio;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     private String fio;
 
     private String mail;

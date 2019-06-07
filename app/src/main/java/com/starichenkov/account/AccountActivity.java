@@ -32,6 +32,8 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
 
     private List<Events> events;
 
+    private String currentFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +85,15 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
 
     @Override
     public void sendUser(Users user){
-        ChangeAccountFragment changeAccountFragment = (ChangeAccountFragment)
-                getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-        changeAccountFragment.setUser(user);
+        if(currentFragment == "ChangeAccountFragment") {
+            ChangeAccountFragment changeAccountFragment = (ChangeAccountFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
+            changeAccountFragment.setUser(user);
+        }else if(currentFragment == "AccountFragment"){
+            AccountFragment accountFragment = (AccountFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
+            accountFragment.setUser(user);
+        }
     }
 
     @Override
@@ -107,8 +115,18 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
     }
 
     @Override
+    public void updateUser(Users user){
+        presenter.updateUser(user);
+    }
+
+    @Override
     public void getUserEvents(){
         presenter.getUserEvents();
+    }
+
+    @Override
+    public void setCurrentFragment(String nameFragment){
+        this.currentFragment = nameFragment;
     }
 
     @Override
