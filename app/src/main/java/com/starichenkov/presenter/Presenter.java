@@ -80,6 +80,9 @@ public class Presenter implements IPresenter{
     }
 
     @Override
+    public void getEventById(long idEvent){iModel.getEventById(idEvent);}
+
+    @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
         Log.e(TAG, "Presenter sendBookMarks()");
         //mListener.sendBookMarks(bookMarks);

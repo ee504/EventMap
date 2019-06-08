@@ -1,6 +1,7 @@
 package com.starichenkov.account;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
+import com.starichenkov.createEvent.CreateEventActivity;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
@@ -103,6 +105,10 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
                 getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
         accountFragment.onEditClick(position);*/
         Log.d(TAG, "onEditClick(): " + events.get(position).nameEvent);
+
+        Intent intent = new Intent(this, CreateEventActivity.class);
+        intent.putExtra("idEvent", events.get(position).id);
+        this.startActivity(intent);
     }
 
     @Override

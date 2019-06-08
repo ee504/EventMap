@@ -43,4 +43,6 @@ public interface IPresenter {
     void sendUser(Users user);
 
     void updateUser(Users user);
+
+    void getEventById(long idEvent);
 }

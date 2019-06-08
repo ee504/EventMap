@@ -1,7 +1,6 @@
 package com.starichenkov.createEvent;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -9,6 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
@@ -33,6 +34,7 @@ public class CreateEventPlaceFragment extends Fragment implements OnMapReadyCall
 
     private static final String TAG = "MyLog";
     private GoogleMap mMap;
+    private MapView mapView;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
     private CallBackInterfaceCreateEvent mListener;
@@ -42,10 +44,13 @@ public class CreateEventPlaceFragment extends Fragment implements OnMapReadyCall
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_place_autocomplete, null);
-
-        MapFragment mapFragment = (MapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map_second);
-        mapFragment.getMapAsync(this);
+        //getSupportChildFragmentManager()
+        //MapFragment mapFragment = (MapFragment) getChildFragmentManager()
+                //.findFragmentById(R.id.map_second);
+        mapView = (MapView) view.findViewById(R.id.map_second);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+        mapView.getMapAsync(this);
 
         return view;
 

@@ -23,6 +23,9 @@ public interface EventsDao {
     @Query("SELECT Events.* FROM Events WHERE idOrganizer = :idOrganizer")
     Single<List<Events>> getUserEvents(long idOrganizer);
 
+    @Query("SELECT Events.* FROM Events WHERE id = :id")
+    Single<List<Events>> getEventById(long id);
+
     @Query("DELETE FROM Events")
     void deleteAllEvents();
 }

@@ -5,14 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <com.google.android.gms.maps.MapView
             android:id="@+id/map_second"
-            android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".MapFragment" >
-        </fragment>
+            android:layout_centerInParent="true"/>
 
 </LinearLayout>

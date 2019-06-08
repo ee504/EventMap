@@ -439,4 +439,32 @@ public class Model implements IModel {
                 });
 
     }
+
+    @Override
+    public void getEventById(long idEvent){
+
+        Log.e(TAG, "Model getEventById()");
+        //eventsDao.getUserEvents(new AccountAuthorization().getIdUser())
+        eventsDao.getEventById(idEvent)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Events>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // add it to a CompositeDisposable
+                    }
+                    @Override
+                    public void onSuccess(List<Events> events) {
+                        Log.d(TAG, "Model getUserEvents() onSuccess");
+                        //new Presenter(iView, "Model").sendEvents(events);
+                        presenter.sendEvents(events);
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "getUserEvents Some error");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+
+    }
 }

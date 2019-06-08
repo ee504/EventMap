@@ -33,4 +33,6 @@ public interface IModel {
     void getUserEvents();
 
     void getCurrentUser();
+
+    void getEventById(long idEvent);
 }
