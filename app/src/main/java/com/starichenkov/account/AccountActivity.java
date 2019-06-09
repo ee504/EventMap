@@ -100,10 +100,6 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
 
     @Override
     public void onEditClick(int position) {
-        /*Log.d(TAG, "position: " + position);
-        AccountFragment accountFragment = (AccountFragment)
-                getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-        accountFragment.onEditClick(position);*/
         Log.d(TAG, "onEditClick(): " + events.get(position).nameEvent);
 
         Intent intent = new Intent(this, CreateEventActivity.class);
@@ -118,6 +114,8 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
                 getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
         accountFragment.onEditClick(position);*/
         Log.d(TAG, "onDeleteClick(): " + events.get(position).nameEvent);
+        //presenter.deleteEventById(events.get(position).id);
+        presenter.deleteEvent(events.get(position));
     }
 
     @Override

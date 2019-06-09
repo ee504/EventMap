@@ -90,6 +90,21 @@ public class Presenter implements IPresenter{
     }
 
     @Override
+    public void deleteEventById(long id){
+        iModel.deleteEventById(id);
+    }
+
+    @Override
+    public void deleteEvent(Events event){
+        iModel.deleteEvent(event);
+    }
+
+    @Override
+    public void updateEvent(Events event){
+        iModel.updateEvent(event);
+    }
+
+    @Override
     public void sendUser(Users user){
         iView.sendUser(user);
     }

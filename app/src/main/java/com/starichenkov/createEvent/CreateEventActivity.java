@@ -1,6 +1,7 @@
 package com.starichenkov.createEvent;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.location.Address;
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
+import com.starichenkov.account.AccountActivity;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
@@ -102,9 +104,13 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
 
     @Override
     public void createEvent(Events event){
-        if(event != null){
+        if(this.event != null){
             Log.d(TAG, "Change event");
-        }else {
+            event.id = this.event.id;
+            presenter.updateEvent(event);
+            Intent intent = new Intent(this, AccountActivity.class);
+            this.startActivity(intent);
+        }else{
             presenter.createEvent(event);
         }
     }

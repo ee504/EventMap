@@ -35,4 +35,10 @@ public interface IModel {
     void getCurrentUser();
 
     void getEventById(long idEvent);
+
+    void deleteEventById(long id);
+
+    void updateEvent(Events event);
+
+    void deleteEvent(Events event);
 }

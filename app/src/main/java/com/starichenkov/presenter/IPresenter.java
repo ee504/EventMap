@@ -45,4 +45,10 @@ public interface IPresenter {
     void updateUser(Users user);
 
     void getEventById(long idEvent);
+
+    void deleteEventById(long id);
+
+    void updateEvent(Events event);
+
+    void deleteEvent(Events events);
 }

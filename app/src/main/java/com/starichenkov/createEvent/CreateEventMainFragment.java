@@ -84,6 +84,9 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     private Uri photoUriMain;
     private Uri photoURI;
     private Uri photoURIFullSize;
+    private Uri newPhotoURI;
+    private Uri newPhotoURIFullSize;
+
     //private Bitmap bitmapPhoto;
     private String nameEvent;
     private String dateEvent;
@@ -154,8 +157,21 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             case R.id.buttonCreateEvent:
                 Log.d(TAG, "Click buttonCreateEvent");
                 Log.d(TAG, "Создать мероприятие");
+                if(newPhotoURI != null){
+                    if(photoURI != null){
+                        new File(photoURI.getPath()).delete();
+                        photoURI = newPhotoURI;
+
+                        new File(photoURIFullSize.getPath()).delete();
+                        photoURIFullSize = newPhotoURIFullSize;
+
+                    }else{
+                        photoURI = newPhotoURI;
+                        photoURIFullSize = newPhotoURIFullSize;
+                    }
+                }
                 mListener.createEvent(new Events(new AccountAuthorization().getIdUser(), photoURI.toString(), photoURIFullSize.toString(), editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
-                        dateEvent, spinnerTypeEvent.getSelectedItem().toString(), addressEvent, latLngEvent.latitude, latLngEvent.longitude));
+                        dateEvent, spinnerTypeEvent.getSelectedItem().toString(), editAddressEvent.getText().toString(), latLngEvent.latitude, latLngEvent.longitude));
                 Log.d(TAG, "Список переменных");
                 Log.d(TAG,
                         "id = " + new AccountAuthorization().getIdUser() +
@@ -179,8 +195,12 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             case R.id.buttonDeletePhoto:
                 Log.d(TAG, "Click buttonDeletePhoto");
                 imageView.setImageResource(R.drawable.event_map_logo);
-                getActivity().getContentResolver().delete(photoURI, null, null);
-                getActivity().getContentResolver().delete(photoURIFullSize, null, null);
+                //getActivity().getContentResolver().delete(photoURI, null, null);
+                //getActivity().getContentResolver().delete(photoURIFullSize, null, null);
+                if(newPhotoURI != null) {
+                    new File(newPhotoURI.getPath()).delete();
+                    new File(newPhotoURIFullSize.getPath()).delete();
+                }
                 break;
 
         }
@@ -321,15 +341,19 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
         super.onActivityResult(requestCode, resultCode, intent);
 
+        Log.d(TAG, "CreateEventMainFragment onActivityResult()");
+
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Log.d(TAG, "intent is not null");
-            Log.d(TAG, "photoURI: " + photoURI);
+            Log.d(TAG, "photoUriMain: " + photoUriMain);
             ChangeImage image = new ChangeImage(getContext(), photoUriMain);
-            photoURIFullSize = image.getImage1920x1080();
-            photoURI = image.getImage300x300();
+
+            newPhotoURIFullSize = image.getImage1920x1080();
+            newPhotoURI = image.getImage300x300();
+
             //bitmapPhoto = image.getBitmapPhoto();
             //imageView.setImageBitmap(bitmapPhoto);
-            imageView.setImageURI(photoURI);
+            imageView.setImageURI(newPhotoURI);
             getActivity().getContentResolver().delete(photoUriMain, null, null);
         }
     }
@@ -347,18 +371,24 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     @Override
     public void onDestroy(){
         super.onDestroy();
-        if(createEvent == false){
-            if(photoURI != null) {
-                getActivity().getContentResolver().delete(photoURI, null, null);
-                getActivity().getContentResolver().delete(photoURIFullSize, null, null);
-            }
+        if(createEvent == false && newPhotoURI != null){
+                new File(newPhotoURI.getPath()).delete();
+                new File(newPhotoURIFullSize.getPath()).delete();
+                //getActivity().getContentResolver().delete(photoURI, null, null);
+                //getActivity().getContentResolver().delete(photoURIFullSize, null, null);
         }
     }
 
     public void sentEvent(Events event) {
 
+        Log.d(TAG, "CreateEventMainFragment sentEvent");
+        latLngEvent = new LatLng(event.latitude, event.longitude);
+        photoURI = Uri.parse(event.photoEvent);
+        photoURIFullSize = Uri.parse(event.photoEventFullSize);
+        dateEvent = event.dateEvent;
+
         textViewCreateEvent.setText("Редактирование мероприятия");
-        imageView.setImageURI(Uri.parse(event.photoEvent));
+        imageView.setImageURI(photoURI);
         editNameEvent.setText(event.nameEvent);
         editDescriptionEvent.setText(event.descriptionEvent);
         editDateEvent.setText(event.dateEvent);

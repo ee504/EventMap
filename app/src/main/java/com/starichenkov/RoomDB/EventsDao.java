@@ -1,8 +1,10 @@
 package com.starichenkov.RoomDB;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
@@ -28,4 +30,13 @@ public interface EventsDao {
 
     @Query("DELETE FROM Events")
     void deleteAllEvents();
+
+    @Query("DELETE FROM Events WHERE id = :id")
+    void deleteEventById(long id);
+
+    @Update
+    void update(Events event);
+
+    @Delete
+    void delete(Events event);
 }

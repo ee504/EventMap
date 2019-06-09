@@ -1,6 +1,7 @@
 package com.starichenkov.Model;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.starichenkov.RoomDB.App;
@@ -16,6 +17,7 @@ import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.view.IView;
 import com.starichenkov.presenter.Presenter;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -154,22 +156,49 @@ public class Model implements IModel {
                     @Override
                     public void onSubscribe(Disposable d) {
                         // just like with a Single
-                        Log.d(TAG, "onSubscribe");
+                        Log.d(TAG, "createEvent onSubscribe");
                     }
 
                     @Override
                     public void onComplete() {
                         // action was completed successfully
-                        Log.d(TAG, "onComplete");
+                        Log.d(TAG, "createEvent onComplete");
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         // something went wrong
-                        Log.d(TAG, "onError");
+                        Log.d(TAG, "createEvent onError");
                         Log.d(TAG, e.getMessage());
                     }
                 });
+    }
+
+    @Override
+    public void updateEvent(final Events event){
+
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                eventsDao.update(event);
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        // action was completed successfully
+                        Log.d(TAG, "updateEvent() onComplete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // something went wrong
+                        Log.d(TAG, "updateEvent() onError");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+
     }
 
     @Override
@@ -462,6 +491,70 @@ public class Model implements IModel {
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "getUserEvents Some error");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+
+    }
+
+    @Override
+    public void deleteEventById(final long id){
+
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                eventsDao.deleteEventById(id);
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // just like with a Single
+                        Log.d(TAG, "deleteEventById() onSubscribe");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        // action was completed successfully
+                        Log.d(TAG, "deleteEventById() onComplete");
+                        getAllEvents();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // something went wrong
+                        Log.d(TAG, "deleteEventById() onError");
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void deleteEvent(final Events event){
+
+        new File(Uri.parse(event.photoEvent).getPath()).delete();
+        new File(Uri.parse(event.photoEventFullSize).getPath()).delete();
+
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                eventsDao.delete(event);
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        // action was completed successfully
+                        Log.d(TAG, "deleteEvent() onComplete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // something went wrong
+                        Log.d(TAG, "deleteEvent() onError");
                         Log.d(TAG, e.getMessage());
                     }
                 });
