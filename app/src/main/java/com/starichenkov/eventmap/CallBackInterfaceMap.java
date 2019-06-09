@@ -26,4 +26,6 @@ public interface CallBackInterfaceMap {
     void getSelectedMarker();
 
     void filter(String query);
+
+    void back();
 }

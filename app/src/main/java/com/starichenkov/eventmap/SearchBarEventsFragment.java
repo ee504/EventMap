@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 //import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-public class SearchBarEventsFragment extends Fragment {
+public class SearchBarEventsFragment extends Fragment implements View.OnClickListener{
 
     private ImageButton ibtnDrawerOpener;
     private ImageButton ibtnFilter;
@@ -29,7 +30,7 @@ public class SearchBarEventsFragment extends Fragment {
 
         ibtnDrawerOpener = (ImageButton) view.findViewById(R.id.ibtnDrawerOpener);
         ibtnDrawerOpener.setImageResource(R.drawable.ic_arrow_back_black_24dp);
-        //ibtnDrawerOpener.setOnClickListener(this);
+        ibtnDrawerOpener.setOnClickListener(this);
 
         editSearch = (SearchView) view.findViewById(R.id.editSearch);
         editSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -49,6 +50,19 @@ public class SearchBarEventsFragment extends Fragment {
 
         ibtnFilter = (ImageButton) view.findViewById(R.id.ibtnFilter);
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        // по id определяем кнопку, вызвавшую этот обработчик
+        //Log.d(TAG, "по id определяем кнопку, вызвавшую этот обработчик");
+        switch (v.getId()) {
+
+            case R.id.ibtnDrawerOpener:
+                Log.d(TAG, "Click back");
+                mListener.back();
+                break;
+        }
     }
 
     @Override

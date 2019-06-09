@@ -230,4 +230,9 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
                 getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
         eventsListFragment.filter(query);
     }
+
+    @Override
+    public void back(){
+        getSupportFragmentManager().popBackStackImmediate();
+    }
 }
