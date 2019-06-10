@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Gravity;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -60,8 +61,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
     private MapView mapView;
     private static final String TAG = "MyLog";
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private Button btnDrawerOpener;
-    //private ImageButton ibtnDrawerOpener;
+    private ImageButton ibtnZoomIn;
+    private ImageButton ibtnZoomOut;
+    private ImageButton ibtnLocation;
     private Button btnUsersData;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -97,6 +99,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     private final String nameFragment = "mapFragment";
 
+    private View locationButton;
 
 
     @Override
@@ -133,18 +136,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     private void initView(View view) {
 
+        ibtnZoomIn = (ImageButton) view.findViewById(R.id.ibtnZoomIn);
+        ibtnZoomIn.setOnClickListener(this);
 
-        btnDrawerOpener = (Button) view.findViewById(R.id.btnDrawerOpener);
-        Log.d(TAG, "btnDrawerOpener:" + btnDrawerOpener);
-        btnDrawerOpener.setOnClickListener(this);
-        btnDrawerOpener.setVisibility(View.GONE);
+        ibtnZoomOut = (ImageButton) view.findViewById(R.id.ibtnZoomOut);
+        ibtnZoomOut.setOnClickListener(this);
 
-        //ibtnDrawerOpener = (ImageButton) view.findViewById(R.id.ibtnDrawerOpener);
-        //ibtnDrawerOpener.setOnClickListener(this);
+        ibtnLocation = (ImageButton) view.findViewById(R.id.ibtnLocation);
+        ibtnLocation.setOnClickListener(this);
+        //ibtnLocation.setVisibility(View.GONE);
 
         btnUsersData = (Button) view.findViewById(R.id.btnUsersData);
         btnUsersData.setOnClickListener(this);
-        //btnUsersData.setVisibility(View.GONE);
+        btnUsersData.setVisibility(View.GONE);
 
         btnFloatingAction = (FloatingActionButton) view.findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
@@ -227,22 +231,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         // по id определяем кнопку, вызвавшую этот обработчик
         //Log.d(TAG, "по id определяем кнопку, вызвавшую этот обработчик");
         switch (v.getId()) {
-            case R.id.btnDrawerOpener:
-                //drawerLayout.openDrawer(GravityCompat.START);
-                Log.d(TAG, "Click Menu");
-                //presenter.getAllBookmarks();
+
+            case R.id.ibtnZoomIn:
+                mMap.animateCamera(CameraUpdateFactory.zoomIn());
                 break;
 
-            case R.id.ibtnDrawerOpener:
-                drawerLayout.openDrawer(GravityCompat.START);
-                Log.d(TAG, "Click Menu");
+            case R.id.ibtnZoomOut:
+                mMap.animateCamera(CameraUpdateFactory.zoomOut());
+                break;
+
+            case R.id.ibtnLocation:
+                Log.d(TAG, "Click ibtnLocation");
+                locationButton.callOnClick();
+                //drawerLayout.openDrawer(GravityCompat.START);
                 break;
 
             case R.id.btnUsersData:
                 Log.d(TAG, "Click btnUsersData");
                 Log.d(TAG, "this.getLocalClassName(): " + getActivity().getLocalClassName());
-                Intent intentUsersData = new Intent(getActivity(), UsersDataActivity.class);
-                startActivity(intentUsersData);
+                //mMap.animateCamera(CameraUpdateFactory.zoomIn());
+                //Intent intentUsersData = new Intent(getActivity(), UsersDataActivity.class);
+                //startActivity(intentUsersData);
                 //View frgm = findViewById(R.id.map);
                 //frgm.setClickable(false);
                 //bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -322,13 +331,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {//this.mMap = googleMap;};
+    public void onMapReady(GoogleMap googleMap) {
 
-    //public void onMap(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady()");
         mMap = googleMap;
-        UiSettings uiSettings = mMap.getUiSettings();
-        uiSettings.setZoomControlsEnabled(true);
+        //UiSettings uiSettings = mMap.getUiSettings();
+        //uiSettings.setZoomControlsEnabled(true);
 
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -344,6 +352,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
             mMap.setMyLocationEnabled(true);
             //uiSettings.setMyLocationButtonEnabled(true);
         }
+
+        //Get standard location button
+        locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        // Change the visibility of my location button
+        if(locationButton != null)
+            locationButton.setVisibility(View.GONE);
 
         //MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         //View zoomControls = mapFragment.getView().findViewById(0x1);
@@ -364,11 +378,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
-
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         //get latlong for corners for specified place
         LatLng one = new LatLng(56.188109, 43.702207);

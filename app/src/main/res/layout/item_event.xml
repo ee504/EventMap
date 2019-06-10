@@ -6,7 +6,9 @@
     android:layout_height="wrap_content"
     android:id = "@+id/llBookMark"
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:background="@drawable/rounded"
+    android:layout_margin="3dp">
 
     <ImageView
         android:id="@+id/imageEvent"

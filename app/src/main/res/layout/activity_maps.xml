@@ -18,19 +18,9 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"/>
 
-        <Button
-            android:id="@+id/btnDrawerOpener"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|top"
-            android:text="Menu"
-            android:padding="10dp"
-            android:layout_marginTop="50dp"
-            android:paddingRight="10dp"/>
-
         <fragment android:name="com.starichenkov.eventmap.TopSearchBarFragment"
             android:id="@+id/frgmTopSearchBar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:layout_alignParentTop="true"
@@ -51,12 +41,47 @@
             android:id="@+id/btnFloatingAction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:src="@drawable/ic_add"
-            android:layout_marginBottom="150dp"
+            android:src="@drawable/ic_add_white"
+            android:layout_marginBottom="100dp"
             android:layout_marginRight="20dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            app:backgroundTint="@color/mainTheme"/>
+
+        <ImageButton
+            android:id="@+id/ibtnZoomIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_black"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_above="@+id/ibtnZoomOut"
+            android:background="@drawable/circle_button"
+            />
+
+        <ImageButton
+            android:id="@+id/ibtnZoomOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_remove_black_24dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_button"
+            />
+
+        <ImageButton
+            android:id="@+id/ibtnLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_near_me_black_24dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ibtnZoomOut"
+            android:background="@drawable/circle_button"
+            />
 
     </RelativeLayout>
 
