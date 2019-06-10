@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-public class TopSearchBarFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
+public class TopSearchBarFragment extends Fragment implements View.OnClickListener {
 
     private ImageButton ibtnDrawerOpener;
     private ImageButton ibtnFilter;
@@ -36,13 +36,15 @@ public class TopSearchBarFragment extends Fragment implements View.OnClickListen
         editSearch = (SearchView) view.findViewById(R.id.editSearch);
         //editSearch.setOnTouchListener(this);
         //editSearch.setOnClickListener(this);
-        editSearch.setOnSearchClickListener(new View.OnClickListener() {
+        /*editSearch.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Touch editSearch");
                 mListener.OpenEventsList();
             }
-        });
+        });*/
+
+        editSearch.setOnSearchClickListener(this);
 
 
         /*ibtnDrawerOpener.setOnClickListener(new View.OnClickListener() {
@@ -74,27 +76,33 @@ public class TopSearchBarFragment extends Fragment implements View.OnClickListen
 
             case R.id.ibtnDrawerOpener:
                 mListener.openDrawer();
-                Log.d(TAG, "Click Menu");
+                Log.d(TAG, "Click back");
                 break;
 
             case R.id.editSearch:
-                Log.d(TAG, "Touch editSearch");
+                Log.d(TAG, "Click editSearch");
+                editSearch.setQuery("",false);
+                editSearch.setIconified(true);
                 mListener.OpenEventsList();
                 break;
         }
     }
 
-    @Override
+    /*@Override
     public boolean  onTouch(View v, MotionEvent event){
         //if (event.getAction() == MotionEvent.ACTION_DOWN) {
             switch (v.getId()) {
                 case R.id.editSearch:
                     Log.d(TAG, "Touch editSearch");
+                    //editSearch.clearFocus();
+                    editSearch.cancelPendingInputEvents();
+                    editSearch.setQuery("", false);
+                    editSearch.clearFocus();
                     mListener.OpenEventsList();
                     break;
 
             }
         //}
         return true;
-    }
+    }*/
 }

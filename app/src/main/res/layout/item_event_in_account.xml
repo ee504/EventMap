@@ -40,7 +40,7 @@
                 android:id="@+id/imageDot"
                 android:layout_width="19dp"
                 android:layout_height="19dp"
-                android:src="@drawable/ic_fiber_manual_record_black_24dp" />
+                android:src="@drawable/ic_fiber_manual_record_spectacle_24dp" />
             <TextView
                 android:id="@+id/textTypeEvent"
                 android:layout_width="match_parent"

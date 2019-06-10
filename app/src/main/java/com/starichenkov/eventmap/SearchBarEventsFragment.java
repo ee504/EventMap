@@ -33,6 +33,8 @@ public class SearchBarEventsFragment extends Fragment implements View.OnClickLis
         ibtnDrawerOpener.setOnClickListener(this);
 
         editSearch = (SearchView) view.findViewById(R.id.editSearch);
+        editSearch.setQuery("",true);
+        editSearch.setIconified(false);
         editSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

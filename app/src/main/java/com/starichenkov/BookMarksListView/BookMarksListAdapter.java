@@ -18,10 +18,13 @@ import android.widget.TextView;
 import com.bumptech.glide.load.engine.Resource;
 import com.squareup.picasso.Picasso;
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.createEvent.TypeEvent;
 import com.starichenkov.eventmap.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdapter.MyViewHolder> {
 
@@ -31,6 +34,10 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
     private int mResourse;
     private static final String TAG = "MyLog";
     int lastPosition = -1;
+    TypeEvent typeEvent;
+
+    //private Map<String,String> dictionary = new HashMap<String,String>();
+
 
     private OnEventListener mOnEventListener;
 
@@ -44,6 +51,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         TextView textAddressEvent;
         ImageView imageEvent;
         LinearLayout llBookMark;
+        ImageView imageDot;
 
         OnEventListener onEventListener;
 
@@ -54,6 +62,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
             textAddressEvent = (TextView) view.findViewById(R.id.textAddressEvent);
             imageEvent = (ImageView) view.findViewById(R.id.imageEvent);
             llBookMark = (LinearLayout) view.findViewById(R.id.llBookMark);
+            imageDot = (ImageView) view.findViewById(R.id.imageDot);
 
             this.onEventListener = onEventListener;
             itemView.setOnClickListener(this);
@@ -81,6 +90,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
         this.events = events;
         this.eventsCopy = new ArrayList<Events>(events);
         this.mOnEventListener = (OnEventListener)mContext;
+        this.typeEvent = new TypeEvent();
     }
 
     // Create new views (invoked by the layout manager)
@@ -98,10 +108,12 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+
         Events event = events.get(position);
         holder.textNameEvent.setText(event.nameEvent);
         holder.textTypeEvent.setText(event.typeEvent);
         holder.textAddressEvent.setText(event.addressEvent);
+        holder.imageDot.setImageDrawable(typeEvent.getDrawable(mContext, event.typeEvent));
         //holder.imageEvent.setImageURI(Uri.parse(event.photoEvent));
         //Picasso.with(mContext).load(event.photoEvent).into(imageView);
         Log.d(TAG, "event.nameEvent: " + event.nameEvent);

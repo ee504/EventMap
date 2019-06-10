@@ -112,21 +112,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         Log.d(TAG, "------------------------------------");
         Log.d(TAG, "MapFragment onCreateView()");
         Log.d(TAG, "------------------------------------");
-        //super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_maps);
-        //setContentView(R.layout.activity_main_view);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);//when you already implement OnMapReadyCallback in your fragment
-        /*SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);*/
-
-
-        //presenter = new Presenter(this);
-        //presenter.getAllEvents();
 
         initView(view);
         Log.d(TAG, "Hello");

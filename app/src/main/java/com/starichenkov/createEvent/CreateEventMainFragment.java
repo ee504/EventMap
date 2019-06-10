@@ -62,7 +62,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class CreateEventMainFragment extends Fragment implements OnClickListener, OnTouchListener {
 
-    private String[] TypeEvents = { "Спектакль", "Выставка", "Вечеринка", "Кинопоказ", "Концерт" };
+    //private String[] TypeEvents = { "Спектакль", "Выставка", "Вечеринка", "Кинопоказ", "Концерт" };
+    private TypeEvent typeEvent;
     private static final String TAG = "MyLog";
 
     private TextView textViewCreateEvent;
@@ -90,7 +91,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     //private Bitmap bitmapPhoto;
     private String nameEvent;
     private String dateEvent;
-    private String typeEvent;
+    //private String typeEvent;
     private String addressEvent;
     private LatLng latLngEvent;
 
@@ -110,7 +111,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
         createEvent = false;
 
-
+        typeEvent = new TypeEvent();
 
         Log.d(TAG, "start CreateEventMainFragment");
         Log.d(TAG, "photoURI: " + photoURI);
@@ -141,7 +142,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         buttonDeletePhoto = (Button) view.findViewById(R.id.buttonDeletePhoto);
         buttonDeletePhoto.setOnClickListener(this);
 
-        adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, TypeEvents);
+        adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, typeEvent.getArrayOfTypeEvent());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTypeEvent.setAdapter(adapter);
 
