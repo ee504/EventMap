@@ -17,6 +17,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.RoomDB.Users;
 import com.starichenkov.account.AccountActivity;
 import com.starichenkov.account.EnterAccountActivity;
 import com.starichenkov.account.RegistrationActivity;
@@ -71,8 +73,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     private Button btnRegistration;
     private Button btnEnterAccount;
+    private TextView tvNameUser;
     private Button btnAccount;
-    private Button btnExit;
     private View header_not_authorized;
     private View header_authorized;
 
@@ -116,10 +118,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
-        mapView.getMapAsync(this);//when you already implement OnMapReadyCallback in your fragment
+        mapView.getMapAsync(this);
 
         initView(view);
-        Log.d(TAG, "Hello");
+
+        checkAuthorization(view);
+
         return view;
 
     }
@@ -146,6 +150,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         drawerLayout = view.findViewById(R.id.drawer_layout);
 
         navigationView = view.findViewById(R.id.nav_view);
+        //navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -157,15 +162,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
                             case R.id.nav_search:
                                 Log.d(TAG, "Click nav_search");
+                                drawerLayout.closeDrawer(GravityCompat.START);
+                                mListener.OpenEventsList();
                                 break;
 
                             case R.id.nav_bookmarks:
                                 Log.d(TAG, "Click nav_bookmarks");
                                 drawerLayout.closeDrawer(GravityCompat.START);
-                                //drawerLayout.openDrawer(GravityCompat.START);
-                                //Intent intentBookMarks = new Intent(getActivity().getApplicationContext(), BookMarksListFragment.class);
-                                //startActivity(intentBookMarks);
-                                mListener.openBookMarksList();
+                                if(account.checkAuthorization()) {
+                                    mListener.openBookMarksList();
+                                }else{
+                                    Toast toast = Toast.makeText(getActivity(), "Требуется регистрация",Toast.LENGTH_LONG);
+                                    toast.setGravity(Gravity.CENTER,0,0);
+                                    toast.show();
+                                }
+                                break;
+
+                            case R.id.nav_exit:
+                                Log.d(TAG, "Click nav_exit");
+                                drawerLayout.closeDrawer(GravityCompat.START);
+                                account.deleteAuthorization();
+                                Intent intentExit = new Intent(getActivity(), MainMapActivity.class);
+                                startActivity(intentExit);
                                 break;
                         }
                         return true;
@@ -179,15 +197,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         header_authorized = LayoutInflater.from(getActivity()).inflate(R.layout.nav_header_authorized, navigationView, false);
         header_not_authorized = LayoutInflater.from(getActivity()).inflate(R.layout.nav_header_not_authorized, navigationView, false);
 
-        if(account.checkAuthorization()) {
-            navigationView.addHeaderView(header_authorized);
-            mListener.getAllBookmarks();
-            //mListener.setCurrentFragment(nameFragment);
 
-        }else{
-            navigationView.addHeaderView(header_not_authorized);
-            ibtnBookMark.setEnabled(false);
-        }
 
         btnRegistration = (Button) header_not_authorized.findViewById(R.id.btnRegistration);
         btnRegistration.setOnClickListener(this);
@@ -195,9 +205,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         btnEnterAccount = (Button) header_not_authorized.findViewById(R.id.btnEnterAccount);
         btnEnterAccount.setOnClickListener(this);
 
-        btnExit = (Button) header_authorized.findViewById(R.id.btnExit);
-        btnExit.setOnClickListener(this);
-
+        tvNameUser = (TextView) header_authorized.findViewById(R.id.tvNameUser);
         btnAccount = (Button) header_authorized.findViewById(R.id.btnAccount);
         btnAccount.setOnClickListener(this);
 
@@ -214,6 +222,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
         listMarkers = new ArrayList<Marker>();
 
+    }
+
+    private void checkAuthorization(View view) {
+        if(account.checkAuthorization()) {
+            navigationView.addHeaderView(header_authorized);
+
+            mListener.getCurrentUser();
+            mListener.getAllBookmarks();
+            //mListener.setCurrentFragment(nameFragment);
+
+        }else{
+            navigationView.addHeaderView(header_not_authorized);
+            ibtnBookMark.setEnabled(false);
+
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_exit).setVisible(false);
+        }
     }
 
     @Override
@@ -274,15 +299,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
             case R.id.btnAccount:
                 Log.d(TAG, "Click btnAccount");
-                Intent intentAccount = new Intent(getActivity(), AccountActivity.class);
-                startActivity(intentAccount);
-                break;
-
-            case R.id.btnExit:
-                Log.d(TAG, "Click btnExit");
-                account.deleteAuthorization();
-                Intent intentExit = new Intent(getActivity(), MainMapActivity.class);
-                startActivity(intentExit);
+                Intent intentAccountSecond = new Intent(getActivity(), AccountActivity.class);
+                startActivity(intentAccountSecond);
                 break;
 
             case R.id.ibtnBookMark:
@@ -528,5 +546,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     public void openDrawer() {
         drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    public void setCurrentUser(Users user) {
+        Log.d(TAG, "user.getFio(): " + user.getFio());
+        tvNameUser.setText(user.getFio());
     }
 }

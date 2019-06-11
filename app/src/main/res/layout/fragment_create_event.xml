@@ -68,6 +68,7 @@
             android:ems="10"
             android:padding="10dp"
             android:lines="1"
+            android:inputType="textCapWords"
             android:hint="Наименование мероприятия:"/>
 
         <EditText
@@ -78,6 +79,7 @@
             android:ems="10"
             android:padding="30dp"
             android:lines="3"
+            android:inputType="textCapWords"
             android:hint="Описание мероприятия:"/>
 
         <EditText

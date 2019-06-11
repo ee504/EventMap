@@ -28,4 +28,6 @@ public interface CallBackInterfaceMap {
     void filter(String query);
 
     void back();
+
+    void getCurrentUser();
 }

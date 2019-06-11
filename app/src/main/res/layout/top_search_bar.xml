@@ -21,7 +21,8 @@
         android:layout_centerInParent="true"
         android:background="@android:color/white"
         android:ems="10"
-        android:hint="Поиск:" />
+        android:hint="Поиск:"
+        android:inputType="textCapWords"/>
 
     <ImageButton
         android:id="@+id/ibtnFilter"

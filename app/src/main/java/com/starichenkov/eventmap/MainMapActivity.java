@@ -193,7 +193,15 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
     }
 
     @Override
+    public void getCurrentUser(){
+        presenter.getCurrentUser();
+    }
+
+    @Override
     public void sendUser(Users user){
+        MapFragment mapFragment = (MapFragment)
+                getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
+        mapFragment.setCurrentUser(user);
     }
 
     @Override
