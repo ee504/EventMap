@@ -46,7 +46,7 @@
             android:layout_marginRight="20dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            app:backgroundTint="@color/mainTheme"/>
+            app:backgroundTint="@color/colorMainTheme"/>
 
         <ImageButton
             android:id="@+id/ibtnZoomIn"
@@ -58,6 +58,7 @@
             android:layout_alignParentRight="true"
             android:layout_above="@+id/ibtnZoomOut"
             android:background="@drawable/circle_button"
+            android:foreground="?android:attr/selectableItemBackground"
             />
 
         <ImageButton

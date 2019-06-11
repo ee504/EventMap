@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
+import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.view.IView;
 import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
@@ -57,7 +58,7 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
 
                 Log.d(TAG, "Click buttonEnterAcc");
                 Log.d(TAG, "authorized = " + test);
-                Intent intentMapsActivity = new Intent(this, MapFragment.class);
+                Intent intentMapsActivity = new Intent(this, MainMapActivity.class);
                 startActivity(intentMapsActivity);
                 break;
 

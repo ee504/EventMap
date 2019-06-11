@@ -142,7 +142,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
         btnUsersData = (Button) view.findViewById(R.id.btnUsersData);
         btnUsersData.setOnClickListener(this);
-        btnUsersData.setVisibility(View.GONE);
+        //btnUsersData.setVisibility(View.GONE);
 
         btnFloatingAction = (FloatingActionButton) view.findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
@@ -265,8 +265,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
                 Log.d(TAG, "Click btnUsersData");
                 Log.d(TAG, "this.getLocalClassName(): " + getActivity().getLocalClassName());
                 //mMap.animateCamera(CameraUpdateFactory.zoomIn());
-                //Intent intentUsersData = new Intent(getActivity(), UsersDataActivity.class);
-                //startActivity(intentUsersData);
+                Intent intentUsersData = new Intent(getActivity(), UsersDataActivity.class);
+                startActivity(intentUsersData);
                 //View frgm = findViewById(R.id.map);
                 //frgm.setClickable(false);
                 //bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

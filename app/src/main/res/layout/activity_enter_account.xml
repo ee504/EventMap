@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/event_map_theme">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -30,6 +31,7 @@
             android:layout_margin="20dp"
             android:ems="10"
             android:padding="10dp"
+            android:background="@drawable/rounded_button_white"
             android:hint="Почта:"/>
 
         <EditText
@@ -39,6 +41,7 @@
             android:layout_margin="20dp"
             android:ems="10"
             android:padding="10dp"
+            android:background="@drawable/rounded_button_white"
             android:inputType="textPassword"
             android:hint="Пароль:"/>
 
@@ -48,7 +51,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:padding="10dp"
-            android:text="Войти в аккаунт" />
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/rounded_button_main_theme"
+            android:text="Войти" />
 
     </LinearLayout>
 
