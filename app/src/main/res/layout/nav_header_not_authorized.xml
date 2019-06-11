@@ -12,7 +12,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/circle_event_map_logo"
+        android:src="@drawable/event_map_logo_circle"
         android:layout_gravity="center_vertical"/>
 
     <LinearLayout

@@ -5,15 +5,24 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/llBookMark">
+    android:id="@+id/llBookMark"
+    android:background="@drawable/event_map_theme"
+    android:gravity="center">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="147dp"
+            android:layout_height="147dp"
+            android:layout_weight="1"
+            android:src="@drawable/event_map_logo_reverse"/>
 
         <TextView
             android:id="@+id/textViewRegistration"
@@ -22,7 +31,9 @@
             android:layout_margin="20dp"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:textSize="20sp"
+            android:textSize="26dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorDefault"
             android:text="Регистрация" />
 
         <EditText
@@ -32,6 +43,8 @@
             android:layout_margin="20dp"
             android:ems="10"
             android:padding="10dp"
+            android:background="@drawable/rounded_button_white"
+            android:inputType="textCapWords"
             android:hint="ФИО:"/>
 
         <EditText
@@ -42,6 +55,7 @@
             android:ems="10"
             android:padding="10dp"
             android:inputType="textEmailAddress"
+            android:background="@drawable/rounded_button_white"
             android:hint="Почта:"/>
 
         <EditText
@@ -51,6 +65,7 @@
             android:layout_margin="20dp"
             android:ems="10"
             android:padding="10dp"
+            android:background="@drawable/rounded_button_white"
             android:hint="Пароль:"/>
 
         <Button
@@ -59,7 +74,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:padding="10dp"
-            android:text="Создать аккаунт" />
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/rounded_button_main_theme"
+            android:text="Зарегистрироваться" />
 
     </LinearLayout>
 

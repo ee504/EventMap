@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.location.Address;
 import android.media.ExifInterface;
@@ -21,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -54,6 +56,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -142,9 +145,44 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         buttonDeletePhoto = (Button) view.findViewById(R.id.buttonDeletePhoto);
         buttonDeletePhoto.setOnClickListener(this);
 
-        adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, typeEvent.getArrayOfTypeEvent());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, typeEvent.getArrayOfTypeEvent());
+        ArrayList<String> spinnerList = typeEvent.getArrayOfTypeEvent();
+        spinnerList.add(0, "Тип мероприятия:");
+        adapter = new ArrayAdapter<String>(
+                getActivity(),android.R.layout.simple_spinner_item,spinnerList){
+            @Override
+            public boolean isEnabled(int position){
+                if(position == 0)
+                {
+                    // Disable the first item from Spinner
+                    // First item will be use for hint
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if(position == 0){
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY);
+                }
+                else {
+                    tv.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerTypeEvent.setAdapter(adapter);
+
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spinnerTypeEvent.setAdapter(adapter);
 
         mListener.getEvent();
 

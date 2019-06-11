@@ -7,4 +7,5 @@
     <color name="colorDefault">#FF000000</color>
     <color name="colorMainTheme">#9C4FFF</color>
     <color name="colorWhite">#ffff</color>
+    <color name="colorGrey">#C4C4C4</color>
 </resources>

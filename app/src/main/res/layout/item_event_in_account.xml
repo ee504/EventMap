@@ -6,7 +6,9 @@
     android:layout_height="wrap_content"
     android:id = "@+id/llBookMark"
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:background="@drawable/rounded"
+    android:layout_margin="3dp">
 
     <ImageView
         android:id="@+id/imageEvent"
@@ -19,35 +21,47 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textNameEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textSize="18dp"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textColor="@color/colorDefault"
             android:lines="2"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
 
             <ImageView
                 android:id="@+id/imageDot"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:paddingTop="2dp"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_fiber_manual_record_spectacle_24dp" />
             <TextView
                 android:id="@+id/textTypeEvent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"/>
+                android:layout_gravity="center"
+                android:layout_marginLeft="2dp"
+                android:textColor="@color/colorDefault"
+                android:text="Спектакль"/>
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/colorDefault" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,16 +73,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textSize="11dp"
-                android:padding="0dp"
+                android:textSize="13dp"
+                android:background="@null"
+                android:gravity="left|center_vertical"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="Редактировать" />
 
             <Button
                 android:id="@+id/buttonDelete"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="11dp"
+                android:layout_weight="1.5"
+                android:textSize="13dp"
+                android:background="@null"
+                android:gravity="left|center_vertical"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="Удалить" />
 
         </LinearLayout>

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.starichenkov.RoomDB.Events;
+import com.starichenkov.createEvent.TypeEvent;
 import com.starichenkov.eventmap.R;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
     private int mResourse;
     private static final String TAG = "MyLog";
     int lastPosition = -1;
+    TypeEvent typeEvent;
 
     private OnEventListener mOnEventListener;
 
@@ -44,6 +46,7 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
         LinearLayout llBookMark;
         Button buttonEdit;
         Button buttonDelete;
+        ImageView imageDot;
 
         OnEventListener onEventListener;
 
@@ -53,6 +56,7 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
             textTypeEvent = (TextView) view.findViewById(R.id.textTypeEvent);
             //textAddressEvent = (TextView) view.findViewById(R.id.textAddressEvent);
             imageEvent = (ImageView) view.findViewById(R.id.imageEvent);
+            imageDot = (ImageView) view.findViewById(R.id.imageDot);
 
             llBookMark = (LinearLayout) view.findViewById(R.id.llBookMark);
 
@@ -95,6 +99,7 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
         this.events = events;
         this.eventsCopy = new ArrayList<Events>(events);
         this.mOnEventListener = (OnEventListener)mContext;
+        this.typeEvent = new TypeEvent();
     }
 
     // Create new views (invoked by the layout manager)
@@ -115,6 +120,7 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
         Events event = events.get(position);
         holder.textNameEvent.setText(event.nameEvent);
         holder.textTypeEvent.setText(event.typeEvent);
+        holder.imageDot.setImageDrawable(typeEvent.getDrawable(mContext, event.typeEvent));
         //holder.textAddressEvent.setText(event.addressEvent);
         //holder.imageEvent.setImageURI(Uri.parse(event.photoEvent));
         //Picasso.with(mContext).load(event.photoEvent).into(imageView);
