@@ -1,4 +1,4 @@
-package com.starichenkov.createEvent;
+package com.starichenkov.image;
 
 import android.content.Context;
 import android.os.Environment;

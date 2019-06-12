@@ -1,5 +1,7 @@
 package com.starichenkov.eventmap;
 
+import android.net.Uri;
+
 public interface CallBackInterfaceMap {
 
     void openBookMarksList();
@@ -30,4 +32,6 @@ public interface CallBackInterfaceMap {
     void back();
 
     void getCurrentUser();
+
+    void openImageFullScreen(Uri uri);
 }

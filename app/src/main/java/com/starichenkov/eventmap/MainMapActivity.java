@@ -1,5 +1,6 @@
 package com.starichenkov.eventmap;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +15,7 @@ import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
 import com.starichenkov.account.AccountAuthorization;
+import com.starichenkov.image.ImageFullSizeFragment;
 import com.starichenkov.presenter.Presenter;
 import com.starichenkov.view.IView;
 
@@ -24,6 +26,7 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
     private Fragment bookMarksListFragment;
     //private Fragment topSearchBarFragment;
     private Fragment eventsListFragment;
+    private Fragment imageFullSizeFragment;
 
     private static final String TAG = "MyLog";
 
@@ -42,6 +45,7 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
         bookMarksListFragment = new BookMarksListFragment();
         //topSearchBarFragment = new TopSearchBarFragment();
         eventsListFragment = new EventsListFragment();
+        imageFullSizeFragment = new ImageFullSizeFragment();
         //createEventPlaceFragment = new CreateEventPlaceFragment();
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         fTrans.add(R.id.frgmCreateEvent, mapFragment)
@@ -166,6 +170,24 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
         MapFragment mapFragment = (MapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
         mapFragment.sendBookMarks(this.bookMarks);
+    }
+
+    @Override
+    public void openImageFullScreen(Uri uri){
+        FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+        /*fTrans.replace(R.id.frgmCreateEvent, imageFullSizeFragment)
+                .addToBackStack(null)
+                .commit();*/
+
+        fTrans.add(R.id.frgmCreateEvent, imageFullSizeFragment)
+                .addToBackStack(null)
+                .hide(mapFragment)
+                //.show(bookMarksListFragment)
+                .commit();
+        getSupportFragmentManager().executePendingTransactions();
+        ImageFullSizeFragment imageFullSizeFragment = (ImageFullSizeFragment)
+                getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
+        imageFullSizeFragment.setImage(uri);
     }
 
     @Override

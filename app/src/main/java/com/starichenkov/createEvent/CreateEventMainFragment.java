@@ -1,19 +1,13 @@
 package com.starichenkov.createEvent;
 
 import android.app.DatePickerDialog;
-import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.location.Address;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
@@ -22,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -36,30 +29,19 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.eventmap.BuildConfig;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.image.ChangeImage;
-import com.starichenkov.view.IView;
-import com.starichenkov.eventmap.MapFragment;
+import com.starichenkov.image.CreateImageFile;
 import com.starichenkov.eventmap.R;
-import com.starichenkov.presenter.IPresenter;
-import com.starichenkov.presenter.Presenter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 

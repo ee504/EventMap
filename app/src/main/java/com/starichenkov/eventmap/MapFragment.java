@@ -216,6 +216,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         imageEvent = (ImageView) view.findViewById(R.id.imageEvent);
+        imageEvent.setOnClickListener(this);
         textNameEvent = (TextView) view.findViewById(R.id.textNameEvent);
         textTypeEvent = (TextView) view.findViewById(R.id.textTypeEvent);
         textDateEvent = (TextView) view.findViewById(R.id.textDateEvent);
@@ -262,6 +263,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
                 Log.d(TAG, "Click ibtnLocation");
                 locationButton.callOnClick();
                 //drawerLayout.openDrawer(GravityCompat.START);
+                break;
+
+            case R.id.imageEvent:
+                Log.d(TAG, "Click imageEvent");
+                mListener.openImageFullScreen(Uri.parse(currentEvent.photoEventFullSize));
                 break;
 
             case R.id.btnUsersData:
