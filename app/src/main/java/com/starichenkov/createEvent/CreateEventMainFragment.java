@@ -102,7 +102,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
     private ArrayAdapter<String> adapter;
 
-
+    private CreateImageFile createImageFile;
 
     private CallBackInterfaceCreateEvent mListener;
 
@@ -183,6 +183,8 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //spinnerTypeEvent.setAdapter(adapter);
+
+        createImageFile = new CreateImageFile(getActivity());
 
         mListener.getEvent();
 
@@ -329,7 +331,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             // Create the File where the photo should go
             File photoFile = null;
             try {
-                photoFile = createTempImageFile();
+                photoFile = createImageFile.getTempImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
@@ -348,21 +350,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         }
     }
 
-    private File createTempImageFile() throws IOException{
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-        // Save a file: path for use with ACTION_VIEW intents
-        //mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
+
 
     @Override
     public void onAttach(Context context) {

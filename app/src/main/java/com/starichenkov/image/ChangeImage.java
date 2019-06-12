@@ -11,6 +11,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.starichenkov.createEvent.CreateImageFile;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,6 +28,7 @@ public class ChangeImage {
     private Uri photoURI;
     private Context context;
     private Bitmap bitmapPhoto;
+    private CreateImageFile createImageFile;
 
     public Bitmap getBitmapPhoto() {
         return bitmapPhoto;
@@ -34,6 +37,7 @@ public class ChangeImage {
     public ChangeImage(Context context, Uri photoURI){
         this.context = context;
         this.photoURI = photoURI;
+        this.createImageFile = new CreateImageFile(context);
     }
 
     public Uri getImage1920x1080(){
@@ -83,7 +87,7 @@ public class ChangeImage {
 
             }
 
-            File newFile = createImageFile();
+            File newFile = createImageFile.getImageFile();
             setBitMapToFile(newBitmap, newFile);
             Uri newUri = Uri.fromFile(newFile);
             Log.d(TAG, "newUri.getPath(): " + newUri);
@@ -110,14 +114,7 @@ public class ChangeImage {
                 matrix, true);
     }
 
-    private File createImageFile() throws IOException{
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_.jpg";
-        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = new File(storageDir, imageFileName);
-        return image;
-    }
+
 
     public void setBitMapToFile(Bitmap bitMap, File file) throws IOException {
 
