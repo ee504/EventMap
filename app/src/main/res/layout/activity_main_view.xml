@@ -7,7 +7,7 @@
     tools:context="com.starichenkov.eventmap.MapFragment">
 
     <!-- подключение основного контента -->
-    <include layout="@layout/activity_maps" />
+    <include layout="@layout/map_fragment" />
 
     <!-- подключение нижнего экрана -->
     <include layout="@layout/bottom_sheet" />

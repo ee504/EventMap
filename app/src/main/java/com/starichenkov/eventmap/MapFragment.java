@@ -50,6 +50,7 @@ import com.starichenkov.account.EnterAccountActivity;
 import com.starichenkov.account.RegistrationActivity;
 import com.starichenkov.createEvent.CreateEventActivity;
 import com.starichenkov.account.AccountAuthorization;
+import com.starichenkov.createEvent.TypeEvent;
 import com.starichenkov.presenter.Presenter;
 import com.starichenkov.view.CallBackFromDB;
 import com.starichenkov.view.IView;
@@ -85,6 +86,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
     private TextView textAddressEvent;
     private TextView textDescriptionEvent;
     private ImageButton ibtnBookMark;
+    private ImageView imageDot;
 
     private FloatingActionButton btnFloatingAction;
 
@@ -219,6 +221,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         textDateEvent = (TextView) view.findViewById(R.id.textDateEvent);
         textAddressEvent = (TextView) view.findViewById(R.id.textAddressEvent);
         textDescriptionEvent = (TextView) view.findViewById(R.id.textDescriptionEvent);
+        imageDot = (ImageView) view.findViewById(R.id.imageDot);
 
         listMarkers = new ArrayList<Marker>();
 
@@ -443,6 +446,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         imageEvent.setImageURI(Uri.parse(currentEvent.photoEvent));
         textNameEvent.setText(currentEvent.nameEvent);
         textTypeEvent.setText(currentEvent.typeEvent);
+        imageDot.setImageDrawable(new TypeEvent().getDrawable(getActivity(), currentEvent.typeEvent));
+
         textDateEvent.setText(currentEvent.dateEvent);
         textAddressEvent.setText(currentEvent.addressEvent);
         textDescriptionEvent.setText(currentEvent.descriptionEvent);

@@ -4,17 +4,21 @@
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="340dp"
-    android:background="@android:color/darker_gray"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     app:behavior_hideable="true"
     app:behavior_peekHeight="170dp"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/colorMainTheme" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -23,12 +27,13 @@
             android:id="@+id/imageEvent"
             android:layout_width="147dp"
             android:layout_height="147dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_vertical"/>
 
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="147dp"
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
@@ -38,19 +43,43 @@
                 android:id="@+id/textNameEvent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"/>
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorDefault"
+                android:gravity="left|top"/>
 
-            <TextView
-                android:id="@+id/textTypeEvent"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"/>
+                android:orientation="horizontal"
+                android:paddingTop="3dp">
+
+                <ImageView
+                    android:id="@+id/imageDot"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:paddingTop="2dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_fiber_manual_record_spectacle_24dp" />
+                <TextView
+                    android:id="@+id/textTypeEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="2dp"
+                    android:textColor="@color/colorDefault"
+                    android:text="Спектакль"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textDateEvent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"/>
+                android:paddingTop="5dp"
+                android:textColor="@color/colorDefault"
+                android:gravity="left"/>
+
 
         </LinearLayout>
 
@@ -73,17 +102,52 @@
         android:orientation="vertical"
         android:layout_gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/textAddressEvent"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"/>
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp">
 
-        <TextView
-            android:id="@+id/textDescriptionEvent"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorDefault"
+                android:gravity="left"
+                android:text="Адрес: "/>
+
+            <TextView
+                android:id="@+id/textAddressEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorDefault"
+                android:gravity="left"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"/>
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorDefault"
+                android:gravity="left"
+                android:text="Описание: "/>
+
+            <TextView
+                android:id="@+id/textDescriptionEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorDefault"
+                android:gravity="left"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
 import com.starichenkov.eventmap.CallBackInterfaceMap;
+import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
 
@@ -47,7 +48,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
 
         //View view = inflater.inflate(R.layout.activity_main_view, container, false);
-        View view = inflater.inflate(R.layout.account, null);
+        View view = inflater.inflate(R.layout.account_fragment, null);
 
         imagePhoto = (ImageView) view.findViewById(R.id.imagePhoto);
         imageMore = (ImageView) view.findViewById(R.id.imageMore);
@@ -105,7 +106,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                                 Log.d(TAG, "onClick() Выход");
                                 Log.d(TAG, "Click btnExit");
                                 new AccountAuthorization().deleteAuthorization();
-                                Intent intentExit = new Intent(getActivity(), MapFragment.class);
+                                Intent intentExit = new Intent(getActivity(), MainMapActivity.class);
                                 startActivity(intentExit);
                                 return true;
                             default:
