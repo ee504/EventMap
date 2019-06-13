@@ -7,33 +7,120 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Calendar;
 
-@Entity(foreignKeys = @ForeignKey(entity = Users.class, parentColumns = "id", childColumns = "idOrganizer"),
+@Entity(
         indices = {@Index("nameEvent"), @Index("idOrganizer")})
 public class Events {
 
-    @PrimaryKey(autoGenerate = true)
-    public long id;
+    public String getIdOrganizer() {
+        return idOrganizer;
+    }
 
-    public long idOrganizer;
+    public String getPhotoEvent() {
+        return photoEvent;
+    }
 
-    public String photoEvent;
-    public String photoEventFullSize;
+    public String getPhotoEventFullSize() {
+        return photoEventFullSize;
+    }
 
-    public String nameEvent;
+    public String getNameEvent() {
+        return nameEvent;
+    }
 
-    public String descriptionEvent;
+    public String getDescriptionEvent() {
+        return descriptionEvent;
+    }
 
-    public String dateEvent;
+    public String getDateEvent() {
+        return dateEvent;
+    }
 
-    public String typeEvent;
+    public String getTypeEvent() {
+        return typeEvent;
+    }
 
-    public String addressEvent;
+    public String getAddressEvent() {
+        return addressEvent;
+    }
 
-    public double latitude;
+    public double getLatitude() {
+        return latitude;
+    }
 
-    public double longitude;
+    public double getLongitude() {
+        return longitude;
+    }
 
-    public Events(long idOrganizer, String photoEvent, String photoEventFullSize, String nameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
+    public void setIdOrganizer(String idOrganizer) {
+        this.idOrganizer = idOrganizer;
+    }
+
+    public void setPhotoEvent(String photoEvent) {
+        this.photoEvent = photoEvent;
+    }
+
+    public void setPhotoEventFullSize(String photoEventFullSize) {
+        this.photoEventFullSize = photoEventFullSize;
+    }
+
+    public void setNameEvent(String nameEvent) {
+        this.nameEvent = nameEvent;
+    }
+
+    public void setDescriptionEvent(String descriptionEvent) {
+        this.descriptionEvent = descriptionEvent;
+    }
+
+    public void setDateEvent(String dateEvent) {
+        this.dateEvent = dateEvent;
+    }
+
+    public void setTypeEvent(String typeEvent) {
+        this.typeEvent = typeEvent;
+    }
+
+    public void setAddressEvent(String addressEvent) {
+        this.addressEvent = addressEvent;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private String id;
+
+    private String idOrganizer;
+
+    private String photoEvent;
+    private String photoEventFullSize;
+
+    private String nameEvent;
+
+    private String descriptionEvent;
+
+    private String dateEvent;
+
+    private String typeEvent;
+
+    private String addressEvent;
+
+    private double latitude;
+
+    private double longitude;
+
+    public Events(String idOrganizer, String photoEvent, String photoEventFullSize, String nameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
         this.idOrganizer = idOrganizer;
         this.photoEvent = photoEvent;
         this.photoEventFullSize = photoEventFullSize;
@@ -57,5 +144,13 @@ public class Events {
         this.addressEvent = event.addressEvent;
         this.latitude = event.latitude;
         this.longitude = event.longitude;
+    }
+
+    public Events(){
+
+    }
+
+    public boolean equals(BookMarks bookMarks) {
+        return (this.getId().equals(bookMarks.getIdEvent()));
     }
 }

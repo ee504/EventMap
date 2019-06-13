@@ -16,6 +16,7 @@ import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
 import com.starichenkov.account.AccountActivity;
+import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
@@ -33,7 +34,7 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
 
     private IPresenter presenter;
 
-    private long idEvent;
+    private String idEvent;
     private Events event;
 
 
@@ -48,7 +49,7 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            idEvent = extras.getLong("idEvent");
+            idEvent = extras.getString("idEvent");
             presenter.getEventById(idEvent);
         }else {
             fTrans = getSupportFragmentManager().beginTransaction();
@@ -74,22 +75,26 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
         Log.d(TAG, "OpenPlaceAutocomplete");
 
         fTrans = getSupportFragmentManager().beginTransaction();
-        /*fTrans.add(R.id.frgmCreateEvent, createEventPlaceFragment)
+        fTrans.add(R.id.frgmCreateEvent, createEventPlaceFragment)
                 .hide(createEventMainFragment)
                 .show(createEventPlaceFragment)
-                .commit();*/
-        fTrans.replace(R.id.frgmCreateEvent, createEventPlaceFragment)
-                .addToBackStack(null)
                 .commit();
+        /*fTrans.replace(R.id.frgmCreateEvent, createEventPlaceFragment)
+                .addToBackStack(null)
+                .commit();*/
     }
 
     @Override
     public void SetEventAddress(Address address, LatLng latLng){
         Log.d(TAG, "SetEventAddress");
-        //fTrans = getFragmentManager().beginTransaction();
+        fTrans = getSupportFragmentManager().beginTransaction();
+        fTrans.remove(createEventPlaceFragment)
+                .show(createEventMainFragment)
+                .commit();
+        getSupportFragmentManager().executePendingTransactions();
         //fTrans.replace(R.id.frgmCreateEvent, createEventMainFragment).commit();
         //getFragmentManager().popBackStack();
-        getSupportFragmentManager().popBackStackImmediate();
+        //getSupportFragmentManager().popBackStackImmediate();
         //getSupportFragmentManager().popBackStackImmediate();
         //fTrans.replace(R.id.frgmCreateEvent, createEventMainFragment).commit();
 
@@ -106,7 +111,7 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
     public void createEvent(Events event){
         if(this.event != null){
             Log.d(TAG, "Change event");
-            event.id = this.event.id;
+            event.setId(this.event.getId());
             presenter.updateEvent(event);
             Intent intent = new Intent(this, AccountActivity.class);
             this.startActivity(intent);
@@ -146,6 +151,18 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
     public void sendUser(Users user){
     }
 
+    @Override
+    public void startMainActivity(){
+
+        Intent intentMainMapActivity = new Intent(this, MainMapActivity.class);
+        startActivity(intentMainMapActivity);
+
+    }
+
+    @Override
+    public void deletePhoto(String photoEvent){
+        presenter.deletePhoto(photoEvent);
+    }
 
     @Override
     public void detachView(){

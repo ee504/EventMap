@@ -2,6 +2,8 @@ package com.starichenkov.eventmap;
 
 import android.net.Uri;
 
+import com.starichenkov.RoomDB.BookMarks;
+
 public interface CallBackInterfaceMap {
 
     void openBookMarksList();
@@ -9,9 +11,9 @@ public interface CallBackInterfaceMap {
 
     void getAllBookmarks();
 
-    void createBookMark(int idUser, long id);
+    void createBookMark(BookMarks bookMark);
 
-    void deleteBookMark(int idUser, long id);
+    void deleteBookMark(BookMarks bookMark);
 
     void getAllEvents();
 
@@ -33,5 +35,7 @@ public interface CallBackInterfaceMap {
 
     void getCurrentUser();
 
-    void openImageFullScreen(Uri uri);
+    void openImageFullScreen(String url);
+
+    void openLoadScreen();
 }

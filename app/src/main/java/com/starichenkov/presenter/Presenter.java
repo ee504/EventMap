@@ -1,13 +1,11 @@
 package com.starichenkov.presenter;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
 import com.starichenkov.account.AccountAuthorization;
-import com.starichenkov.view.CallBackFromDB;
 import com.starichenkov.view.IView;
 
 import com.starichenkov.Model.IModel;
@@ -65,13 +63,13 @@ public class Presenter implements IPresenter{
     }
 
     @Override
-    public void createBookMark(long idOrganizer, long id){
-        iModel.createBookMark(idOrganizer, id);
+    public void createBookMark(BookMarks bookMark){
+        iModel.createBookMark(bookMark);
     }
 
     @Override
-    public void deleteBookMark(int idUser, long id){
-        iModel.deleteBookMark(idUser, id);
+    public void deleteBookMark(BookMarks bookMark){
+        iModel.deleteBookMark(bookMark);
     }
 
     @Override
@@ -80,7 +78,7 @@ public class Presenter implements IPresenter{
     }
 
     @Override
-    public void getEventById(long idEvent){iModel.getEventById(idEvent);}
+    public void getEventById(String idEvent){iModel.getEventById(idEvent);}
 
     @Override
     public void sendBookMarks(List<BookMarks> bookMarks){
@@ -92,6 +90,11 @@ public class Presenter implements IPresenter{
     @Override
     public void deleteEventById(long id){
         iModel.deleteEventById(id);
+    }
+
+    @Override
+    public void deletePhoto(String photoEvent){
+        iModel.deletePhoto(photoEvent);
     }
 
     @Override
@@ -110,8 +113,8 @@ public class Presenter implements IPresenter{
     }
 
     @Override
-    public void getEventsFromBookmarks(){
-        iModel.getEventsFromBookmarks();
+    public void getEventsFromBookmarks(List<BookMarks> bookMarks){
+        iModel.getEventsFromBookmarks(bookMarks);
     }
 
     @Override
@@ -126,6 +129,14 @@ public class Presenter implements IPresenter{
     @Override
     public void updateUser(Users user){
         iModel.updateUser(user);
+    }
+
+    @Override
+    public void startMainActivity(){
+
+        Log.d(TAG, "iView.startMainActivity()");
+        Log.d(TAG, "iView.getClass()" + iView.getClass());
+        iView.startMainActivity();
     }
 
     @Override

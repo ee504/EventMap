@@ -58,8 +58,8 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
 
                 Log.d(TAG, "Click buttonEnterAcc");
                 Log.d(TAG, "authorized = " + test);
-                Intent intentMapsActivity = new Intent(this, MainMapActivity.class);
-                startActivity(intentMapsActivity);
+                Intent intentLoadScreenActivity = new Intent(this, LoadScreenActivity.class);
+                startActivity(intentLoadScreenActivity);
                 break;
 
         }
@@ -75,6 +75,12 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
 
     @Override
     public void sendUser(Users user){
+    }
+
+    @Override
+    public void startMainActivity(){
+        Intent intentMainMapActivity = new Intent(this, MainMapActivity.class);
+        startActivity(intentMainMapActivity);
     }
 
     @Override

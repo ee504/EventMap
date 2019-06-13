@@ -13,4 +13,6 @@ public interface CallBackInterfaceCreateEvent {
     void createEvent(Events events);
 
     void getEvent();
+
+    void deletePhoto(String photoEvent);
 }

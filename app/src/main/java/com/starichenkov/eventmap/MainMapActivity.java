@@ -1,5 +1,6 @@
 package com.starichenkov.eventmap;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import com.starichenkov.image.ImageFullSizeFragment;
 import com.starichenkov.presenter.Presenter;
 import com.starichenkov.view.IView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainMapActivity extends FragmentActivity implements CallBackInterfaceMap, BookMarksListAdapter.OnEventListener, IView {
@@ -27,6 +29,7 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
     //private Fragment topSearchBarFragment;
     private Fragment eventsListFragment;
     private Fragment imageFullSizeFragment;
+    private Fragment loadScreenFragment;
 
     private static final String TAG = "MyLog";
 
@@ -34,7 +37,7 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
     private List<Events> events;
     private List<BookMarks> bookMarks;
     private String currentFragment;
-    private long idEvent;
+    private String idEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
         //topSearchBarFragment = new TopSearchBarFragment();
         eventsListFragment = new EventsListFragment();
         imageFullSizeFragment = new ImageFullSizeFragment();
+        loadScreenFragment = new LoadScreenFragment();
         //createEventPlaceFragment = new CreateEventPlaceFragment();
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         fTrans.add(R.id.frgmCreateEvent, mapFragment)
@@ -54,7 +58,7 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
         getSupportFragmentManager().popBackStackImmediate();
         //currentFragment = "mapFragment";
         //fTrans.show(createEventMainFragment);
-        idEvent = -1;
+        idEvent = "0";
         presenter = new Presenter(this);
 
     }
@@ -104,7 +108,7 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
     @Override
     public void openMapWithMarker(int position){
         Log.d(TAG, "openMapWithMarker()");
-        idEvent = events.get(position).id;
+        idEvent = events.get(position).getId();
         //FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         //fTrans.replace(R.id.frgmCreateEvent, mapFragment)
                 //.commit();
@@ -114,21 +118,21 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
                 .remove(bookMarksListFragment)
                 .show(mapFragment)
                 .commit();*/
-        getSupportFragmentManager().executePendingTransactions();
+        //getSupportFragmentManager().executePendingTransactions();
         //currentFragment = "mapFragment";
         getSupportFragmentManager().popBackStackImmediate();
-        /*MapFragment mapFragment = (MapFragment)
+        MapFragment mapFragment = (MapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-        mapFragment.setMarker(idEvent);*/
+        mapFragment.setMarker(idEvent);
     }
 
     @Override
     public void getSelectedMarker(){
-        if(idEvent != -1){
+        if(idEvent != "0"){
             MapFragment mapFragment = (MapFragment)
                     getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
             mapFragment.setMarker(idEvent);
-            idEvent = -1;
+            idEvent = "0";
         }
     }
 
@@ -147,14 +151,17 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
     public void sendEvents(List<Events> events){
         this.events = events;
         if(currentFragment == "mapFragment") {
+            Log.d(TAG, "sendEvents() mapFragment");
             MapFragment mapFragment = (MapFragment)
                     getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
             mapFragment.sendEvents(this.events);
         }else if(currentFragment == "bookMarksListFragment"){
+            Log.d(TAG, "sendEvents() bookMarksListFragment");
             BookMarksListFragment bookMarksListFragment = (BookMarksListFragment)
                     getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
             bookMarksListFragment.sendEvents(this.events);
         }else if(currentFragment == "eventsListFragment"){
+            Log.d(TAG, "sendEvents() eventsListFragment");
             EventsListFragment eventsListFragment = (EventsListFragment)
                     getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
             eventsListFragment.sendEvents(this.events);
@@ -173,7 +180,7 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
     }
 
     @Override
-    public void openImageFullScreen(Uri uri){
+    public void openImageFullScreen(String url){
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         /*fTrans.replace(R.id.frgmCreateEvent, imageFullSizeFragment)
                 .addToBackStack(null)
@@ -187,7 +194,7 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
         getSupportFragmentManager().executePendingTransactions();
         ImageFullSizeFragment imageFullSizeFragment = (ImageFullSizeFragment)
                 getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-        imageFullSizeFragment.setImage(uri);
+        imageFullSizeFragment.setImage(url);
     }
 
     @Override
@@ -211,7 +218,17 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
 
     @Override
     public void getEventsFromBookmarks(){
-        presenter.getEventsFromBookmarks();
+        List<Events> listEvents = new ArrayList<>();
+        for(BookMarks bm : bookMarks){
+            for(Events el : events){
+                if(bm.getIdEvent().equals(el.getId())){
+                    listEvents.add(el);
+                    continue;
+                }
+            }
+        }
+        sendEvents(listEvents);
+
     }
 
     @Override
@@ -221,20 +238,23 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
 
     @Override
     public void sendUser(Users user){
+
+        //Log.e(TAG, "user.getFio(): " + user.getFio());
+        //Log.e(TAG, "user.getMail(): " + user.getMail());
         MapFragment mapFragment = (MapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
         mapFragment.setCurrentUser(user);
     }
 
     @Override
-    public  void createBookMark(int idUser, long id){
-        presenter.createBookMark(idUser, id);
+    public  void createBookMark(BookMarks bookMark){
+        presenter.createBookMark(bookMark);
         getAllBookmarks();
     }
 
     @Override
-    public void deleteBookMark(int idUser, long id){
-        presenter.deleteBookMark(idUser, id);
+    public void deleteBookMark(BookMarks bookMark){
+        presenter.deleteBookMark(bookMark);
         getAllBookmarks();
     }
 
@@ -264,5 +284,20 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
     @Override
     public void back(){
         getSupportFragmentManager().popBackStackImmediate();
+    }
+
+    @Override
+    public void openLoadScreen(){
+        FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+        fTrans.replace(R.id.frgmCreateEvent, loadScreenFragment)
+                .commit();
+    }
+
+    @Override
+    public void startMainActivity(){
+
+        Intent intentMainMapActivity = new Intent(this, MainMapActivity.class);
+        startActivity(intentMainMapActivity);
+
     }
 }

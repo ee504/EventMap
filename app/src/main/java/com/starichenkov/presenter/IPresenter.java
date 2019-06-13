@@ -1,8 +1,5 @@
 package com.starichenkov.presenter;
 
-import android.location.Address;
-import android.text.Editable;
-
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
@@ -22,15 +19,15 @@ public interface IPresenter {
 
     void getAllEvents();
 
-    void createBookMark(long idOrganizer, long id);
+    void createBookMark(BookMarks bookMark);
 
-    void deleteBookMark(int idUser, long id);
+    void deleteBookMark(BookMarks bookMark);
 
     void getAllBookmarks();
 
     void sendBookMarks(List<BookMarks> bookMarks);
 
-    void getEventsFromBookmarks();
+    void getEventsFromBookmarks(List<BookMarks> bookMarks);
 
     void deleteAllEvents();
 
@@ -44,11 +41,15 @@ public interface IPresenter {
 
     void updateUser(Users user);
 
-    void getEventById(long idEvent);
+    void getEventById(String idEvent);
 
     void deleteEventById(long id);
 
     void updateEvent(Events event);
 
     void deleteEvent(Events events);
+
+    void startMainActivity();
+
+    void deletePhoto(String photoEvent);
 }

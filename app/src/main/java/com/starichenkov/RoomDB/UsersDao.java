@@ -15,11 +15,11 @@ import io.reactivex.Single;
 @Dao
 public interface UsersDao {
 
-    @Query("SELECT * FROM Users")
+    /*@Query("SELECT * FROM Users")
     Single<List<Users>> getAll();
 
     @Query("SELECT * FROM Users WHERE id = :id")
-    Single<Users> getById(long id);
+    Single<Users> getById(String id);
 
     @Query("SELECT id FROM Users WHERE mail = :mail and password = :password")
     Single<Integer> getId(String mail, String password);
@@ -32,6 +32,6 @@ public interface UsersDao {
     void update(Users users);
 
     @Delete
-    void delete(Users users);
+    void delete(Users users);*/
 
 }

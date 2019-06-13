@@ -6,11 +6,13 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 
+import com.google.firebase.FirebaseApp;
+
 public class App extends Application {
 
-    public static App instance;
+    //public static App instance;
 
-    private AppDataBase database;
+    //private AppDataBase database;
 
     private static Context mContext;
 
@@ -18,24 +20,21 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        instance = this;
-        database = Room.databaseBuilder(this, AppDataBase.class, "database")
-                .build();
+        //instance = this;
+        //database = Room.databaseBuilder(this, AppDataBase.class, "database").build();
+
+        //FirebaseApp.initializeApp(this);
     }
 
     public static Context getAppContext() {
         return mContext;
     }
 
-    public static App getInstance() {
-        return instance;
-    }
+    //public static App getInstance() { return instance; }
 
-    public AppDataBase getDatabase() {
-        return database;
-    }
+    //public AppDataBase getDatabase() {return database;}
 
-    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+    /*static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE `Events` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `idOrganizer` INTEGER NOT NULL, `photoEvent` TEXT, `nameEvent` TEXT, `dateEvent` TEXT, `typeEvent` TEXT,"
@@ -69,6 +68,6 @@ public class App extends Application {
             database.execSQL("ALTER TABLE `Events` "
                     + " ADD COLUMN `photoEventFullSize` TEXT");
         }
-    };
+    };*/
 
 }

@@ -68,9 +68,9 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
             buttonDelete.setOnClickListener(this);
         }
 
-        public void loadImage(Uri uri){
+        public void loadImage(String url){
             //Picasso.with(context).load(url).placeholder(R.drawable.placeholder).error(R.drawable.error_ph).into(this.image);
-            Picasso.get().load(uri).error(R.drawable.event_map_logo).into(imageEvent);
+            Picasso.get().load(url).placeholder(R.drawable.event_map_logo).error(R.drawable.event_map_logo).into(imageEvent);
         }
 
         @Override
@@ -118,14 +118,14 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         Events event = events.get(position);
-        holder.textNameEvent.setText(event.nameEvent);
-        holder.textTypeEvent.setText(event.typeEvent);
-        holder.imageDot.setImageDrawable(typeEvent.getDrawable(mContext, event.typeEvent));
+        holder.textNameEvent.setText(event.getNameEvent());
+        holder.textTypeEvent.setText(event.getTypeEvent());
+        holder.imageDot.setImageDrawable(typeEvent.getDrawable(mContext, event.getTypeEvent()));
         //holder.textAddressEvent.setText(event.addressEvent);
         //holder.imageEvent.setImageURI(Uri.parse(event.photoEvent));
         //Picasso.with(mContext).load(event.photoEvent).into(imageView);
         //Log.d(TAG, "event.nameEvent: " + event.nameEvent);
-        holder.loadImage(Uri.parse(event.photoEvent));
+        holder.loadImage(event.getPhotoEvent());
         setAnimation(holder.llBookMark, position);
 
     }

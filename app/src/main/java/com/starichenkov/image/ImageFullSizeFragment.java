@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
 import com.starichenkov.eventmap.R;
 
 public class ImageFullSizeFragment extends Fragment {
@@ -26,8 +27,10 @@ public class ImageFullSizeFragment extends Fragment {
 
     }
 
-    public void setImage(Uri uri){
-        imageViewFullScreen.setImageURI(uri);
+    public void setImage(String url){
+
+        //imageViewFullScreen.setImageURI(uri);
+        Picasso.get().load(url).placeholder(R.drawable.event_map_logo).error(R.drawable.event_map_logo).into(imageViewFullScreen);
     }
 
 }

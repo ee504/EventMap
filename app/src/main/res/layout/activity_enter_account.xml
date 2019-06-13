@@ -41,6 +41,8 @@
             android:layout_margin="20dp"
             android:ems="10"
             android:padding="10dp"
+            android:lines="1"
+            android:inputType="textCapSentences"
             android:background="@drawable/rounded_button_white"
             android:hint="Почта:"/>
 
@@ -53,6 +55,7 @@
             android:padding="10dp"
             android:background="@drawable/rounded_button_white"
             android:inputType="textPassword"
+            android:lines="1"
             android:hint="Пароль:"/>
 
         <Button

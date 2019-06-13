@@ -13,16 +13,16 @@ import io.reactivex.Single;
 @Dao
 public interface BookMarksDao {
 
-    @Insert
+    /*@Insert
     void insert(BookMarks bookMarks);
 
     @Delete
     void delete(BookMarks bookMarks);
 
     @Query("SELECT * FROM BookMarks WHERE idOrganizer = :idOrganizer")
-    Single<List<BookMarks>> getAll(long idOrganizer);
+    Single<List<BookMarks>> getAll(String idOrganizer);
 
     @Query("DELETE FROM BookMarks WHERE idOrganizer = :idClient AND idEvent = :idEvent")
-    void deleteBookMark(long idClient, long idEvent);
+    void deleteBookMark(String idClient, long idEvent);*/
 
 }

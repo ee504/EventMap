@@ -74,7 +74,7 @@
             android:ems="10"
             android:padding="10dp"
             android:lines="1"
-            android:inputType="textCapWords"
+            android:inputType="textCapSentences"
             android:background="@drawable/rounded_button_white"
             android:hint="Наименование мероприятия:"/>
 
@@ -86,7 +86,7 @@
             android:ems="10"
             android:padding="30dp"
             android:lines="3"
-            android:inputType="textCapWords"
+            android:inputType="textCapSentences"
             android:background="@drawable/rounded_button_white"
             android:hint="Описание мероприятия:"/>
 

@@ -33,12 +33,12 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
         Log.d(TAG, "ID: " + new AccountAuthorization().getIdUser());
         Log.d(TAG, "--- Rows in mytable: ---");
 
-        AppDataBase db = App.getInstance().getDatabase();
+        //AppDataBase db = App.getInstance().getDatabase();
 
         boolean test = new AccountAuthorization().checkAuthorization();
         Log.d(TAG, "authorized = " + test);
 
-        db.usersDao().getAll()
+        /*db.usersDao().getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<List<Users>>() {
@@ -47,8 +47,7 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
                         Log.d(TAG, "onSuccess");
                         for(Users user: users){
                             Log.d(TAG,
-                                    "ID = " + user.getId() +
-                                            ", fio = " + user.getFio() +
+                                    "fio = " + user.getFio() +
                                             ", email = " + user.getMail() +
                                             ", password = " + user.getPassword());
                         }
@@ -60,7 +59,7 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
                         Log.d(TAG, "Some error");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
 
     }
 
@@ -84,6 +83,10 @@ public class UsersDataActivity extends AppCompatActivity implements IView {
 
     @Override
     public void detachView(){
+    }
+
+    @Override
+    public void startMainActivity(){
     }
 
 }

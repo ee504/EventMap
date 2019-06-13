@@ -23,11 +23,11 @@ public class AccountAuthorization {
 
     }
 
-    public void saveAuthorization(int idUser){
+    public void saveAuthorization(String idUser){
 
         //this.idUser = idUser;
         Editor ed = sPref.edit();
-        ed.putInt(namePreference, idUser);
+        ed.putString(namePreference, idUser);
         ed.commit();
 
     }
@@ -35,14 +35,14 @@ public class AccountAuthorization {
     public void deleteAuthorization(){
 
         Editor ed = sPref.edit();
-        ed.putInt(namePreference, 0);
+        ed.putString(namePreference, "0");
         ed.commit();
 
     }
 
     public boolean checkAuthorization(){
 
-        if (sPref.getInt(namePreference, 0) != 0){
+        if (sPref.getString(namePreference, "0") != "0"){
             return true;
         }else{
             return false;
@@ -50,8 +50,8 @@ public class AccountAuthorization {
 
     }
 
-    public int getIdUser(){
-        return sPref.getInt(namePreference, 0);
+    public String getIdUser(){
+        return sPref.getString(namePreference, "0");
     }
 
 

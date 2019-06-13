@@ -1,14 +1,14 @@
-package com.starichenkov.RoomDB;
+package com.starichenkov.FireBase;
 
-public class Users {
+public class User {
 
-    public Users(String fio, String mail, String password){
+    public User(String fio, String mail, String password){
         this.fio = fio;
         this.mail = mail;
         this.password = password;
     }
 
-    public Users(){
+    public User(){
 
     }
 

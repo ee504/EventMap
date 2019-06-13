@@ -1,9 +1,10 @@
 package com.starichenkov.Model;
 
-import android.location.Address;
-
+import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
+
+import java.util.List;
 
 public interface IModel {
 
@@ -18,13 +19,13 @@ public interface IModel {
 
     void getAllEvents();
 
-    void createBookMark(long idOrganizer, long id);
+    void createBookMark(BookMarks bookMark);
 
-    void deleteBookMark(long idClient, long id);
+    void deleteBookMark(BookMarks bookMark);
 
     void getAllBookmarks();
 
-    void getEventsFromBookmarks();
+    void getEventsFromBookmarks(List<BookMarks> bookMarks);
 
     void deleteAllEvents();
 
@@ -34,11 +35,13 @@ public interface IModel {
 
     void getCurrentUser();
 
-    void getEventById(long idEvent);
+    void getEventById(String idEvent);
 
     void deleteEventById(long id);
 
     void updateEvent(Events event);
 
     void deleteEvent(Events event);
+
+    void deletePhoto(String photoEvent);
 }

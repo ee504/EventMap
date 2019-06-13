@@ -1,10 +1,21 @@
 package com.starichenkov.Model;
 
-import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.starichenkov.RoomDB.App;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.starichenkov.RoomDB.AppDataBase;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.BookMarksDao;
@@ -14,21 +25,10 @@ import com.starichenkov.RoomDB.Users;
 import com.starichenkov.RoomDB.UsersDao;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.presenter.IPresenter;
-import com.starichenkov.view.IView;
-import com.starichenkov.presenter.Presenter;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Completable;
-import io.reactivex.CompletableObserver;
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.observers.DisposableCompletableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
 
 public class Model implements IModel {
 
@@ -41,24 +41,41 @@ public class Model implements IModel {
     private IPresenter presenter;
     private AccountAuthorization accountAuthorization;
 
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private DatabaseReference userRef;
+    private DatabaseReference eventRef;
+    private DatabaseReference bookMarkRef;
+
+    private StorageReference mStorageRef;
+
     public Model(IPresenter presenter) {
 
-        db = App.getInstance().getDatabase();
-        userDao = db.usersDao();
-        eventsDao = db.eventsDao();
-        bookMarksDao = db.bookMarksDao();
+        //db = App.getInstance().getDatabase();
+        //userDao = db.usersDao();
+        //eventsDao = db.eventsDao();
+        //bookMarksDao = db.bookMarksDao();
         accountAuthorization = new AccountAuthorization();
         this.presenter = presenter;
         //this.iView = iView;
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        userRef = myRef.child("users");
+        eventRef = myRef.child("events");
+        bookMarkRef = myRef.child("bookmarks");
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("photo");
     }
 
 
     @Override
     public void createUser(final String fio, final String mail, final String password) {
 
+        userRef.push().setValue(new Users(fio, mail, password));
+
         //userDao.insert(new Users(fio, mail, password))
-        Completable.fromAction(new Action() {
+        /*Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
                 userDao.insert(new Users(fio, mail, password));
@@ -84,15 +101,17 @@ public class Model implements IModel {
                         Log.d(TAG, "onError");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
 
     }
 
     @Override
     public void updateUser(final Users user) {
 
+        userRef.child(accountAuthorization.getIdUser()).setValue(user);
+
         //userDao.insert(new Users(fio, mail, password))
-        Completable.fromAction(new Action() {
+        /*Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
                 userDao.update(user);
@@ -112,16 +131,39 @@ public class Model implements IModel {
                         Log.d(TAG, "updateUser() onError");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
 
     }
 
     @Override
-    public void findUser(String mail, String password) {
+    public void findUser(final String mail, final String password) {
+
+        Log.d(TAG, "Model findUser");
+
+        userRef.orderByChild("mail").equalTo(mail).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot dat : dataSnapshot.getChildren()) {
+                    if(dat.getValue(Users.class).getPassword().equals(password)){
+                        Log.d(TAG, "Авторизован");
+                        accountAuthorization.saveAuthorization(dat.getKey());
+                        presenter.startMainActivity();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
+            }
+        });
+
 
         //final AccountAuthorization accountAuthorization = new AccountAuthorization();
 
-        userDao.getId(mail, password)
+        /*userDao.getId(mail, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<Integer>() {
@@ -139,45 +181,98 @@ public class Model implements IModel {
                         Log.d(TAG, e.getMessage());
 
                     }
-                });
+                });*/
+
+    }
+
+    @Override
+    public void getCurrentUser(){
+
+        Log.e(TAG, "Model getCurrentUser()");
+
+        userRef.orderByKey().equalTo(accountAuthorization.getIdUser()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot dat : dataSnapshot.getChildren()) {
+                    //Log.e(TAG, "Model dataSnapshot: " + dat);
+                    Users user = dat.getValue(Users.class);
+                    //Log.e(TAG, "Model user.getFio(): " + user.getFio());
+                    //Log.e(TAG, "Model user.getMail(): " + user.getMail());
+                    presenter.sendUser(dat.getValue(Users.class));
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
+            }
+        });
+
 
     }
 
     @Override
     public void createEvent(final Events event){
-        Completable.fromAction(new Action() {
+
+        Log.e(TAG, "Model createEvent()");
+
+        final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+                + "." + "jpg");
+
+        fileReference.putFile(Uri.parse(event.getPhotoEvent())).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
-            public void run() throws Exception {
-                eventsDao.insert(new Events(event));
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return fileReference.getDownloadUrl();
             }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        // just like with a Single
-                        Log.d(TAG, "createEvent onSubscribe");
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+
+                    new File(Uri.parse(event.getPhotoEvent()).getPath()).delete();
+                    event.setPhotoEvent(downloadUri.toString());
+
+                    if(event.getId()!=null){
+                        eventRef.child(event.getId()).setValue(event);
+                    }else {
+                        DatabaseReference pushedEventRef = eventRef.push();
+                        event.setId(pushedEventRef.getKey().toString());
+                        pushedEventRef.setValue(event);
                     }
 
-                    @Override
-                    public void onComplete() {
-                        // action was completed successfully
-                        Log.d(TAG, "createEvent onComplete");
-                    }
+                    //getAllEvents();
+                    presenter.startMainActivity();
 
-                    @Override
-                    public void onError(Throwable e) {
-                        // something went wrong
-                        Log.d(TAG, "createEvent onError");
-                        Log.d(TAG, e.getMessage());
-                    }
-                });
+                } else {
+                    Log.d(TAG, "task.getException().getMessage(): " + task.getException().getMessage());
+                    //Toast.makeText(MainActivity.this, "upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void deletePhoto(String photoEvent){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference photoRef = storage.getReferenceFromUrl(photoEvent);
+        photoRef.delete();
     }
 
     @Override
     public void updateEvent(final Events event){
 
-        Completable.fromAction(new Action() {
+        Log.e(TAG, "Model updateEvent()");
+
+        createEvent(event);
+
+        /*Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
                 eventsDao.update(event);
@@ -197,14 +292,34 @@ public class Model implements IModel {
                         Log.d(TAG, "updateEvent() onError");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
 
     }
 
     @Override
     public void getAllEvents(){
+
         Log.e(TAG, "Model getAllEvents()");
-        eventsDao.getAll()
+
+        eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Events> listEvents = new ArrayList<Events>();
+                for(DataSnapshot dat : dataSnapshot.getChildren()) {
+                    listEvents.add(dat.getValue(Events.class));
+
+                }
+                presenter.sendEvents(listEvents);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
+            }
+        });
+
+        /*eventsDao.getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Events>>() {
@@ -223,112 +338,51 @@ public class Model implements IModel {
                         Log.d(TAG, "Some error");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
     }
 
     @Override
-    public void createBookMark(final long idOrganizer, final long id){
+    public void createBookMark(final BookMarks bookMark){
 
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                bookMarksDao.insert(new BookMarks(idOrganizer, id));
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        // just like with a Single
-                        Log.d(TAG, "createBookMark() onSubscribe");
-                    }
+        DatabaseReference pushedBookMarkRef = bookMarkRef.push();
+        bookMark.setId(pushedBookMarkRef.getKey().toString());
+        pushedBookMarkRef.setValue(bookMark);
 
-                    @Override
-                    public void onComplete() {
-                        // action was completed successfully
-                        Log.d(TAG, "createBookMark() onComplete");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // something went wrong
-                        Log.d(TAG, "createBookMark() onError");
-                        Log.d(TAG, e.getMessage());
-                    }
-                });
 
     }
 
-    /*@Override
-    public void deleteBookMark(final long idClient, final long id){
-        Log.d(TAG, "deleteBookMark(): idClient="+ idClient+" idEvent=" + id);
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                bookMarksDao.delete(new BookMarks(idClient, id));
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        // just like with a Single
-                        Log.d(TAG, "deleteBookMark() onSubscribe");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        // action was completed successfully
-                        Log.d(TAG, "deleteBookMark() onComplete");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // something went wrong
-                        Log.d(TAG, "deleteBookMark() onError");
-                        Log.d(TAG, e.getMessage());
-                    }
-                });
-
-    }*/
-
     @Override
-    public void deleteBookMark(final long idClient, final long id){
-        Log.d(TAG, "deleteBookMark(): idClient="+ idClient+" idEvent=" + id);
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                bookMarksDao.deleteBookMark(idClient, id);
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        // just like with a Single
-                        Log.d(TAG, "deleteBookMark() onSubscribe");
-                    }
+    public void deleteBookMark(final BookMarks bookMark){
 
-                    @Override
-                    public void onComplete() {
-                        // action was completed successfully
-                        Log.d(TAG, "deleteBookMark() onComplete");
-                    }
+        Log.d(TAG, "Model deleteBookMark()");
 
-                    @Override
-                    public void onError(Throwable e) {
-                        // something went wrong
-                        Log.d(TAG, "deleteBookMark() onError");
-                        Log.d(TAG, e.getMessage());
-                    }
-                });
+        bookMarkRef.child(bookMark.getId()).removeValue();
 
     }
 
     @Override
     public void getAllBookmarks(){
 
-        bookMarksDao.getAll(new AccountAuthorization().getIdUser())
+        Log.e(TAG, "Model getAllBookmarks()");
+
+        bookMarkRef.orderByChild("idOrganizer").equalTo(accountAuthorization.getIdUser()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<BookMarks> listBookMarks = new ArrayList<BookMarks>();
+                for(DataSnapshot dat : dataSnapshot.getChildren()) {
+                    listBookMarks.add(dat.getValue(BookMarks.class));
+                }
+                presenter.sendBookMarks(listBookMarks);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
+            }
+        });
+
+        /*bookMarksDao.getAll(new AccountAuthorization().getIdUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<BookMarks>>() {
@@ -348,13 +402,34 @@ public class Model implements IModel {
                         Log.d(TAG, "Model getAllBookmarks() Some error");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
     }
 
     @Override
-    public void getEventsFromBookmarks(){
+    public void getEventsFromBookmarks(List<BookMarks> bookMarks){
+
         Log.e(TAG, "Model getEventsFromBookmarks()");
-        //eventsDao.getEventsFromBookmarks(new AccountAuthorization().getIdUser())
+
+        /*final List<Events> listEvents = new ArrayList<Events>();
+        for(BookMarks bm : bookMarks){
+
+            eventRef.orderByChild("id").equalTo(bm.getIdEvent()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    listEvents.add(dataSnapshot.getChildren().iterator().next().getValue(Events.class));
+                    //presenter.sendBookMarks(listBookMarks);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
+                }
+            });
+
+        }*/
+
+        /*//eventsDao.getEventsFromBookmarks(new AccountAuthorization().getIdUser())
         eventsDao.getEventsFromBookmarks(accountAuthorization.getIdUser())
         //eventsDao.getEventsFromBookmarks(new AccountAuthorization().getIdUser())
                 .subscribeOn(Schedulers.io())
@@ -375,13 +450,13 @@ public class Model implements IModel {
                         Log.d(TAG, "Some error");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
     }
 
     @Override
     public void deleteAllEvents(){
 
-        Completable.fromAction(new Action() {
+        /*Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
                 eventsDao.deleteAllEvents();
@@ -407,7 +482,7 @@ public class Model implements IModel {
                         Log.d(TAG, "deleteBookMark() onError");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
     }
 
     @Override
@@ -420,6 +495,25 @@ public class Model implements IModel {
     public void getUserEvents(){
 
         Log.e(TAG, "Model getUserEvents()");
+
+        eventRef.orderByChild("idOrganizer").equalTo(accountAuthorization.getIdUser()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Events> listEvents = new ArrayList<Events>();
+                for(DataSnapshot dat : dataSnapshot.getChildren()) {
+                    listEvents.add(dat.getValue(Events.class));
+                }
+                presenter.sendEvents(listEvents);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
+            }
+        });
+
+        /*Log.e(TAG, "Model getUserEvents()");
         //eventsDao.getUserEvents(new AccountAuthorization().getIdUser())
         eventsDao.getUserEvents(accountAuthorization.getIdUser())
                 .subscribeOn(Schedulers.io())
@@ -440,39 +534,34 @@ public class Model implements IModel {
                         Log.d(TAG, "getUserEvents Some error");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
 
     }
 
     @Override
-    public void getCurrentUser(){
-
-        Log.e(TAG, "Model getCurrentUser()");
-
-        userDao.getById(accountAuthorization.getIdUser())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<Users>() {
-                    @Override
-                    public void onSuccess(Users user) {
-                        Log.d(TAG, "onSuccess");
-                        presenter.sendUser(user);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "Some error");
-                        Log.d(TAG, e.getMessage());
-
-                    }
-                });
-
-    }
-
-    @Override
-    public void getEventById(long idEvent){
+    public void getEventById(String idEvent){
 
         Log.e(TAG, "Model getEventById()");
+
+        eventRef.orderByKey().equalTo(idEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Events> listEvents = new ArrayList<Events>();
+                for(DataSnapshot dat : dataSnapshot.getChildren()) {
+                    listEvents.add(dat.getValue(Events.class));
+                }
+                presenter.sendEvents(listEvents);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
+            }
+        });
+
+        /*Log.e(TAG, "Model getEventById()");
         //eventsDao.getUserEvents(new AccountAuthorization().getIdUser())
         eventsDao.getEventById(idEvent)
                 .subscribeOn(Schedulers.io())
@@ -493,14 +582,14 @@ public class Model implements IModel {
                         Log.d(TAG, "getUserEvents Some error");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
 
     }
 
     @Override
     public void deleteEventById(final long id){
 
-        Completable.fromAction(new Action() {
+        /*Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
                 eventsDao.deleteEventById(id);
@@ -528,13 +617,25 @@ public class Model implements IModel {
                         Log.d(TAG, "deleteEventById() onError");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
     }
 
     @Override
     public void deleteEvent(final Events event){
 
-        new File(Uri.parse(event.photoEvent).getPath()).delete();
+        Log.d(TAG, "Model deleteEvent()");
+
+        if(event.getPhotoEvent() != null) {
+            deletePhoto(event.getPhotoEvent());
+        }
+        eventRef.child(event.getId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>(){
+            @Override
+            public void onSuccess(Void mVoid) {
+                presenter.startMainActivity();
+            }
+        });
+        presenter.startMainActivity();
+        /*new File(Uri.parse(event.photoEvent).getPath()).delete();
         new File(Uri.parse(event.photoEventFullSize).getPath()).delete();
 
         Completable.fromAction(new Action() {
@@ -557,7 +658,7 @@ public class Model implements IModel {
                         Log.d(TAG, "deleteEvent() onError");
                         Log.d(TAG, e.getMessage());
                     }
-                });
+                });*/
 
     }
 }

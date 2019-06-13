@@ -20,10 +20,10 @@ public interface EventsDao {
     void insert(Events events);
 
     @Query("SELECT Events.* FROM Events INNER JOIN BookMarks ON BookMarks.idEvent = Events.id WHERE BookMarks.idOrganizer = :idOrganizer ORDER BY Events.nameEvent")
-    Single<List<Events>> getEventsFromBookmarks(long idOrganizer);
+    Single<List<Events>> getEventsFromBookmarks(String idOrganizer);
 
     @Query("SELECT Events.* FROM Events WHERE idOrganizer = :idOrganizer")
-    Single<List<Events>> getUserEvents(long idOrganizer);
+    Single<List<Events>> getUserEvents(String idOrganizer);
 
     @Query("SELECT Events.* FROM Events WHERE id = :id")
     Single<List<Events>> getEventById(long id);

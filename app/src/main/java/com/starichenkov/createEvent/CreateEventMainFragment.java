@@ -29,8 +29,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.squareup.picasso.Picasso;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.account.AccountAuthorization;
+import com.starichenkov.account.LoadScreenActivity;
 import com.starichenkov.eventmap.BuildConfig;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.image.ChangeImage;
@@ -68,10 +70,10 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     private Calendar dateAndTime= Calendar.getInstance();
 
     private Uri photoUriMain;
-    private Uri photoURI;
-    private Uri photoURIFullSize;
+    private String photoURI;
+    //private Uri photoURIFullSize;
     private Uri newPhotoURI;
-    private Uri newPhotoURIFullSize;
+    //private Uri newPhotoURIFullSize;
 
     //private Bitmap bitmapPhoto;
     private String nameEvent;
@@ -87,6 +89,8 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     private CreateImageFile createImageFile;
 
     private CallBackInterfaceCreateEvent mListener;
+
+    private Events currentEvent = new Events();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,7 +109,8 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             imageView.setImageResource(R.drawable.event_map_logo);
         }else{
             //imageView.setImageBitmap(bitmapPhoto);
-            imageView.setImageURI(photoURI);
+            //imageView.setImageURI(photoURI);
+            Picasso.get().load(photoURI).placeholder(R.drawable.event_map_logo).error(R.drawable.event_map_logo).into(imageView);
         }
 
         textViewCreateEvent = (TextView) view.findViewById(R.id.textViewCreateEvent);
@@ -181,19 +186,25 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                 Log.d(TAG, "Click buttonCreateEvent");
                 Log.d(TAG, "Создать мероприятие");
                 if(newPhotoURI != null){
-                    if(photoURI != null){
-                        new File(photoURI.getPath()).delete();
-                        photoURI = newPhotoURI;
+                    if(currentEvent.getPhotoEvent()!=null){
 
-                        new File(photoURIFullSize.getPath()).delete();
-                        photoURIFullSize = newPhotoURIFullSize;
+                        mListener.deletePhoto(currentEvent.getPhotoEvent());
+                        currentEvent.setPhotoEvent(null);
+                        photoURI = newPhotoURI.toString();
+
+                    }else if(photoURI != null){
+                        new File(Uri.parse(photoURI).getPath()).delete();
+                        photoURI = newPhotoURI.toString();
+
+                        //new File(photoURIFullSize.getPath()).delete();
+                        //photoURIFullSize = newPhotoURIFullSize;
 
                     }else{
-                        photoURI = newPhotoURI;
-                        photoURIFullSize = newPhotoURIFullSize;
+                        photoURI = newPhotoURI.toString();
+                        //photoURIFullSize = newPhotoURIFullSize;
                     }
                 }
-                mListener.createEvent(new Events(new AccountAuthorization().getIdUser(), photoURI.toString(), photoURIFullSize.toString(), editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
+                mListener.createEvent(new Events(new AccountAuthorization().getIdUser(), photoURI, "", editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
                         dateEvent, spinnerTypeEvent.getSelectedItem().toString(), editAddressEvent.getText().toString(), latLngEvent.latitude, latLngEvent.longitude));
                 Log.d(TAG, "Список переменных");
                 Log.d(TAG,
@@ -206,8 +217,10 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                                 ", latitude = " + latLngEvent.latitude +
                                 ", longitude = " + latLngEvent.longitude);
                 createEvent = true;
-                Intent intent = new Intent(getActivity(), MainMapActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(getActivity(), MainMapActivity.class);
+                //startActivity(intent);
+                Intent intentLoadScreenActivity = new Intent(getActivity(), LoadScreenActivity.class);
+                startActivity(intentLoadScreenActivity);
                 break;
 
             case R.id.buttonTakePhoto:
@@ -218,11 +231,14 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             case R.id.buttonDeletePhoto:
                 Log.d(TAG, "Click buttonDeletePhoto");
                 imageView.setImageResource(R.drawable.event_map_logo);
-                //getActivity().getContentResolver().delete(photoURI, null, null);
-                //getActivity().getContentResolver().delete(photoURIFullSize, null, null);
-                if(newPhotoURI != null) {
+                if(currentEvent.getPhotoEvent()!=null){
+
+                    mListener.deletePhoto(currentEvent.getPhotoEvent());
+                    currentEvent.setPhotoEvent(null);
+
+                }else if(newPhotoURI != null) {
                     new File(newPhotoURI.getPath()).delete();
-                    new File(newPhotoURIFullSize.getPath()).delete();
+                    //new File(newPhotoURIFullSize.getPath()).delete();
                 }
                 break;
 
@@ -355,9 +371,14 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Log.d(TAG, "intent is not null");
             Log.d(TAG, "photoUriMain: " + photoUriMain);
+
+            if(newPhotoURI != null) {
+                new File(newPhotoURI.getPath()).delete();
+            }
+
             ChangeImage image = new ChangeImage(getContext(), photoUriMain);
 
-            newPhotoURIFullSize = image.getImage1920x1080();
+            //newPhotoURIFullSize = image.getImage1920x1080();
             newPhotoURI = image.getImage300x300();
 
             //bitmapPhoto = image.getBitmapPhoto();
@@ -382,7 +403,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         super.onDestroy();
         if(createEvent == false && newPhotoURI != null){
                 new File(newPhotoURI.getPath()).delete();
-                new File(newPhotoURIFullSize.getPath()).delete();
+                //new File(newPhotoURIFullSize.getPath()).delete();
                 //getActivity().getContentResolver().delete(photoURI, null, null);
                 //getActivity().getContentResolver().delete(photoURIFullSize, null, null);
         }
@@ -390,19 +411,23 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
     public void sentEvent(Events event) {
 
+        this.currentEvent = event;
+
         Log.d(TAG, "CreateEventMainFragment sentEvent");
-        latLngEvent = new LatLng(event.latitude, event.longitude);
-        photoURI = Uri.parse(event.photoEvent);
-        photoURIFullSize = Uri.parse(event.photoEventFullSize);
-        dateEvent = event.dateEvent;
+        latLngEvent = new LatLng(event.getLatitude(), event.getLongitude());
+        photoURI = event.getPhotoEvent();
+        //photoURIFullSize = Uri.parse(event.getPhotoEventFullSize());
+        dateEvent = event.getDateEvent();
 
         textViewCreateEvent.setText("Редактирование мероприятия");
-        imageView.setImageURI(photoURI);
-        editNameEvent.setText(event.nameEvent);
-        editDescriptionEvent.setText(event.descriptionEvent);
-        editDateEvent.setText(event.dateEvent);
-        spinnerTypeEvent.setSelection(adapter.getPosition(event.typeEvent));
-        editAddressEvent.setText(event.addressEvent);
+
+        //imageView.setImageURI(photoURI);
+        Picasso.get().load(photoURI).placeholder(R.drawable.event_map_logo).error(R.drawable.event_map_logo).into(imageView);
+        editNameEvent.setText(event.getNameEvent());
+        editDescriptionEvent.setText(event.getDescriptionEvent());
+        editDateEvent.setText(event.getDateEvent());
+        spinnerTypeEvent.setSelection(adapter.getPosition(event.getTypeEvent()));
+        editAddressEvent.setText(event.getAddressEvent());
         buttonCreateEvent.setText("Изменить мероприятие");
 
     }

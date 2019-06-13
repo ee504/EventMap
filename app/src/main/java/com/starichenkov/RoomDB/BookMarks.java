@@ -7,20 +7,44 @@ import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(foreignKeys = {@ForeignKey(onDelete = CASCADE, entity = Users.class, parentColumns = "id", childColumns = "idOrganizer"),
-            @ForeignKey(onDelete = CASCADE, entity = Events.class, parentColumns = "id", childColumns = "idEvent")},
-            indices = {@Index("idEvent"), @Index("idOrganizer")})
 public class BookMarks {
 
-    @PrimaryKey(autoGenerate = true)
-    public long id;
+    public String getId() {
+        return id;
+    }
 
-    public long idOrganizer;
+    public String getIdOrganizer() {
+        return idOrganizer;
+    }
 
-    public long idEvent;
+    public String getIdEvent() {
+        return idEvent;
+    }
 
-    public BookMarks(long idOrganizer, long idEvent){
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setIdOrganizer(String idOrganizer) {
+        this.idOrganizer = idOrganizer;
+    }
+
+    public void setIdEvent(String idEvent) {
+        this.idEvent = idEvent;
+    }
+
+    private String id;
+
+    private String idOrganizer;
+
+    private String idEvent;
+
+    public BookMarks(String idOrganizer, String idEvent){
         this.idOrganizer = idOrganizer;
         this.idEvent = idEvent;
     }
+
+    public BookMarks(){
+    }
+
 }

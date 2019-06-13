@@ -16,6 +16,7 @@ import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
 import com.starichenkov.createEvent.CreateEventActivity;
+import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;
@@ -50,8 +51,8 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
         fTrans.add(R.id.frgmCreateEvent, accountFragment)
                 .show(accountFragment)
                 .commit();
-        getSupportFragmentManager().popBackStackImmediate();
-
+        //getSupportFragmentManager().popBackStackImmediate();
+        getSupportFragmentManager().executePendingTransactions();
         presenter = new Presenter(this);
     }
 
@@ -100,10 +101,10 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
 
     @Override
     public void onEditClick(int position) {
-        Log.d(TAG, "onEditClick(): " + events.get(position).nameEvent);
+        Log.d(TAG, "onEditClick(): " + events.get(position).getNameEvent());
 
         Intent intent = new Intent(this, CreateEventActivity.class);
-        intent.putExtra("idEvent", events.get(position).id);
+        intent.putExtra("idEvent", events.get(position).getId());
         this.startActivity(intent);
     }
 
@@ -113,9 +114,11 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
         AccountFragment accountFragment = (AccountFragment)
                 getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
         accountFragment.onEditClick(position);*/
-        Log.d(TAG, "onDeleteClick(): " + events.get(position).nameEvent);
+        Log.d(TAG, "onDeleteClick(): " + events.get(position).getNameEvent());
         //presenter.deleteEventById(events.get(position).id);
         presenter.deleteEvent(events.get(position));
+        Intent intentLoadScreenActivity = new Intent(this, LoadScreenActivity.class);
+        startActivity(intentLoadScreenActivity);
     }
 
     @Override
@@ -136,6 +139,12 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
     @Override
     public void detachView(){
         presenter.detachView();
+    }
+
+    @Override
+    public void startMainActivity(){
+        Intent intentMainMapActivity = new Intent(this, MainMapActivity.class);
+        startActivity(intentMainMapActivity);
     }
 
     @Override

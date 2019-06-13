@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import com.starichenkov.RoomDB.BookMarks;
 import com.starichenkov.RoomDB.Events;
 import com.starichenkov.RoomDB.Users;
+import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.view.IView;
 import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
@@ -64,7 +65,7 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
                         "name = " + editFIO.getText().toString() +
                                 ", email = " + editMail.getText().toString() +
                                 ", passwordColIndex = " + editPassword.getText().toString());
-                Intent intent = new Intent(this, MapFragment.class);
+                Intent intent = new Intent(this, MainMapActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -82,6 +83,9 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
     public void sendUser(Users user){
     }
 
+    @Override
+    public void startMainActivity(){
+    }
 
     @Override
     public void detachView(){

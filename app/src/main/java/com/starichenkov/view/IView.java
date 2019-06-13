@@ -15,4 +15,6 @@ public interface IView {
     void detachView();
 
     void sendUser(Users user);
+
+    void startMainActivity();
 }
