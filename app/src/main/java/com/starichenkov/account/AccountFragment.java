@@ -12,16 +12,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
-import com.starichenkov.eventmap.CallBackInterfaceMap;
+import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.MainMapActivity;
-import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
 
 import java.util.List;

@@ -30,11 +30,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
-import com.starichenkov.RoomDB.Events;
+import com.starichenkov.data.Events;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.account.LoadScreenActivity;
 import com.starichenkov.eventmap.BuildConfig;
-import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.image.ChangeImage;
 import com.starichenkov.image.CreateImageFile;
 import com.starichenkov.eventmap.R;

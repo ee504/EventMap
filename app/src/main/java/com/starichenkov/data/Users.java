@@ -1,14 +1,14 @@
-package com.starichenkov.FireBase;
+package com.starichenkov.data;
 
-public class User {
+public class Users {
 
-    public User(String fio, String mail, String password){
+    public Users(String fio, String mail, String password){
         this.fio = fio;
         this.mail = mail;
         this.password = password;
     }
 
-    public User(){
+    public Users(){
 
     }
 
@@ -37,6 +37,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
     private String fio;
 

@@ -1,14 +1,5 @@
-package com.starichenkov.RoomDB;
+package com.starichenkov.data;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
-
-import java.util.Calendar;
-
-@Entity(
-        indices = {@Index("nameEvent"), @Index("idOrganizer")})
 public class Events {
 
     public String getIdOrganizer() {
@@ -17,10 +8,6 @@ public class Events {
 
     public String getPhotoEvent() {
         return photoEvent;
-    }
-
-    public String getPhotoEventFullSize() {
-        return photoEventFullSize;
     }
 
     public String getNameEvent() {
@@ -57,10 +44,6 @@ public class Events {
 
     public void setPhotoEvent(String photoEvent) {
         this.photoEvent = photoEvent;
-    }
-
-    public void setPhotoEventFullSize(String photoEventFullSize) {
-        this.photoEventFullSize = photoEventFullSize;
     }
 
     public void setNameEvent(String nameEvent) {
@@ -104,7 +87,6 @@ public class Events {
     private String idOrganizer;
 
     private String photoEvent;
-    private String photoEventFullSize;
 
     private String nameEvent;
 
@@ -120,10 +102,9 @@ public class Events {
 
     private double longitude;
 
-    public Events(String idOrganizer, String photoEvent, String photoEventFullSize, String nameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
+    public Events(String idOrganizer, String photoEvent, String nameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
         this.idOrganizer = idOrganizer;
         this.photoEvent = photoEvent;
-        this.photoEventFullSize = photoEventFullSize;
         this.nameEvent = nameEvent;
         this.descriptionEvent = descriptionEvent;
         this.dateEvent = dateEvent;
@@ -136,7 +117,6 @@ public class Events {
     public Events(Events event){
         this.idOrganizer = event.idOrganizer;
         this.photoEvent = event.photoEvent;
-        this.photoEventFullSize = event.photoEventFullSize;
         this.nameEvent = event.nameEvent;
         this.descriptionEvent = event.descriptionEvent;
         this.dateEvent = event.dateEvent;
@@ -148,9 +128,5 @@ public class Events {
 
     public Events(){
 
-    }
-
-    public boolean equals(BookMarks bookMarks) {
-        return (this.getId().equals(bookMarks.getIdEvent()));
     }
 }

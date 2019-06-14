@@ -1,8 +1,8 @@
 package com.starichenkov.view;
 
-import com.starichenkov.RoomDB.BookMarks;
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
+import com.starichenkov.data.BookMarks;
+import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 
 import java.util.List;
 

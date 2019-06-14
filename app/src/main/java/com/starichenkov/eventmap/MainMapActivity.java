@@ -1,21 +1,16 @@
 package com.starichenkov.eventmap;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.starichenkov.BookMarksListView.BookMarksListAdapter;
-import com.starichenkov.RoomDB.BookMarks;
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
-import com.starichenkov.account.AccountAuthorization;
+import com.starichenkov.bookMarksListView.BookMarksListAdapter;
+import com.starichenkov.data.BookMarks;
+import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 import com.starichenkov.image.ImageFullSizeFragment;
 import com.starichenkov.presenter.Presenter;
 import com.starichenkov.view.IView;

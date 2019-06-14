@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -30,12 +29,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Gravity;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -43,18 +40,15 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
-import com.starichenkov.RoomDB.BookMarks;
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
+import com.starichenkov.data.BookMarks;
+import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 import com.starichenkov.account.AccountActivity;
 import com.starichenkov.account.EnterAccountActivity;
 import com.starichenkov.account.RegistrationActivity;
 import com.starichenkov.createEvent.CreateEventActivity;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.createEvent.TypeEvent;
-import com.starichenkov.presenter.Presenter;
-import com.starichenkov.view.CallBackFromDB;
-import com.starichenkov.view.IView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -268,7 +262,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
             case R.id.imageEvent:
                 Log.d(TAG, "Click imageEvent");
-                mListener.openImageFullScreen(currentEvent.getPhotoEventFullSize());
+                //mListener.openImageFullScreen(currentEvent.getPhotoEventFullSize());
                 break;
 
             case R.id.btnUsersData:

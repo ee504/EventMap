@@ -2,14 +2,14 @@ package com.starichenkov.presenter;
 
 import android.util.Log;
 
-import com.starichenkov.RoomDB.BookMarks;
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
+import com.starichenkov.data.BookMarks;
+import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.view.IView;
 
-import com.starichenkov.Model.IModel;
-import com.starichenkov.Model.Model;
+import com.starichenkov.model.IModel;
+import com.starichenkov.model.Model;
 
 import java.util.List;
 

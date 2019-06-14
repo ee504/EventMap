@@ -9,12 +9,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.starichenkov.RoomDB.BookMarks;
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
+import com.starichenkov.data.BookMarks;
+import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.view.IView;
-import com.starichenkov.eventmap.MapFragment;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
 import com.starichenkov.presenter.Presenter;

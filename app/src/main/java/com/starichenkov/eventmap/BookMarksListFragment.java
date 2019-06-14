@@ -1,6 +1,5 @@
 package com.starichenkov.eventmap;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,14 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
-import com.starichenkov.BookMarksListView.BookMarksListAdapter;
-import com.starichenkov.RoomDB.BookMarks;
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.presenter.Presenter;
-import com.starichenkov.view.CallBackFromDB;
-import com.starichenkov.view.IView;
+import com.starichenkov.bookMarksListView.BookMarksListAdapter;
+import com.starichenkov.data.Events;
 
 import java.util.List;
 

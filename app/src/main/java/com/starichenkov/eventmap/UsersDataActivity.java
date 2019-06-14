@@ -6,19 +6,14 @@ import android.util.Log;
 //import android.support.v4.app.LoaderManager.LoaderCallbacks;
 
 
-import com.starichenkov.RoomDB.App;
 import com.starichenkov.RoomDB.AppDataBase;
-import com.starichenkov.RoomDB.BookMarks;
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
+import com.starichenkov.data.BookMarks;
+import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.view.IView;
 
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
 
 public class UsersDataActivity extends AppCompatActivity implements IView {
 

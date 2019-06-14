@@ -1,8 +1,6 @@
 package com.starichenkov.eventmap;
 
-import android.net.Uri;
-
-import com.starichenkov.RoomDB.BookMarks;
+import com.starichenkov.data.BookMarks;
 
 public interface CallBackInterfaceMap {
 

@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.starichenkov.RoomDB.Events;
+import com.starichenkov.data.Events;
 
 import java.util.List;
 

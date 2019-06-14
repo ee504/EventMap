@@ -1,6 +1,5 @@
 package com.starichenkov.createEvent;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -12,9 +11,9 @@ import android.util.Log;
 //import com.google.android.gms.location.places.Place;
 //import com.google.android.libraries.places.api;
 import com.google.android.gms.maps.model.LatLng;
-import com.starichenkov.RoomDB.BookMarks;
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
+import com.starichenkov.data.BookMarks;
+import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 import com.starichenkov.account.AccountActivity;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.R;

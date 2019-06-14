@@ -1,4 +1,4 @@
-package com.starichenkov.Model;
+package com.starichenkov.model;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -15,14 +15,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.starichenkov.RoomDB.AppDataBase;
-import com.starichenkov.RoomDB.BookMarks;
-import com.starichenkov.RoomDB.BookMarksDao;
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.EventsDao;
-import com.starichenkov.RoomDB.Users;
-import com.starichenkov.RoomDB.UsersDao;
+import com.google.firebase.storage.UploadTask;import com.starichenkov.data.BookMarks;
+import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.presenter.IPresenter;
 
@@ -32,12 +27,8 @@ import java.util.List;
 
 public class Model implements IModel {
 
-    private AppDataBase db;
-    private UsersDao userDao;
-    private EventsDao eventsDao;
-    private BookMarksDao bookMarksDao;
     private static final String TAG = "MyLog";
-    //private IView iView;
+
     private IPresenter presenter;
     private AccountAuthorization accountAuthorization;
 

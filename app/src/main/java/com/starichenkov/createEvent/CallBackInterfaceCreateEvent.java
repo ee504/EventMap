@@ -3,7 +3,7 @@ package com.starichenkov.createEvent;
 import android.location.Address;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.starichenkov.RoomDB.Events;
+import com.starichenkov.data.Events;
 
 public interface CallBackInterfaceCreateEvent {
 

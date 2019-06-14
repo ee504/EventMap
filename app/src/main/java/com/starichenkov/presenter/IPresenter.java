@@ -1,8 +1,8 @@
 package com.starichenkov.presenter;
 
-import com.starichenkov.RoomDB.BookMarks;
-import com.starichenkov.RoomDB.Events;
-import com.starichenkov.RoomDB.Users;
+import com.starichenkov.data.BookMarks;
+import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 
 import java.util.List;
 
@@ -12,7 +12,6 @@ public interface IPresenter {
 
     boolean findUser(String mail, String password);
 
-    //void createEvent(int idUser, String photoURI, String editNameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude);
     void createEvent(Events event);
 
     void sendEvents(List<Events> events);
