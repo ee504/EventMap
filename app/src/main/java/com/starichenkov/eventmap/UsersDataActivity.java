@@ -6,7 +6,6 @@ import android.util.Log;
 //import android.support.v4.app.LoaderManager.LoaderCallbacks;
 
 
-import com.starichenkov.RoomDB.AppDataBase;
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;

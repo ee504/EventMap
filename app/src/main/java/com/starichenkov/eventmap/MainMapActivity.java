@@ -86,18 +86,18 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
         Log.d(TAG, "OpenPlaceAutocomplete");
         currentFragment = "bookMarksListFragment";
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-        fTrans.add(R.id.frgmCreateEvent, bookMarksListFragment)
-                .addToBackStack(null)
-                .hide(mapFragment)
+        //fTrans.add(R.id.frgmCreateEvent, bookMarksListFragment)
+                //.addToBackStack(null)
+                //.hide(mapFragment)
                 //.show(bookMarksListFragment)
-                .commit();
+                //.commit();
         //fTrans.replace(R.id.frgmCreateEvent, bookMarksListFragment)
                 //.addToBackStack(null)
                 //.commit();
         //presenter.getEventsFromBookmarks();
-        /*fTrans.replace(R.id.frgmCreateEvent, bookMarksListFragment)
+        fTrans.replace(R.id.frgmCreateEvent, bookMarksListFragment)
                 .addToBackStack(null)
-                .commit();*/
+                .commit();
     }
 
     @Override

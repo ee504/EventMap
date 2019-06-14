@@ -203,7 +203,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                         //photoURIFullSize = newPhotoURIFullSize;
                     }
                 }
-                mListener.createEvent(new Events(new AccountAuthorization().getIdUser(), photoURI, "", editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
+                mListener.createEvent(new Events(new AccountAuthorization().getIdUser(), photoURI, editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
                         dateEvent, spinnerTypeEvent.getSelectedItem().toString(), editAddressEvent.getText().toString(), latLngEvent.latitude, latLngEvent.longitude));
                 Log.d(TAG, "Список переменных");
                 Log.d(TAG,
