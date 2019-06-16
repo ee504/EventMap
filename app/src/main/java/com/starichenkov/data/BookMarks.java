@@ -37,6 +37,12 @@ public class BookMarks {
         this.idEvent = idEvent;
     }
 
+    public BookMarks(String id, String idOrganizer, String idEvent){
+        this.id = id;
+        this.idOrganizer = idOrganizer;
+        this.idEvent = idEvent;
+    }
+
     public BookMarks(){
     }
 

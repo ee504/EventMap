@@ -65,35 +65,6 @@ public class Model implements IModel {
 
         userRef.push().setValue(new Users(fio, mail, password));
 
-        //userDao.insert(new Users(fio, mail, password))
-        /*Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                userDao.insert(new Users(fio, mail, password));
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        // just like with a Single
-                        Log.d(TAG, "onSubscribe");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        // action was completed successfully
-                        Log.d(TAG, "onComplete");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // something went wrong
-                        Log.d(TAG, "onError");
-                        Log.d(TAG, e.getMessage());
-                    }
-                });*/
-
     }
 
     @Override
@@ -101,28 +72,6 @@ public class Model implements IModel {
 
         userRef.child(accountAuthorization.getIdUser()).setValue(user);
 
-        //userDao.insert(new Users(fio, mail, password))
-        /*Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                userDao.update(user);
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new DisposableCompletableObserver() {
-                    @Override
-                    public void onComplete() {
-                        // action was completed successfully
-                        Log.d(TAG, "updateUser() onComplete");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // something went wrong
-                        Log.d(TAG, "updateUser() onError");
-                        Log.d(TAG, e.getMessage());
-                    }
-                });*/
 
     }
 
@@ -152,29 +101,8 @@ public class Model implements IModel {
         });
 
 
-        //final AccountAuthorization accountAuthorization = new AccountAuthorization();
-
-        /*userDao.getId(mail, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<Integer>() {
-                    @Override
-                    public void onSuccess(Integer id) {
-                        Log.d(TAG, "onSuccess");
-                        Log.d(TAG, "ID = " + id);
-                        accountAuthorization.saveAuthorization(id);
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "Some error");
-                        Log.d(TAG, e.getMessage());
-
-                    }
-                });*/
-
     }
+
 
     @Override
     public void getCurrentUser(){
@@ -263,28 +191,6 @@ public class Model implements IModel {
 
         createEvent(event);
 
-        /*Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                eventsDao.update(event);
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new DisposableCompletableObserver() {
-                    @Override
-                    public void onComplete() {
-                        // action was completed successfully
-                        Log.d(TAG, "updateEvent() onComplete");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // something went wrong
-                        Log.d(TAG, "updateEvent() onError");
-                        Log.d(TAG, e.getMessage());
-                    }
-                });*/
-
     }
 
     @Override
@@ -310,26 +216,6 @@ public class Model implements IModel {
             }
         });
 
-        /*eventsDao.getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Events>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        // add it to a CompositeDisposable
-                    }
-                    @Override
-                    public void onSuccess(List<Events> events) {
-                        Log.d(TAG, "Model getAllEvents() onSuccess");
-                        //new Presenter(iView, "Model").sendEvents(events);
-                        presenter.sendEvents(events);
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "Some error");
-                        Log.d(TAG, e.getMessage());
-                    }
-                });*/
     }
 
     @Override
@@ -373,27 +259,6 @@ public class Model implements IModel {
             }
         });
 
-        /*bookMarksDao.getAll(new AccountAuthorization().getIdUser())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<BookMarks>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        // add it to a CompositeDisposable
-                        Log.d(TAG, "Model getAllBookmarks() onSubscribe");
-                    }
-                    @Override
-                    public void onSuccess(List<BookMarks> bookMarks) {
-                        Log.d(TAG, "Model getAllBookmarks() onSuccess");
-                        //new Presenter(iView, "Model").sendBookMarks(bookMarks);
-                        presenter.sendBookMarks(bookMarks);
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "Model getAllBookmarks() Some error");
-                        Log.d(TAG, e.getMessage());
-                    }
-                });*/
     }
 
     @Override

@@ -9,15 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.starichenkov.data.Events;
+import com.starichenkov.presenter.PresenterEventsList;
+import com.starichenkov.view.interfaces.IViewEvents;
 
 import java.util.List;
 
-public class EventsListFragment extends Fragment {
+public class EventsListFragment extends Fragment implements FilterCallback{
 
     private static final String TAG = "MyLog";
-
-    private CallBackInterfaceMap mListener;
-    private final String nameFragment = "eventsListFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,36 +31,18 @@ public class EventsListFragment extends Fragment {
         return view;
     }
 
-    public void sendEvents(List<Events> events) {
-
-        //Fragment bookMarksListFragment = new BookMarksListFragment();
-        BookMarksListFragment bookMarksListFragment = (BookMarksListFragment)
-                getChildFragmentManager().findFragmentById(R.id.frgmEventsList);
-        bookMarksListFragment.sendEvents(events);
-
-    }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (CallBackInterfaceMap) context;
-            mListener.setCurrentFragment(nameFragment);
-            Log.d(TAG, nameFragment + " onAttach()");
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement CallBackInterfaceMap");
-        }
-    }
-
     public void filter(String query) {
         BookMarksListFragment bookMarksListFragment = (BookMarksListFragment)
                 getChildFragmentManager().findFragmentById(R.id.frgmEventsList);
         bookMarksListFragment.filter(query);
     }
 
-    public void onEventClick(int position) {
-        BookMarksListFragment bookMarksListFragment = (BookMarksListFragment)
-                getChildFragmentManager().findFragmentById(R.id.frgmEventsList);
-        bookMarksListFragment.onEventClick(position);
+    @Override
+    public void back() {
+        //getSupportFragmentManager().popBackStackImmediate();
+        getFragmentManager().popBackStackImmediate();
     }
+
 }

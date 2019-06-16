@@ -56,11 +56,6 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".UsersDataActivity"
-            android:label="UsersDataActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
         <activity android:name="com.starichenkov.createEvent.CreateEventActivity"
             android:label="CreateEventActivity"
             android:screenOrientation="portrait">

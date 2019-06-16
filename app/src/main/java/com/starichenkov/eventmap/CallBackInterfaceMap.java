@@ -5,35 +5,36 @@ import com.starichenkov.data.BookMarks;
 public interface CallBackInterfaceMap {
 
     void openBookMarksList();
-    void openMapWithMarker(int position);
 
-    void getAllBookmarks();
+    void openMapWithMarker(String idEvent);
 
-    void createBookMark(BookMarks bookMark);
+    //void getAllBookmarks();
 
-    void deleteBookMark(BookMarks bookMark);
+    //void createBookMark(BookMarks bookMark);
 
-    void getAllEvents();
+    //void deleteBookMark(BookMarks bookMark);
 
-    void getEventsFromBookmarks();
+    //void getAllEvents();
+
+    //void getEventsFromBookmarks();
 
     void openDrawer();
 
     void OpenEventsList();
 
-    void getEvents();
+    //void getEvents();
 
-    void setCurrentFragment(String currentFragment);
+    //void setCurrentFragment(String currentFragment);
 
-    void getSelectedMarker();
+    String getSelectedMarker();
 
-    void filter(String query);
+    //void filter(String query);
 
-    void back();
+    //void back();
 
-    void getCurrentUser();
+    //void getCurrentUser();
 
-    void openImageFullScreen(String url);
+    //void openImageFullScreen(String url);
 
-    void openLoadScreen();
+    //void openLoadScreen();
 }

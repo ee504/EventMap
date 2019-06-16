@@ -18,15 +18,19 @@ public class SearchBarEventsFragment extends Fragment implements View.OnClickLis
     private ImageButton ibtnFilter;
     private SearchView editSearch;
 
-    private static final String TAG = "MyLog";
+    private final String TAG = "MyLog";
 
-    private CallBackInterfaceMap mListener;
+    private CallBackInterfaceMap mListener2;
+
+    private FilterCallback mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.top_search_bar, null);
+
+        mListener = (FilterCallback) getParentFragment();
 
         ibtnDrawerOpener = (ImageButton) view.findViewById(R.id.ibtnDrawerOpener);
         ibtnDrawerOpener.setImageResource(R.drawable.ic_arrow_back_black_24dp);
@@ -56,13 +60,12 @@ public class SearchBarEventsFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        // по id определяем кнопку, вызвавшую этот обработчик
-        //Log.d(TAG, "по id определяем кнопку, вызвавшую этот обработчик");
         switch (v.getId()) {
 
             case R.id.ibtnDrawerOpener:
                 Log.d(TAG, "Click back");
                 mListener.back();
+                //getFragmentManager().popBackStackImmediate();
                 break;
         }
     }
@@ -71,7 +74,7 @@ public class SearchBarEventsFragment extends Fragment implements View.OnClickLis
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mListener = (CallBackInterfaceMap) context;
+            mListener2 = (CallBackInterfaceMap) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement CallBackInterfaceMap");
         }

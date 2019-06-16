@@ -1,6 +1,7 @@
 package com.starichenkov.bookMarksListView;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,12 +79,12 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
     }
 
     //Constructor
-    public BookMarksListAdapter(Context mContext, int resource, List<Events> events){
+    public BookMarksListAdapter(Context mContext, Fragment fragment, int resource, List<Events> events){
         this.mContext = mContext;
         this.mResourse = resource;
         this.events = events;
         this.eventsCopy = new ArrayList<Events>(events);
-        this.mOnEventListener = (OnEventListener)mContext;
+        this.mOnEventListener = (OnEventListener)fragment;
         this.typeEvent = new TypeEvent();
     }
 
