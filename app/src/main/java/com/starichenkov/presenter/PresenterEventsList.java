@@ -5,9 +5,8 @@ import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
 import com.starichenkov.model.mModel;
-import com.starichenkov.presenter.interfaces.IPresenterEventsList;
+import com.starichenkov.presenter.interfaces1.IPresenterEventsList;
 import com.starichenkov.view.interfaces.IViewEvents;
-import com.starichenkov.view.interfaces.IViewMap;
 
 import java.util.List;
 

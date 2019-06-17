@@ -1,4 +1,4 @@
-package com.starichenkov.presenter.interfaces;
+package com.starichenkov.presenter.interfaces1;
 
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;

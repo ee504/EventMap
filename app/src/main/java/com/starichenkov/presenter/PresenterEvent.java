@@ -1,29 +1,14 @@
 package com.starichenkov.presenter;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.starichenkov.createEvent.CallBackCreateEvent;
-import com.starichenkov.createEvent.MDatePicker;
 import com.starichenkov.data.Events;
-import com.starichenkov.eventmap.BuildConfig;
-import com.starichenkov.image.ChangeImage;
-import com.starichenkov.image.CreateImageFile;
 import com.starichenkov.model.CreateEventModel;
-import com.starichenkov.presenter.interfaces.IPresenterEvent;
+import com.starichenkov.presenter.interfaces1.IPresenterEvent;
 import com.starichenkov.view.interfaces.IViewCreateEvent;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 public class PresenterEvent implements IPresenterEvent, CallBackCreateEvent {
 

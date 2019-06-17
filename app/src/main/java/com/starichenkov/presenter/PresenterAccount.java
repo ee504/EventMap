@@ -4,7 +4,7 @@ import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
 import com.starichenkov.model.ModelAccount;
-import com.starichenkov.presenter.interfaces.IPresenterAccount;
+import com.starichenkov.presenter.interfaces1.IPresenterAccount;
 import com.starichenkov.view.interfaces.IViewEvents;
 
 import java.util.ArrayList;

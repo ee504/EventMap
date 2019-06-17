@@ -10,15 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.starichenkov.Contracts.ContractEventsList;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
-import com.starichenkov.presenter.PresenterEventsList;
+import com.starichenkov.presenter.myPresenters.PresenterEventsList;
 import com.starichenkov.view.interfaces.IViewEvents;
 
 import java.util.List;
 
 
-public class BookMarksListFragment extends Fragment implements IViewEvents, EventsListAdapter.OnEventListener {
+public class BookMarksListFragment extends Fragment implements ContractEventsList.View, EventsListAdapter.OnEventListener {
 
     private static final String TAG = "MyLog";
 
@@ -84,15 +85,5 @@ public class BookMarksListFragment extends Fragment implements IViewEvents, Even
         Log.d(TAG, "BookMarksListFragment setEvents()");
         adapter = new EventsListAdapter(getActivity(), this, R.layout.item_event, events);
         recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void setUser(Users user) {
-
-    }
-
-    @Override
-    public void startMainActivity() {
-
     }
 }

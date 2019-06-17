@@ -1,8 +1,4 @@
-package com.starichenkov.presenter.interfaces;
-
-import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
+package com.starichenkov.presenter.interfaces1;
 
 import com.starichenkov.data.Events;
 

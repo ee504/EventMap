@@ -4,18 +4,14 @@ import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
-import com.starichenkov.model.Model;
 import com.starichenkov.model.mModel;
-import com.starichenkov.presenter.interfaces.IPresenterMap;
-import com.starichenkov.view.interfaces.IViewMain;
+import com.starichenkov.presenter.interfaces1.IPresenterMap;
 import com.starichenkov.view.interfaces.IViewMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 public class PresenterMap implements IPresenterMap, CallBackModel {
 

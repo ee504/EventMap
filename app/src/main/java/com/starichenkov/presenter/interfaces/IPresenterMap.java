@@ -1,11 +1,10 @@
 package com.starichenkov.presenter.interfaces;
 
-import com.starichenkov.data.BookMarks;
-
-public interface IPresenterMap extends IPresenterEventsList{
-
+public interface IPresenterMap extends IPresenterCurrentUser {
     void createBookMark();
     void deleteBookMark();
+    void getAllBookmarks();
     boolean checkAuthorization();
-    void deleteAuthorization();
+    boolean checkBookMark(String idEvent);
+    void onClickMarker(String idEvent);
 }
