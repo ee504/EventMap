@@ -52,7 +52,7 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
 
     @Override
     public void openBookMarksList(){
-
+        idEvent = null;
         Log.d(TAG, "OpenPlaceAutocomplete");
         //currentFragment = "bookMarksListFragment";
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
@@ -79,13 +79,12 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
 
     @Override
     public String getSelectedMarker(){
-        String temp = idEvent;
-        idEvent = null;
-        return temp;
+        return idEvent;
     }
 
     @Override
     public void OpenEventsList(){
+        idEvent = null;
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         fTrans.replace(R.id.frgmCreateEvent, eventsListFragment)
                 .addToBackStack(null)

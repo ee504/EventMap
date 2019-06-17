@@ -490,7 +490,7 @@ public class Model implements IModel {
                 presenter.startMainActivity();
             }
         });
-        presenter.startMainActivity();
+        //presenter.startMainActivity();
         /*new File(Uri.parse(event.photoEvent).getPath()).delete();
         new File(Uri.parse(event.photoEventFullSize).getPath()).delete();
 

@@ -13,4 +13,5 @@ public interface CallBackInterfaceMap {
     void OpenEventsList();
 
     String getSelectedMarker();
+
 }

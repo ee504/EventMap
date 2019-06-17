@@ -10,4 +10,8 @@ public interface IViewMap extends IViewEvents {
     void setCurrentUser(Users user);
     void setBookMarks(List<BookMarks> bookMarks);
     void setCurrentEvent(Events event);
+
+    void setEvent(Events event);
+
+    void deleteMarker(String id);
 }

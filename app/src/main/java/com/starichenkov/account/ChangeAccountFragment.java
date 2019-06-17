@@ -12,31 +12,48 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.R;
+import com.starichenkov.presenter.PresenterAccount;
+import com.starichenkov.view.interfaces.IViewEvents;
 
-public class ChangeAccountFragment extends Fragment implements View.OnClickListener {
+import java.util.List;
+
+public class ChangeAccountFragment extends Fragment implements View.OnClickListener, IViewEvents {
 
     private TextView textViewRegistration;
     private EditText editFIO;
     private EditText editMail;
     private EditText editPassword;
     private Button buttonCreateAcc;
-    private Users user;
+    //private Users user;
 
     private static final String TAG = "MyLog";
 
     private CallBackInterfaceAccount mListener;
 
-    private String nameFragment = "ChangeAccountFragment";
+    private PresenterAccount presenterAccount;
+
+    //private String nameFragment = "ChangeAccountFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_registration, null);
+        initView(view);
+        presenterAccount = new PresenterAccount(this);
+        presenterAccount.getCurrentUser();
 
+        //mListener.setCurrentFragment(nameFragment);
+        //mListener.getAccountData();
+
+        return view;
+    }
+
+    private void initView(View view){
         textViewRegistration = (TextView) view.findViewById(R.id.textViewRegistration);
         textViewRegistration.setText("Редактирование профиля");
 
@@ -47,12 +64,6 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
         buttonCreateAcc = (Button) view.findViewById(R.id.buttonCreateAcc);
         buttonCreateAcc.setText("Сохранить");
         buttonCreateAcc.setOnClickListener(this);
-
-        mListener.setCurrentFragment(nameFragment);
-
-        mListener.getAccountData();
-
-        return view;
     }
 
     @Override
@@ -61,10 +72,7 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
 
             case R.id.buttonCreateAcc:
                 Log.d(TAG, "onClick buttonCreateAcc()");
-                user.setFio(editFIO.getText().toString());
-                user.setMail(editMail.getText().toString());
-                user.setPassword(editPassword.getText().toString());
-                mListener.updateUser(user);
+                presenterAccount.updateUser(new Users(editFIO.getText().toString(), editMail.getText().toString(), editPassword.getText().toString()));
                 Intent intentExit = new Intent(getActivity(), MainMapActivity.class);
                 startActivity(intentExit);
                 break;
@@ -83,12 +91,28 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
         }
     }
 
+    @Override
+    public void setEvents(List<Events> events) {
+
+    }
+
+    @Override
     public void setUser(Users user) {
 
-        this.user = user;
-        editFIO.setText(this.user.getFio());
-        editMail.setText(this.user.getMail());
-        editPassword.setText(this.user.getPassword());
+        editFIO.setText(user.getFio());
+        editMail.setText(user.getMail());
+        editPassword.setText(user.getPassword());
 
+    }
+
+    @Override
+    public void startMainActivity() {
+
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        presenterAccount.detachView();
     }
 }

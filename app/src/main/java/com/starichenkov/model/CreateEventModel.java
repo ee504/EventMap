@@ -137,4 +137,9 @@ public class CreateEventModel {
 
     }
 
+    public void deletePhoto(String photo) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference photoRef = storage.getReferenceFromUrl(photo);
+        photoRef.delete();
+    }
 }

@@ -19,9 +19,9 @@ import com.starichenkov.view.IView;
 
 import java.util.List;
 
-public class AccountActivity extends FragmentActivity implements IView, CallBackInterfaceAccount, EventsListInAccountAdapter.OnEventListener {
+public class AccountActivity extends FragmentActivity implements CallBackInterfaceAccount {
 
-    private IPresenter presenter;
+    //private IPresenter presenter;
 
     private static final String TAG = "MyLog";
 
@@ -48,13 +48,13 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
                 .commit();
         //getSupportFragmentManager().popBackStackImmediate();
         getSupportFragmentManager().executePendingTransactions();
-        presenter = new Presenter(this);
+        //presenter = new Presenter(this);
     }
 
-    @Override
+    /*@Override
     public void getAccountData(){
         presenter.getCurrentUser();
-    }
+    }*/
 
     @Override
     public void openChangeAccountFragment(){
@@ -67,7 +67,7 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
     }
 
 
-    @Override
+    /*@Override
     public void sendEvents(List<Events> events){
 
         this.events = events;
@@ -92,9 +92,9 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
                     getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
             accountFragment.setUser(user);
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onEditClick(int position) {
         Log.d(TAG, "onEditClick(): " + events.get(position).getNameEvent());
 
@@ -105,15 +105,13 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
 
     @Override
     public void onDeleteClick(int position) {
-        /*Log.d(TAG, "position: " + position);
-        AccountFragment accountFragment = (AccountFragment)
-                getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-        accountFragment.onEditClick(position);*/
         Log.d(TAG, "onDeleteClick(): " + events.get(position).getNameEvent());
         //presenter.deleteEventById(events.get(position).id);
         presenter.deleteEvent(events.get(position));
-        Intent intentLoadScreenActivity = new Intent(this, LoadScreenActivity.class);
-        startActivity(intentLoadScreenActivity);
+        //Intent intentLoadScreenActivity = new Intent(this, LoadScreenActivity.class);
+        //startActivity(intentLoadScreenActivity);
+        Intent intentMainMapActivity = new Intent(this, MainMapActivity.class);
+        startActivity(intentMainMapActivity);
     }
 
     @Override
@@ -146,5 +144,5 @@ public class AccountActivity extends FragmentActivity implements IView, CallBack
     public void onDestroy(){
         super.onDestroy();
         detachView();
-    }
+    }*/
 }

@@ -84,13 +84,12 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
 
     @Override
     public void detachView(){
-        iPresenter.detachView();
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        detachView();
+        iPresenter.detachView();
     }
 
 }

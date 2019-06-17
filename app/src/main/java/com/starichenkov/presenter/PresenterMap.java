@@ -10,6 +10,7 @@ import com.starichenkov.presenter.interfaces.IPresenterMap;
 import com.starichenkov.view.interfaces.IViewMain;
 import com.starichenkov.view.interfaces.IViewMap;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
         account = new AccountAuthorization();
         model = new mModel(this);
         bookMarksMap = new HashMap<String, String>();
+        events = new ArrayList<Events>();
     }
 
 
@@ -52,15 +54,12 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
 
     @Override
     public void deleteBookMark() {
-        /*String keyBookmark = bookMarksMap
-                .entrySet()
-                .stream()
-                .filter(e -> Objects.equals(e.getValue(), currentEvent.getId()))
-                .map(HashMap.Entry::getKey)
-                .findAny()
-                .get();*/
-        model.deleteBookMark(new BookMarks("1", account.getIdUser(), currentEvent.getId()));
-
+        for(String key : bookMarksMap.keySet()){
+            if(bookMarksMap.get(key).equals(currentEvent.getId())){
+                model.deleteBookMark(new BookMarks(key, account.getIdUser(), currentEvent.getId()));
+                break;
+            }
+        }
     }
 
     @Override
@@ -87,6 +86,7 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
     public void setEvents(List<Events> events){
         this.events = events;
         iView.setEvents(events);
+        //model.setValueEventListener();
     }
 
     @Override
@@ -100,6 +100,37 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
     @Override
     public void setUser(Users user){
         iView.setCurrentUser(user);
+    }
+
+    @Override
+    public void setEvent(Events event) {
+        events.add(event);
+        iView.setEvent(event);
+    }
+
+    @Override
+    public void updateEvent(Events event) {
+        int i = 0;
+        for(Events ev : events) {
+            if (ev.getId().equals(event.getId())) {
+                events.set(i, event);
+                break;
+            }
+            i++;
+        }
+    }
+
+    @Override
+    public void deleteEvent(String id) {
+        int i = 0;
+        for(Events ev : events) {
+            if (ev.getId().equals(id)) {
+                events.remove(i);
+                break;
+            }
+            i++;
+        }
+        iView.deleteMarker(id);
     }
 
 

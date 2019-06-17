@@ -2,6 +2,7 @@ package com.starichenkov.model;
 
 import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +49,36 @@ public class mModel {
         mStorageRef = FirebaseStorage.getInstance().getReference("photo");
 
         eventsFromBookMark = new ArrayList<Events>();
+
+        setChildListener(eventRef);
+    }
+
+    private void setChildListener(DatabaseReference eventRef) {
+
+        eventRef.addChildEventListener(new ChildEventListener() { //attach listener
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                callBackModel.setEvent(dataSnapshot.getValue(Events.class));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+                callBackModel.updateEvent(dataSnapshot.getValue(Events.class));
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                callBackModel.deleteEvent(dataSnapshot.getValue(Events.class).getId());
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
     }
 
 
@@ -178,5 +209,38 @@ public class mModel {
 
     private void addEventFromBookMarks(Events event){
         eventsFromBookMark.add(event);
+    }
+
+    public void setValueEventListener() {
+
+        /*eventRef.addChildEventListener(new ChildEventListener() { //attach listener
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                Log.d(TAG, "ChildEventListener onChildAdded: " + dataSnapshot);
+                List<Events> listEvents = new ArrayList<Events>();
+                for(DataSnapshot dat : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "dat: " + dat);
+                    //listEvents.add(dat.getValue(Events.class));
+                }
+                //callBackModel.setEvents(listEvents);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+                Log.d(TAG, "ChildEventListener onChildChanged: " + dataSnapshot);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });*/
+
     }
 }

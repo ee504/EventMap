@@ -59,11 +59,6 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
             case R.id.buttonCreateAcc:
                 Log.d(TAG, "Create account");
                 iPresenter.createUser(editFIO.getText().toString(), editMail.getText().toString(), editPassword.getText().toString());
-                Log.d(TAG, "Список переменных");
-                Log.d(TAG,
-                        "name = " + editFIO.getText().toString() +
-                                ", email = " + editMail.getText().toString() +
-                                ", passwordColIndex = " + editPassword.getText().toString());
                 Intent intent = new Intent(this, MainMapActivity.class);
                 startActivity(intent);
                 break;
@@ -88,12 +83,12 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
 
     @Override
     public void detachView(){
-        iPresenter.detachView();
+
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        detachView();
+        iPresenter.detachView();
     }
 }

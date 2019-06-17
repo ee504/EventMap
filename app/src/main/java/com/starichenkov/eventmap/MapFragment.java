@@ -49,6 +49,7 @@ import com.starichenkov.createEvent.TypeEvent;
 import com.starichenkov.presenter.PresenterMap;
 import com.starichenkov.view.interfaces.IViewMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, OnClickListener, GoogleMap.OnMarkerClickListener, IViewMap {
@@ -96,6 +97,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     private MyGoogleMap myGoogleMap;
     private MToast mToast;
+
+    private List<Marker> markers;
 
 
     @Override
@@ -226,6 +229,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
         typeEvent = new TypeEvent();
         mToast = new MToast(getActivity());
+        markers = new ArrayList<Marker>();
 
     }
 
@@ -327,7 +331,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         if(locationButton != null)
             locationButton.setVisibility(View.GONE);
 
-        presenterMap.getAllEvents();
+        //presenterMap.getAllEvents();
     }
 
 
@@ -362,6 +366,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
     }
 
     @Override
+    public void setEvent(Events event) {
+        Log.e(TAG, "Map fragment setEvents():");
+        String idSelectedEvent = mListener.getSelectedMarker();
+
+        Marker marker = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(event.getLatitude(), event.getLongitude())));
+        markers.add(marker);
+        String idEvent = event.getId();
+        marker.setTag(idEvent);
+
+        if(idSelectedEvent != null && idSelectedEvent.equals(idEvent)) {
+                onMarkerClick(marker);
+        }
+    }
+
+    @Override
+    public void deleteMarker(String id) {
+        for(Marker mar : markers){
+            if(id.equals(mar.getTag().toString())){
+                mar.remove();
+            }
+        }
+    }
+
+    @Override
     public void setEvents(List<Events> events){
 
         Log.e(TAG, "Map fragment setEvents():");
@@ -386,6 +415,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
                 marker.setTag(idEvent);
             }
         }
+
+    }
+
+    @Override
+    public void setUser(Users user) {
 
     }
 

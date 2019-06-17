@@ -15,14 +15,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.starichenkov.createEvent.CreateEventActivity;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.R;
+import com.starichenkov.presenter.PresenterAccount;
+import com.starichenkov.view.interfaces.IViewEvents;
 
 import java.util.List;
 
-public class AccountFragment extends Fragment implements View.OnClickListener {
+public class AccountFragment extends Fragment implements View.OnClickListener, IViewEvents, EventsListInAccountAdapter.OnEventListener {
 
     private ImageView imagePhoto;
     private ImageView imageMore;
@@ -37,7 +40,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
     private CallBackInterfaceAccount mListener;
 
-    private String nameFragment = "AccountFragment";
+    //private String nameFragment = "AccountFragment";
+
+    private PresenterAccount presenterAccount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +51,21 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         //View view = inflater.inflate(R.layout.activity_main_view, container, false);
         View view = inflater.inflate(R.layout.account_fragment, null);
 
+        initView(view);
+
+        presenterAccount = new PresenterAccount(this);
+
+        //mListener.setCurrentFragment(nameFragment);
+        //mListener.getUserEvents();
+        //mListener.getAccountData();
+
+        presenterAccount.getUsersEvents();
+        presenterAccount.getCurrentUser();
+
+        return view;
+    }
+
+    private void initView(View view){
         imagePhoto = (ImageView) view.findViewById(R.id.imagePhoto);
         imageMore = (ImageView) view.findViewById(R.id.imageMore);
         imageMore.setOnClickListener(this);
@@ -57,22 +77,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-        mListener.setCurrentFragment(nameFragment);
-
-        mListener.getUserEvents();
-
-        mListener.getAccountData();
-
-        return view;
     }
 
-    public void sendEvents(List<Events> events){
-        //this.events = events;
-        //setEvents(events);
-        Log.d(TAG, "BookMarksListFragment setEvents()");
+
+    @Override
+    public void setEvents(List<Events> events) {
         adapter = new EventsListInAccountAdapter(getActivity(), R.layout.item_event_in_account, events);
-        //lvBookMarks.setAdapter(adapter);
         recyclerView.setAdapter(adapter);
     }
 
@@ -99,9 +109,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                                 mListener.openChangeAccountFragment();
                                 return true;
                             case R.id.itemMenuExit:
-                                Log.d(TAG, "onClick() Выход");
                                 Log.d(TAG, "Click btnExit");
-                                new AccountAuthorization().deleteAuthorization();
+                                presenterAccount.deleteAuthorization();
+                                //new AccountAuthorization().deleteAuthorization();
                                 Intent intentExit = new Intent(getActivity(), MainMapActivity.class);
                                 startActivity(intentExit);
                                 return true;
@@ -125,8 +135,35 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
     public void setUser(Users user) {
         textFio.setText(user.getFio());
         textMail.setText(user.getMail());
+    }
+
+    @Override
+    public void onEditClick(int position) {
+        Intent intent = new Intent(getActivity(), CreateEventActivity.class);
+        intent.putExtra("idEvent", presenterAccount.getEventByPosition(position).getId());
+        //intent.putExtra("idEvent", events.get(position).getId());
+        this.startActivity(intent);
+    }
+
+    @Override
+    public void onDeleteClick(int position) {
+        presenterAccount.deleteEvent(presenterAccount.getEventByPosition(position));
+        Intent intentMainMapActivity = new Intent(getActivity(), MainMapActivity.class);
+        startActivity(intentMainMapActivity);
+    }
+
+    @Override
+    public void startMainActivity() {
+
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        presenterAccount.detachView();
     }
 }

@@ -202,14 +202,9 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
                 Intent intentMainMapActivity = new Intent(getActivity(), MainMapActivity.class);
                 startActivity(intentMainMapActivity);
-
-                //Intent intentLoadScreenActivity = new Intent(getActivity(), LoadScreenActivity.class);
-                //startActivity(intentLoadScreenActivity);
                 break;
 
             case R.id.buttonTakePhoto:
-                //Log.d(TAG, "Click buttonTakePhoto");
-                //presenterEvent.dispatchTakePictureIntent(getActivity());
                 dispatchTakePictureIntent();
                 break;
 
@@ -245,39 +240,6 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         }
         return true;
     }
-
-    /*public void setDate() {
-        new DatePickerDialog(getActivity(), myDateCallBack,
-                dateAndTime.get(Calendar.YEAR),
-                dateAndTime.get(Calendar.MONTH),
-                dateAndTime.get(Calendar.DAY_OF_MONTH))
-                .show();
-    }
-
-    public void setTime() {
-        new TimePickerDialog(getActivity(), myTimeCallBack,
-                dateAndTime.get(Calendar.HOUR_OF_DAY),
-                dateAndTime.get(Calendar.MINUTE), true)
-                .show();
-    }
-
-    // установка обработчика выбора даты
-    DatePickerDialog.OnDateSetListener myDateCallBack = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            dateAndTime.set(Calendar.YEAR, year);
-            dateAndTime.set(Calendar.MONTH, monthOfYear);
-            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setTime();
-        }
-    };
-
-    TimePickerDialog.OnTimeSetListener myTimeCallBack=new TimePickerDialog.OnTimeSetListener() {
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            dateAndTime.set(Calendar.MINUTE, minute);
-            setInitialDateTime();
-        }
-    };*/
 
     // установка даты и времени
     @Override
@@ -343,12 +305,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             }
 
             ChangeImage image = new ChangeImage(getContext(), photoUriMain);
-
-            //newPhotoURIFullSize = image.getImage1920x1080();
             newPhotoURI = image.getImage300x300();
-
-            //bitmapPhoto = image.getBitmapPhoto();
-            //imageView.setImageBitmap(bitmapPhoto);
             imageView.setImageURI(newPhotoURI);
             getActivity().getContentResolver().delete(photoUriMain, null, null);
         }

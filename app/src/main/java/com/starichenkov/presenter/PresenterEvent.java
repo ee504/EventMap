@@ -82,20 +82,9 @@ public class PresenterEvent implements IPresenterEvent, CallBackCreateEvent {
 
     }
 
-    /*@Override
-    public void onClickDeletePhoto(){
-        if(currentEvent.getPhotoEvent()!=null){
-            deletePhoto(currentEvent.getPhotoEvent());
-            currentEvent.setPhotoEvent(null);
-        }else if(newPhotoURI != null) {
-            new File(newPhotoURI.getPath()).delete();
-            newPhotoURI = null;
-        }
-    }*/
-
     @Override
     public void deletePhoto(String photo) {
-
+        createEventModel.deletePhoto(photo);
     }
 
     @Override
@@ -118,51 +107,4 @@ public class PresenterEvent implements IPresenterEvent, CallBackCreateEvent {
         iView.setEvents(events);
     }
 
-    /*@Override
-    public void dispatchTakePictureIntent(Activity activity){
-
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile.getTempImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                Toast.makeText(activity, "Error!", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "CreateEventMainFragment Error: " + ex.getMessage());
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Log.d(TAG, "photoFile: " + photoFile.getAbsolutePath());
-                photoUriMain = FileProvider.getUriForFile(activity,
-                        BuildConfig.APPLICATION_ID + ".provider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUriMain);
-                activity.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(Activity activity, int requestCode, int resultCode){
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            if(newPhotoURI != null) {
-                new File(newPhotoURI.getPath()).delete();
-            }
-            ChangeImage image = new ChangeImage(context, photoUriMain);
-            newPhotoURI = image.getImage300x300();
-            //imageView.setImageURI(newPhotoURI);
-            activity.getContentResolver().delete(photoUriMain, null, null);
-            photoUriMain = null;
-        }
-    }*/
-
-    /*@Override
-    public void onEditDateEvent(Context context){
-        MDatePicker datePicker = new MDatePicker(context);
-        datePicker.setDate();
-        iView.setInitialDateTime(datePicker.getDateAndTime());
-    }*/
 }

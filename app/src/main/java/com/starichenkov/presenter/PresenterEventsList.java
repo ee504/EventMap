@@ -42,7 +42,7 @@ public class PresenterEventsList implements IPresenterEventsList, CallBackModel 
 
     @Override
     public void detachView() {
-
+        iView = null;
     }
 
     @Override
@@ -60,6 +60,22 @@ public class PresenterEventsList implements IPresenterEventsList, CallBackModel 
     public void setUser(Users user) {
 
     }
+
+    @Override
+    public void setEvent(Events event) {
+
+    }
+
+    @Override
+    public void updateEvent(Events value) {
+
+    }
+
+    @Override
+    public void deleteEvent(String id) {
+
+    }
+
 
     public String getIdEventByPosition(int position) {
         return events.get(position).getId();

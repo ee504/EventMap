@@ -3,13 +3,13 @@ package com.starichenkov.account;
 import com.starichenkov.data.Users;
 
 public interface CallBackInterfaceAccount {
-    void getUserEvents();
+    //void getUserEvents();
 
     void openChangeAccountFragment();
 
-    void getAccountData();
+    //void getAccountData();
 
-    void updateUser(Users user);
+    //void updateUser(Users user);
 
-    void setCurrentFragment(String nameFragment);
+    //void setCurrentFragment(String nameFragment);
 }
