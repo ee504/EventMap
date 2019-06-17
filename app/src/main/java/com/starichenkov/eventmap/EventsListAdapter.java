@@ -1,4 +1,4 @@
-package com.starichenkov.bookMarksListView;
+package com.starichenkov.eventmap;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -16,12 +16,11 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.starichenkov.data.Events;
 import com.starichenkov.createEvent.TypeEvent;
-import com.starichenkov.eventmap.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdapter.MyViewHolder> {
+public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.MyViewHolder> {
 
     private List<Events> events;
     private List<Events> eventsCopy;
@@ -79,7 +78,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
     }
 
     //Constructor
-    public BookMarksListAdapter(Context mContext, Fragment fragment, int resource, List<Events> events){
+    public EventsListAdapter(Context mContext, Fragment fragment, int resource, List<Events> events){
         this.mContext = mContext;
         this.mResourse = resource;
         this.events = events;
@@ -90,7 +89,7 @@ public class BookMarksListAdapter extends RecyclerView.Adapter<BookMarksListAdap
 
     // Create new views (invoked by the layout manager)
     @Override
-    public BookMarksListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EventsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(mResourse, parent, false);

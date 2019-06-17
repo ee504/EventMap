@@ -17,18 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainMapActivity extends FragmentActivity implements CallBackInterfaceMap{
+
     private Fragment mapFragment;
     private Fragment bookMarksListFragment;
-    //private Fragment topSearchBarFragment;
     private Fragment eventsListFragment;
-    //private Fragment loadScreenFragment;
 
     private static final String TAG = "MyLog";
 
-    //private Presenter presenter;
-    //private List<Events> events;
-    //private List<BookMarks> bookMarks;
-    //private String currentFragment;
     private String idEvent;
 
     @Override
@@ -39,14 +34,13 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
         mapFragment = new MapFragment();
         bookMarksListFragment = new BookMarksListFragment();
         eventsListFragment = new EventsListFragment();
-        //createEventPlaceFragment = new CreateEventPlaceFragment();
+
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         fTrans.add(R.id.frgmCreateEvent, mapFragment)
                 .show(mapFragment)
                 .commit();
 
         idEvent = null;
-
     }
 
     @Override
@@ -55,21 +49,6 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
                 getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
         mapFragment.openDrawer();
     }
-
-    /*@Override
-    public void onEventClick(int position) {
-        if(currentFragment == "bookMarksListFragment") {
-            Log.d(TAG, "position: " + position);
-            BookMarksListFragment bookMarksListFragment = (BookMarksListFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-            bookMarksListFragment.onEventClick(position);
-        }else if(currentFragment == "eventsListFragment") {
-            Log.d(TAG, "position: " + position);
-            EventsListFragment eventsListFragment = (EventsListFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-            eventsListFragment.onEventClick(position);
-        }
-    }*/
 
     @Override
     public void openBookMarksList(){
@@ -95,17 +74,6 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
     public void openMapWithMarker(String idEvent){
         Log.d(TAG, "openMapWithMarker(): " + idEvent);
         this.idEvent = idEvent;
-        //FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-        //fTrans.replace(R.id.frgmCreateEvent, mapFragment)
-                //.commit();
-        //getSupportFragmentManager().popBackStackImmediate();
-        /*FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmCreateEvent, mapFragment)
-                .remove(bookMarksListFragment)
-                .show(mapFragment)
-                .commit();*/
-        //getSupportFragmentManager().executePendingTransactions();
-        //currentFragment = "mapFragment";
         getSupportFragmentManager().popBackStackImmediate();
     }
 
@@ -124,162 +92,4 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
                 .commit();
     }
 
-
-    /*@Override
-    public void sendEvents(List<Events> events){
-        this.events = events;
-        /*if(currentFragment == "mapFragment") {
-            Log.d(TAG, "sendEvents() mapFragment");
-            MapFragment mapFragment = (MapFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-            mapFragment.sendEvents(this.events);
-        }else if(currentFragment == "bookMarksListFragment"){*/
-            //Log.d(TAG, "sendEvents() bookMarksListFragment");
-            //BookMarksListFragment bookMarksListFragment = (BookMarksListFragment)
-                    //getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-            //bookMarksListFragment.sendEvents(this.events);
-        /*}else if(currentFragment == "eventsListFragment"){
-            Log.d(TAG, "sendEvents() eventsListFragment");
-            EventsListFragment eventsListFragment = (EventsListFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-            eventsListFragment.sendEvents(this.events);
-            /*BookMarksListFragment bookMarksListFragment = (BookMarksListFragment)
-                    getChildFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-            bookMarksListFragment.sendEvents(this.events);*/
-        //}
-    //}
-
-    /*@Override
-    public void sendBookMarks(List<BookMarks> bookMarks){
-        this.bookMarks = bookMarks;
-        /*MapFragment mapFragment = (MapFragment)
-                getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-        mapFragment.sendBookMarks(this.bookMarks);*/
-    //}
-
-    /*@Override
-    public void openImageFullScreen(String url){
-        /*FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmCreateEvent, imageFullSizeFragment)
-                .addToBackStack(null)
-                .commit();
-
-        fTrans.add(R.id.frgmCreateEvent, imageFullSizeFragment)
-                .addToBackStack(null)
-                .hide(mapFragment)
-                //.show(bookMarksListFragment)
-                .commit();
-        getSupportFragmentManager().executePendingTransactions();
-        ImageFullSizeFragment imageFullSizeFragment = (ImageFullSizeFragment)
-                getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-        imageFullSizeFragment.setImage(url);*/
-    //}
-
-    /*@Override
-    public void getEvents(){
-        Log.d(TAG, "MainMapActivity getAllEvents()");
-        if(currentFragment == "bookMarksListFragment") {
-            getEventsFromBookmarks();
-        }else if(currentFragment == "eventsListFragment") {
-            sendEvents(events);
-        }
-    }*/
-
-    /*@Override
-    public void getAllBookmarks(){
-        //presenter.getAllBookmarks();
-    }*/
-
-    /*@Override
-    public void getAllEvents(){
-        //presenter.getAllEvents();
-    }
-
-    @Override
-    public void getEventsFromBookmarks(){
-        List<Events> listEvents = new ArrayList<>();
-        for(BookMarks bm : bookMarks){
-            for(Events el : events){
-                if(bm.getIdEvent().equals(el.getId())){
-                    listEvents.add(el);
-                    continue;
-                }
-            }
-        }
-        sendEvents(listEvents);
-
-    }*/
-
-    /*@Override
-    public void getCurrentUser(){
-        //presenter.getCurrentUser();
-    }
-
-    @Override
-    public void sendUser(Users user){
-
-        //Log.e(TAG, "user.getFio(): " + user.getFio());
-        //Log.e(TAG, "user.getMail(): " + user.getMail());
-        MapFragment mapFragment = (MapFragment)
-                getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-        mapFragment.setCurrentUser(user);
-    }
-
-    @Override
-    public  void createBookMark(BookMarks bookMark){
-        //presenter.createBookMark(bookMark);
-        //getAllBookmarks();
-    }
-
-    //@Override
-    //public void deleteBookMark(BookMarks bookMark){
-        //presenter.deleteBookMark(bookMark);
-        //getAllBookmarks();
-    //}
-
-    @Override
-    public void setCurrentFragment(String currentFragment){
-        this.currentFragment = currentFragment;
-    }
-
-    @Override
-    public void detachView(){
-        presenter.detachView();
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        detachView();
-    }
-
-    @Override
-    public void filter(String query){
-        //EventsListFragment eventsListFragment = (EventsListFragment)
-                //getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
-        //eventsListFragment.filter(query);
-
-        //BookMarksListFragment bookMarksListFragment = (BookMarksListFragment)
-                //getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent)
-                        //.getChildFragmentManager().findFragmentById(R.id.frgmEventsList);
-        //bookMarksListFragment.filter(query);
-    }
-
-    @Override
-    public void back(){
-        //getSupportFragmentManager().popBackStackImmediate();
-    }
-
-    @Override
-    public void openLoadScreen(){
-        FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmCreateEvent, loadScreenFragment)
-                .commit();
-    }*/
-
-    /*@Override
-    public void startMainActivity(){
-        Intent intentMainMapActivity = new Intent(this, MainMapActivity.class);
-        startActivity(intentMainMapActivity);
-    }*/
 }

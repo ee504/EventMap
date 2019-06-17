@@ -1,5 +1,6 @@
 package com.starichenkov.createEvent;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -34,21 +35,25 @@ import com.starichenkov.data.Events;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.account.LoadScreenActivity;
 import com.starichenkov.eventmap.BuildConfig;
+import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.image.ChangeImage;
 import com.starichenkov.image.CreateImageFile;
 import com.starichenkov.eventmap.R;
+import com.starichenkov.presenter.PresenterEvent;
+import com.starichenkov.view.interfaces.IViewCreateEvent;
+import com.starichenkov.view.interfaces.IViewEvents;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class CreateEventMainFragment extends Fragment implements OnClickListener, OnTouchListener {
+public class CreateEventMainFragment extends Fragment implements OnClickListener, OnTouchListener, IViewCreateEvent, DatePickerCallBack {
 
-    //private String[] TypeEvents = { "Спектакль", "Выставка", "Вечеринка", "Кинопоказ", "Концерт" };
     private TypeEvent typeEvent;
     private static final String TAG = "MyLog";
 
@@ -64,20 +69,15 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     private Button buttonDeletePhoto;
     
     final int REQUEST_TAKE_PHOTO = 1;
-    //private String mCurrentPhotoPath;
 
-    private Calendar dateAndTime= Calendar.getInstance();
+    //private Calendar dateAndTime= Calendar.getInstance();
 
     private Uri photoUriMain;
     private String photoURI;
-    //private Uri photoURIFullSize;
     private Uri newPhotoURI;
-    //private Uri newPhotoURIFullSize;
 
-    //private Bitmap bitmapPhoto;
     private String nameEvent;
     private String dateEvent;
-    //private String typeEvent;
     private String addressEvent;
     private LatLng latLngEvent;
 
@@ -89,7 +89,9 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
     private CallBackInterfaceCreateEvent mListener;
 
-    private Events currentEvent = new Events();
+    //private Events currentEvent = new Events();
+
+    private PresenterEvent presenterEvent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,18 +99,28 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
         View view = inflater.inflate(R.layout.fragment_create_event, null);
 
-        createEvent = false;
-
+        //createEvent = false;
         typeEvent = new TypeEvent();
+        presenterEvent = new PresenterEvent(this);
+        createImageFile = new CreateImageFile(getActivity());
 
-        Log.d(TAG, "start CreateEventMainFragment");
-        Log.d(TAG, "photoURI: " + photoURI);
+        String idEvent = mListener.getIdEvent();
+
+        initView(view);
+        if(idEvent != null){
+            presenterEvent.getEventById(idEvent);
+        }
+
+        return view;
+
+    }
+
+    private void initView(View view) {
+
         imageView = (ImageView) view.findViewById(R.id.imageView);
         if(photoURI == null) {
             imageView.setImageResource(R.drawable.event_map_logo);
         }else{
-            //imageView.setImageBitmap(bitmapPhoto);
-            //imageView.setImageURI(photoURI);
             Picasso.get().load(photoURI).placeholder(R.drawable.event_map_logo).error(R.drawable.event_map_logo).into(imageView);
         }
 
@@ -131,7 +143,6 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         buttonDeletePhoto = (Button) view.findViewById(R.id.buttonDeletePhoto);
         buttonDeletePhoto.setOnClickListener(this);
 
-        //adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, typeEvent.getArrayOfTypeEvent());
         ArrayList<String> spinnerList = typeEvent.getArrayOfTypeEvent();
         spinnerList.add(0, "Тип мероприятия:");
         adapter = new ArrayAdapter<String>(
@@ -140,8 +151,6 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             public boolean isEnabled(int position){
                 if(position == 0)
                 {
-                    // Disable the first item from Spinner
-                    // First item will be use for hint
                     return false;
                 }
                 else
@@ -167,15 +176,6 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerTypeEvent.setAdapter(adapter);
 
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinnerTypeEvent.setAdapter(adapter);
-
-        createImageFile = new CreateImageFile(getActivity());
-
-        mListener.getEvent();
-
-        return view;
-
     }
 
     @Override
@@ -183,61 +183,45 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         switch (v.getId()) {
             case R.id.buttonCreateEvent:
                 Log.d(TAG, "Click buttonCreateEvent");
-                Log.d(TAG, "Создать мероприятие");
                 if(newPhotoURI != null){
-                    if(currentEvent.getPhotoEvent()!=null){
-
-                        mListener.deletePhoto(currentEvent.getPhotoEvent());
-                        currentEvent.setPhotoEvent(null);
+                    if(presenterEvent.getCurrentEvent().getPhotoEvent()!=null){
+                        presenterEvent.deletePhoto(presenterEvent.getCurrentEvent().getPhotoEvent());
+                        presenterEvent.getCurrentEvent().setPhotoEvent(null);
                         photoURI = newPhotoURI.toString();
 
                     }else if(photoURI != null){
                         new File(Uri.parse(photoURI).getPath()).delete();
                         photoURI = newPhotoURI.toString();
-
-                        //new File(photoURIFullSize.getPath()).delete();
-                        //photoURIFullSize = newPhotoURIFullSize;
-
                     }else{
                         photoURI = newPhotoURI.toString();
-                        //photoURIFullSize = newPhotoURIFullSize;
                     }
                 }
-                mListener.createEvent(new Events(new AccountAuthorization().getIdUser(), photoURI, editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
+                presenterEvent.onClickCreateEvent(new Events(new AccountAuthorization().getIdUser(), photoURI, editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
                         dateEvent, spinnerTypeEvent.getSelectedItem().toString(), editAddressEvent.getText().toString(), latLngEvent.latitude, latLngEvent.longitude));
-                Log.d(TAG, "Список переменных");
-                Log.d(TAG,
-                        "id = " + new AccountAuthorization().getIdUser() +
-                                ", photoURI = " + photoURI.toString() +
-                                ", editNameEvent = " + editNameEvent.getText().toString() +
-                                ", dateEvent = " + dateEvent +
-                                ", TypeEvent = " + spinnerTypeEvent.getSelectedItem().toString() +
-                                ", addressEvent = " + addressEvent +
-                                ", latitude = " + latLngEvent.latitude +
-                                ", longitude = " + latLngEvent.longitude);
                 createEvent = true;
-                //Intent intent = new Intent(getActivity(), MainMapActivity.class);
-                //startActivity(intent);
-                Intent intentLoadScreenActivity = new Intent(getActivity(), LoadScreenActivity.class);
-                startActivity(intentLoadScreenActivity);
+
+                Intent intentMainMapActivity = new Intent(getActivity(), MainMapActivity.class);
+                startActivity(intentMainMapActivity);
+
+                //Intent intentLoadScreenActivity = new Intent(getActivity(), LoadScreenActivity.class);
+                //startActivity(intentLoadScreenActivity);
                 break;
 
             case R.id.buttonTakePhoto:
-                Log.d(TAG, "Click buttonTakePhoto");
+                //Log.d(TAG, "Click buttonTakePhoto");
+                //presenterEvent.dispatchTakePictureIntent(getActivity());
                 dispatchTakePictureIntent();
                 break;
 
             case R.id.buttonDeletePhoto:
                 Log.d(TAG, "Click buttonDeletePhoto");
                 imageView.setImageResource(R.drawable.event_map_logo);
-                if(currentEvent.getPhotoEvent()!=null){
-
-                    mListener.deletePhoto(currentEvent.getPhotoEvent());
-                    currentEvent.setPhotoEvent(null);
-
+                //presenterEvent.onClickDeletePhoto();
+                if(presenterEvent.getCurrentEvent().getPhotoEvent()!=null){
+                    presenterEvent.deletePhoto(presenterEvent.getCurrentEvent().getPhotoEvent());
+                    presenterEvent.getCurrentEvent().setPhotoEvent(null);
                 }else if(newPhotoURI != null) {
                     new File(newPhotoURI.getPath()).delete();
-                    //new File(newPhotoURIFullSize.getPath()).delete();
                 }
                 break;
 
@@ -249,22 +233,20 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             switch (v.getId()) {
                 case R.id.editAddressEvent:
-                    Log.d(TAG, "Touch editAddressEvent");
-                    //FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-                    //fTrans.addToBackStack(null).commit();
                     mListener.OpenPlaceAutocomplete();
                     break;
 
                 case R.id.editDateEvent:
-                    setDate(v);
-                    //setTime(v);
-                    //setInitialDateTime();
+                    //presenterEvent.onEditDateEvent(getActivity());
+                    MDatePicker datePicker = new MDatePicker(getActivity(), this);
+                    datePicker.setDate();
+                    //setDate();
             }
         }
         return true;
     }
 
-    public void setDate(View v) {
+    /*public void setDate() {
         new DatePickerDialog(getActivity(), myDateCallBack,
                 dateAndTime.get(Calendar.YEAR),
                 dateAndTime.get(Calendar.MONTH),
@@ -272,7 +254,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                 .show();
     }
 
-    public void setTime(View v) {
+    public void setTime() {
         new TimePickerDialog(getActivity(), myTimeCallBack,
                 dateAndTime.get(Calendar.HOUR_OF_DAY),
                 dateAndTime.get(Calendar.MINUTE), true)
@@ -285,7 +267,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             dateAndTime.set(Calendar.YEAR, year);
             dateAndTime.set(Calendar.MONTH, monthOfYear);
             dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setTime(view);
+            setTime();
         }
     };
 
@@ -295,29 +277,15 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             dateAndTime.set(Calendar.MINUTE, minute);
             setInitialDateTime();
         }
-    };
+    };*/
 
     // установка даты и времени
-    private void setInitialDateTime() {
-
-        /*editDateEvent.setText(DateUtils.formatDateTime(getActivity(),
-                dateAndTime.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
-                        | DateUtils.FORMAT_SHOW_TIME));*/
+    @Override
+    public void setInitialDateTime(Calendar dateAndTime) {
         SimpleDateFormat myDateFormat = new SimpleDateFormat("d MMM yyyy HH:mm");
         dateEvent = myDateFormat.format(dateAndTime.getTime());
-        /*try {
-            Date myDate = myDateFormat.parse(formattedDate);
-            String formattedDate1 = myDateFormat.format(myDate);
-            //editDateEvent.setText(myDate.toString());
-            editDateEvent.setText(formattedDate1);
-        }
-        catch(ParseException pe) {
-            Log.d(TAG, "Error: " + pe.getMessage());
-        }*/
-        //Date myDate = Date(dateAndTime.getTime());
         editDateEvent.setText(dateEvent);
-        //editDateEvent.setText(dateAndTime.getTime().toString());
+
     }
 
     private void dispatchTakePictureIntent() {
@@ -364,9 +332,8 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                                     Intent intent) {
 
         super.onActivityResult(requestCode, resultCode, intent);
-
-        Log.d(TAG, "CreateEventMainFragment onActivityResult()");
-
+        //presenterEvent.onActivityResult(getActivity(), requestCode, resultCode);
+        //imageView.setImageURI(newPhotoURI);
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Log.d(TAG, "intent is not null");
             Log.d(TAG, "photoUriMain: " + photoUriMain);
@@ -400,17 +367,17 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     @Override
     public void onDestroy(){
         super.onDestroy();
+        presenterEvent.detachView();
         if(createEvent == false && newPhotoURI != null){
                 new File(newPhotoURI.getPath()).delete();
-                //new File(newPhotoURIFullSize.getPath()).delete();
-                //getActivity().getContentResolver().delete(photoURI, null, null);
-                //getActivity().getContentResolver().delete(photoURIFullSize, null, null);
         }
     }
 
-    public void sentEvent(Events event) {
+    @Override
+    public void setEvents(List<Events> events) {
 
-        this.currentEvent = event;
+        //this.currentEvent = event;
+        Events event = events.get(0);
 
         Log.d(TAG, "CreateEventMainFragment sentEvent");
         latLngEvent = new LatLng(event.getLatitude(), event.getLongitude());
@@ -429,5 +396,12 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         editAddressEvent.setText(event.getAddressEvent());
         buttonCreateEvent.setText("Изменить мероприятие");
 
+    }
+
+    @Override
+    public void startMainActivity() {
+        Log.e(TAG, "CreateEventMainFragment startMainActivity()");
+        Intent intentMainMapActivity = new Intent(getActivity(), MainMapActivity.class);
+        startActivity(intentMainMapActivity);
     }
 }

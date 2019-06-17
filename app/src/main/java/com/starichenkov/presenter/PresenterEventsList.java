@@ -32,7 +32,7 @@ public class PresenterEventsList implements IPresenterEventsList, CallBackModel 
 
     @Override
     public void getAllBookmarks() {
-        model.getAllBookmarks(account.getIdUser());
+        model.getEventsByBookmarks(account.getIdUser());
     }
 
     @Override

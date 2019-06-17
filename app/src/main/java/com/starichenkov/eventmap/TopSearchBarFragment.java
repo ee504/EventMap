@@ -34,25 +34,7 @@ public class TopSearchBarFragment extends Fragment implements View.OnClickListen
         ibtnDrawerOpener.setOnClickListener(this);
 
         editSearch = (SearchView) view.findViewById(R.id.editSearch);
-        //editSearch.setOnTouchListener(this);
-        //editSearch.setOnClickListener(this);
-        /*editSearch.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Touch editSearch");
-                mListener.OpenEventsList();
-            }
-        });*/
-
         editSearch.setOnSearchClickListener(this);
-
-
-        /*ibtnDrawerOpener.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mListener.openDrawer();
-                Log.d(TAG, "Click Menu");
-            }
-        });*/
 
         ibtnFilter = (ImageButton) view.findViewById(R.id.ibtnFilter);
         return view;
@@ -70,13 +52,11 @@ public class TopSearchBarFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        // по id определяем кнопку, вызвавшую этот обработчик
-        //Log.d(TAG, "по id определяем кнопку, вызвавшую этот обработчик");
         switch (v.getId()) {
 
             case R.id.ibtnDrawerOpener:
                 mListener.openDrawer();
-                Log.d(TAG, "Click back");
+                Log.d(TAG, "Click ibtnDrawerOpener");
                 break;
 
             case R.id.editSearch:

@@ -23,7 +23,7 @@ import com.starichenkov.view.IView;
 
 import java.util.List;
 
-public class CreateEventActivity extends FragmentActivity implements CallBackInterfaceCreateEvent, IView {
+public class CreateEventActivity extends FragmentActivity implements CallBackInterfaceCreateEvent {
 
 
     private Fragment createEventMainFragment;
@@ -31,10 +31,10 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
     private FragmentTransaction fTrans;
     private static final String TAG = "MyLog";
 
-    private IPresenter presenter;
+    //private IPresenter presenter;
 
-    private String idEvent;
-    private Events event;
+    //private String idEvent;
+    //private Events event;
 
 
     @Override
@@ -42,30 +42,21 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        presenter = new Presenter(this);
+        //presenter = new Presenter(this);
         createEventMainFragment = new CreateEventMainFragment();
         createEventPlaceFragment = new CreateEventPlaceFragment();
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            idEvent = extras.getString("idEvent");
-            presenter.getEventById(idEvent);
-        }else {
+        //Bundle extras = getIntent().getExtras();
+        //if (extras != null) {
+            //idEvent = extras.getString("idEvent");
+            //presenter.getEventById(idEvent);
+        //}else {
             fTrans = getSupportFragmentManager().beginTransaction();
             fTrans.add(R.id.frgmCreateEvent, createEventMainFragment)
                     .show(createEventMainFragment)
                     .commit();
-        }
+        //}
 
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        /*fTrans = getFragmentManager().beginTransaction();
-        fTrans.hide(createEventMainFragment)
-                .show(createEventMainFragment)
-                .commit();*/
     }
 
     @Override
@@ -106,7 +97,7 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
 
     }
 
-    @Override
+    /*@Override
     public void createEvent(Events event){
         if(this.event != null){
             Log.d(TAG, "Change event");
@@ -117,20 +108,26 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
         }else{
             presenter.createEvent(event);
         }
-    }
+    }*/
 
     @Override
-    public void getEvent(){
-        Log.d(TAG, "CreateEventActivity getEvent");
+    public String getIdEvent(){
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            return extras.getString("idEvent");
+        }else{
+            return null;
+        }
+        /*Log.d(TAG, "CreateEventActivity getEvent");
         if(event != null){
             CreateEventMainFragment createEventMainFragment = (CreateEventMainFragment)
                     getSupportFragmentManager().findFragmentById(R.id.frgmCreateEvent);
             createEventMainFragment.sentEvent(this.event);
-        }
+        }*/
 
     }
 
-    @Override
+    /*@Override
     public void sendEvents(List<Events> events){
 
         Log.d(TAG, "CreateEventActivity sendEvents");
@@ -172,7 +169,7 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
     public void onDestroy(){
         super.onDestroy();
         detachView();
-    }
+    }*/
 
 
 }

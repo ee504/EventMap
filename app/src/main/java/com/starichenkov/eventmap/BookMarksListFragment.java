@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.starichenkov.bookMarksListView.BookMarksListAdapter;
 import com.starichenkov.data.Events;
 import com.starichenkov.presenter.PresenterEventsList;
 import com.starichenkov.view.interfaces.IViewEvents;
@@ -18,18 +17,13 @@ import com.starichenkov.view.interfaces.IViewEvents;
 import java.util.List;
 
 
-public class BookMarksListFragment extends Fragment implements IViewEvents, BookMarksListAdapter.OnEventListener {
+public class BookMarksListFragment extends Fragment implements IViewEvents, EventsListAdapter.OnEventListener {
 
     private static final String TAG = "MyLog";
-    private final String nameFragment = "bookMarksListFragment";
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private BookMarksListAdapter adapter;
-
-    //private Presenter presenter;
-
-   // private List<Events> events;
+    private EventsListAdapter adapter;
 
     private CallBackInterfaceMap mListener;
 
@@ -87,7 +81,7 @@ public class BookMarksListFragment extends Fragment implements IViewEvents, Book
     @Override
     public void setEvents(List<Events> events) {
         Log.d(TAG, "BookMarksListFragment setEvents()");
-        adapter = new BookMarksListAdapter(getActivity(), this, R.layout.item_event, events);
+        adapter = new EventsListAdapter(getActivity(), this, R.layout.item_event, events);
         recyclerView.setAdapter(adapter);
     }
 

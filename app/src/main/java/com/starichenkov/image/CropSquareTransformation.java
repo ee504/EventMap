@@ -1,4 +1,4 @@
-package com.starichenkov.bookMarksListView;
+package com.starichenkov.image;
 
 import android.graphics.Bitmap;
 import android.util.Log;

@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface IViewEvents extends IViewMain {
     void setEvents(List<Events> events);
-
 }

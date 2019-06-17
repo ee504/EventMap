@@ -9,10 +9,5 @@ public interface CallBackInterfaceCreateEvent {
 
     void OpenPlaceAutocomplete();
     void SetEventAddress(Address address, LatLng latLng);
-
-    void createEvent(Events events);
-
-    void getEvent();
-
-    void deletePhoto(String photoEvent);
+    String getIdEvent();
 }

@@ -82,11 +82,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     private FloatingActionButton btnFloatingAction;
 
-    //private List<Events> events;
-    //private List<Marker> listMarkers;
-    //private Events currentEvent;
-    //private List<BookMarks> bookMarks;
-
     private TypeEvent typeEvent;
 
     private BottomSheetBehavior bottomSheetBehavior;
@@ -94,8 +89,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
     private CallBackInterfaceMap mListener;
 
     private AccountAuthorization account = new AccountAuthorization();
-
-    //private final String nameFragment = "mapFragment";
 
     private View locationButton;
 

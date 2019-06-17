@@ -52,14 +52,14 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
 
     @Override
     public void deleteBookMark() {
-        String keyBookmark = bookMarksMap
+        /*String keyBookmark = bookMarksMap
                 .entrySet()
                 .stream()
                 .filter(e -> Objects.equals(e.getValue(), currentEvent.getId()))
                 .map(HashMap.Entry::getKey)
                 .findAny()
-                .get();
-        model.deleteBookMark(new BookMarks(keyBookmark, account.getIdUser(), currentEvent.getId()));
+                .get();*/
+        model.deleteBookMark(new BookMarks("1", account.getIdUser(), currentEvent.getId()));
 
     }
 
@@ -116,4 +116,5 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
     public boolean checkBookMark(String idEvent) {
         return bookMarksMap.containsValue(idEvent);
     }
+
 }

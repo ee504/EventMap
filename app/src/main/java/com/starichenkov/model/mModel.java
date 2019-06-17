@@ -33,6 +33,8 @@ public class mModel {
 
     private StorageReference mStorageRef;
 
+    private List<Events> eventsFromBookMark;
+
     public mModel(CallBackModel callBackModel) {
 
         this.callBackModel = callBackModel;
@@ -44,6 +46,8 @@ public class mModel {
         bookMarkRef = myRef.child("bookmarks");
 
         mStorageRef = FirebaseStorage.getInstance().getReference("photo");
+
+        eventsFromBookMark = new ArrayList<Events>();
     }
 
 
@@ -127,5 +131,52 @@ public class mModel {
                 Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
             }
         });
+    }
+
+    public void getEventsByBookmarks(String idUser) {
+
+        Log.e(TAG, "Model getEventsByBookmarks()");
+
+        bookMarkRef.orderByChild("idOrganizer").equalTo(idUser).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "size: " + (int) dataSnapshot.getChildrenCount());
+                final int sizeDataSnapshot = (int) dataSnapshot.getChildrenCount();
+                for(DataSnapshot dat : dataSnapshot.getChildren()) {
+                    //Log.d(TAG, "dat: " + dat);
+                    eventRef.orderByKey().equalTo(dat.getValue(BookMarks.class).getIdEvent()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot dat : dataSnapshot.getChildren()) {
+                                //Log.d(TAG, "dat: " + dat);
+                                eventsFromBookMark.add(dat.getValue(Events.class));
+                                if(eventsFromBookMark.size() == sizeDataSnapshot){
+                                    callBackModel.setEvents(eventsFromBookMark);
+                                    eventsFromBookMark = null;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
+                        }
+                    });
+                }
+                callBackModel.setEvents(eventsFromBookMark);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
+            }
+        });
+
+    }
+
+    private void addEventFromBookMarks(Events event){
+        eventsFromBookMark.add(event);
     }
 }
