@@ -7,7 +7,7 @@ import android.net.Uri;
 import com.starichenkov.data.Events;
 
 public interface IPresenterEvent extends IPresenterMain {
-    void onClickCreateEvent(Events event);
+    void createEvent(Events event);
     void getEventById(String IdEvent);
     void updateEvent(Events event);
     void deletePhoto(String photo);

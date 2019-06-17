@@ -32,6 +32,10 @@ public class PresenterEventsList implements IPresenterEventsList, CallBackModel 
 
     @Override
     public void getAllBookmarks() {
+    }
+
+    @Override
+    public void getEventsFromBookmarks() {
         model.getEventsByBookmarks(account.getIdUser());
     }
 

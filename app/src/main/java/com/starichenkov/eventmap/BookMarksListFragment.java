@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.starichenkov.data.Events;
+import com.starichenkov.data.Users;
 import com.starichenkov.presenter.PresenterEventsList;
 import com.starichenkov.view.interfaces.IViewEvents;
 
@@ -47,7 +48,7 @@ public class BookMarksListFragment extends Fragment implements IViewEvents, Even
         if(getParentFragment() != null){
             presenterEventsList.getAllEvents();
         }else{
-            presenterEventsList.getAllBookmarks();
+            presenterEventsList.getEventsFromBookmarks();
         }
         return view;
     }
@@ -83,6 +84,11 @@ public class BookMarksListFragment extends Fragment implements IViewEvents, Even
         Log.d(TAG, "BookMarksListFragment setEvents()");
         adapter = new EventsListAdapter(getActivity(), this, R.layout.item_event, events);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void setUser(Users user) {
+
     }
 
     @Override

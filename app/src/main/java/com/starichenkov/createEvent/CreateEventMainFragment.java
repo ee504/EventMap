@@ -34,6 +34,7 @@ import com.squareup.picasso.Picasso;
 import com.starichenkov.data.Events;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.account.LoadScreenActivity;
+import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.BuildConfig;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.image.ChangeImage;
@@ -196,7 +197,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                         photoURI = newPhotoURI.toString();
                     }
                 }
-                presenterEvent.onClickCreateEvent(new Events(new AccountAuthorization().getIdUser(), photoURI, editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
+                presenterEvent.createEvent(new Events(new AccountAuthorization().getIdUser(), photoURI, editNameEvent.getText().toString(), editDescriptionEvent.getText().toString(),
                         dateEvent, spinnerTypeEvent.getSelectedItem().toString(), editAddressEvent.getText().toString(), latLngEvent.latitude, latLngEvent.longitude));
                 createEvent = true;
 
@@ -352,6 +353,11 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         spinnerTypeEvent.setSelection(adapter.getPosition(event.getTypeEvent()));
         editAddressEvent.setText(event.getAddressEvent());
         buttonCreateEvent.setText("Изменить мероприятие");
+
+    }
+
+    @Override
+    public void setUser(Users user) {
 
     }
 

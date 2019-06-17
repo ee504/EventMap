@@ -48,6 +48,11 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
     }
 
     @Override
+    public void getEventsFromBookmarks() {
+
+    }
+
+    @Override
     public void createBookMark() {
         model.createBookMark(new BookMarks(account.getIdUser(), currentEvent.getId()));
     }
@@ -134,13 +139,14 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
     }
 
 
-    public void onMarkerClick(String idEvent) {
+    public void onClickMarker(String idEvent) {
         for(Events event : events){
             if(event.getId().equals(idEvent)){
                 currentEvent = event;
-                break;
+                //return currentEvent;
             }
         }
+        //return null;
         iView.setCurrentEvent(currentEvent);
     }
 

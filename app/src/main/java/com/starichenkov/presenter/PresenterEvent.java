@@ -31,27 +31,11 @@ public class PresenterEvent implements IPresenterEvent, CallBackCreateEvent {
 
     private IViewCreateEvent iView;
     private CreateEventModel createEventModel;
-    //private CreateImageFile createImageFile;
     private Events currentEvent;
-    //private boolean isEventCreated;
-    //final int REQUEST_TAKE_PHOTO = 1;
-
-    //private Uri photoUriMain;
-    //private String photoURI;
-    //private Uri newPhotoURI;
-
-    //private Context context;
 
     public PresenterEvent(IViewCreateEvent iView){
         this.iView = iView;
-        //this.isEventCreated = false;
-        //this.context = context;
         this.createEventModel = new CreateEventModel(this);
-        //this.createImageFile = new CreateImageFile(context);
-
-        //this.photoUriMain = iView.getPhotoUriMain();
-        //this.photoURI = iView.getPhotoURI();
-        //this.newPhotoURI = iView.getNewPhotoURI();
     }
 
     @Override
@@ -64,7 +48,7 @@ public class PresenterEvent implements IPresenterEvent, CallBackCreateEvent {
     }
 
     @Override
-    public void onClickCreateEvent(Events event) {
+    public void createEvent(Events event) {
         if(currentEvent != null){
             event.setId(currentEvent.getId());
             createEventModel.updateEvent(event);
@@ -89,9 +73,6 @@ public class PresenterEvent implements IPresenterEvent, CallBackCreateEvent {
 
     @Override
     public void detachView() {
-        /*if(isEventCreated == false && newPhotoURI != null){
-            new File(newPhotoURI.getPath()).delete();
-        }*/
         iView = null;
     }
 

@@ -347,7 +347,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
             ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_border_black_24dp));
         }
 
-        presenterMap.onMarkerClick(idEvent);
+        presenterMap.onClickMarker(idEvent);
+
+        /*Events currentEvent = presenterMap.getCurrentEvent(idEvent);
+
+        if(currentEvent != null){
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+            Picasso.get().load(currentEvent.getPhotoEvent()).placeholder(R.drawable.event_map_logo).error(R.drawable.event_map_logo).into(imageEvent);
+            textNameEvent.setText(currentEvent.getNameEvent());
+            textTypeEvent.setText(currentEvent.getTypeEvent());
+            imageDot.setImageDrawable(typeEvent.getDrawable(getActivity(), currentEvent.getTypeEvent()));
+            textDateEvent.setText(currentEvent.getDateEvent());
+            textAddressEvent.setText(currentEvent.getAddressEvent());
+            textDescriptionEvent.setText(currentEvent.getDescriptionEvent());
+        }*/
 
         return false;
     }
