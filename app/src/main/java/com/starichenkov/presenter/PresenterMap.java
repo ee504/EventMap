@@ -101,6 +101,12 @@ public class PresenterMap extends PresenterAuthorization implements ContractMap.
             i++;
         }
         iView.deleteMarker(id);
+        for(String key : bookMarksMap.keySet()){
+            if(bookMarksMap.get(key).equals(id)){
+                model.deleteBookMark(new BookMarks(key, account.getIdUser(), id));
+                break;
+            }
+        }
     }
 
     @Override

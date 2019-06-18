@@ -17,12 +17,14 @@ import java.util.List;
 public class ModelAccount extends ModelPhoto implements ContractAccount.Model {
 
     protected DatabaseReference eventRef;
+    //private DatabaseReference bookMarkRef;
     CallBackAccount callBackAccount;
 
     public ModelAccount(CallBackAccount callBackAccount) {
         super(callBackAccount);
         this.callBackAccount = callBackAccount;
         eventRef = myRef.child("events");
+        //bookMarkRef = myRef.child("bookmarks");
     }
 
     @Override
@@ -32,6 +34,7 @@ public class ModelAccount extends ModelPhoto implements ContractAccount.Model {
         if(event.getPhotoEvent() != null) {
             deletePhoto(event.getPhotoEvent());
         }
+        //bookMarkRef.child(bookMark.getId()).removeValue();
         eventRef.child(event.getId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>(){
             @Override
             public void onSuccess(Void mVoid) {
