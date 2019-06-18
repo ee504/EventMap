@@ -79,7 +79,6 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
         super.onAttach(context);
         try {
             mListener = (CallBackInterfaceAccount) context;
-            //mListener.setCurrentFragment(nameFragment);
             Log.d(TAG, "AccountFragment onAttach()");
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement CallBackInterfaceMap");

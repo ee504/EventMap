@@ -43,7 +43,7 @@ public class RegistrationActivity extends Activity implements ContractRegistrati
         buttonCreateAcc = (Button) findViewById(R.id.buttonCreateAcc);
         buttonCreateAcc.setOnClickListener(this);
     }
-
+    //create account
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

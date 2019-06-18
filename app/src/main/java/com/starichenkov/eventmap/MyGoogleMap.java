@@ -23,13 +23,14 @@ public class MyGoogleMap {
 
     private final String TAG = "MyLog";
 
-    MyGoogleMap(Context context, GoogleMap mMap){
+    public MyGoogleMap(Context context, GoogleMap mMap){
         this.context = context;
         this.mMap = mMap;
     }
 
     public void onMapReady(GoogleMap googleMap) {
         Log.d("TAG", "Click ibtnLocation");
+
         mMap = googleMap;
         //UiSettings uiSettings = mMap.getUiSettings();
         //uiSettings.setZoomControlsEnabled(true);

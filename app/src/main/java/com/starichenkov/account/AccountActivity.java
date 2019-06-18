@@ -11,7 +11,7 @@ public class AccountActivity extends FragmentActivity implements CallBackInterfa
     private String TAG;
 
     private Fragment accountFragment;
-    private ChangeAccountFragment changeAccountFragment;
+    private Fragment changeAccountFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -47,7 +47,7 @@ import static android.app.Activity.RESULT_OK;
 public class CreateEventMainFragment extends Fragment implements OnClickListener, OnTouchListener, DatePickerCallBack, ContractCreateEvent.View {
 
     private TypeEvent typeEvent;
-    private static final String TAG = "MyLog";
+    private String TAG;
 
     private TextView textViewCreateEvent;
     private EditText editNameEvent;
@@ -86,13 +86,13 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_create_event, null);
-
+        TAG = getResources().getString(R.string.TAG);
         typeEvent = new TypeEvent();
         presenterEvent = new PresenterCreateEvent(this);
         createImageFile = new CreateImageFile(getActivity());
 
+        //check. is it editing or creating a new event
         String idEvent = mListener.getIdEvent();
-
         initView(view);
         if(idEvent != null){
             presenterEvent.getEventById(idEvent);
@@ -169,14 +169,17 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonCreateEvent:
+                //create or update event
                 Log.d(TAG, "Click buttonCreateEvent");
                 if(newPhotoURI != null){
                     if(presenterEvent.getCurrentEvent().getPhotoEvent()!=null){
+                        //delete old photo if exist
                         presenterEvent.deletePhoto(presenterEvent.getCurrentEvent().getPhotoEvent());
                         presenterEvent.getCurrentEvent().setPhotoEvent(null);
                         photoURI = newPhotoURI.toString();
 
                     }else if(photoURI != null){
+                        //delete old photo if exist
                         new File(Uri.parse(photoURI).getPath()).delete();
                         photoURI = newPhotoURI.toString();
                     }else{
@@ -190,11 +193,11 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                 Intent intentMainMapActivity = new Intent(getActivity(), MainMapActivity.class);
                 startActivity(intentMainMapActivity);
                 break;
-
+            //take a photo
             case R.id.buttonTakePhoto:
                 dispatchTakePictureIntent();
                 break;
-
+            //delete photo
             case R.id.buttonDeletePhoto:
                 Log.d(TAG, "Click buttonDeletePhoto");
                 imageView.setImageResource(R.drawable.event_map_logo);
@@ -209,7 +212,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
 
         }
     }
-
+    //choose date
     @Override
     public boolean  onTouch(View v, MotionEvent event){
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -219,16 +222,14 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
                     break;
 
                 case R.id.editDateEvent:
-                    //presenterEvent.onEditDateEvent(getActivity());
                     MDatePicker datePicker = new MDatePicker(getActivity(), this);
                     datePicker.setDate();
-                    //setDate();
             }
         }
         return true;
     }
 
-    // установка даты и времени
+    //set date and time
     @Override
     public void setInitialDateTime(Calendar dateAndTime) {
         SimpleDateFormat myDateFormat = new SimpleDateFormat("d MMM yyyy HH:mm");
@@ -236,7 +237,7 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         editDateEvent.setText(dateEvent);
 
     }
-
+    //open the camera to take a photo
     private void dispatchTakePictureIntent() {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -275,30 +276,30 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
             throw new ClassCastException(context.toString() + " must implement CallBackInterfaceCreateEvent");
         }
     }
-
+    //get a photo from camera
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
 
         super.onActivityResult(requestCode, resultCode, intent);
-        //presenterEvent.onActivityResult(getActivity(), requestCode, resultCode);
-        //imageView.setImageURI(newPhotoURI);
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Log.d(TAG, "intent is not null");
             Log.d(TAG, "photoUriMain: " + photoUriMain);
-
+            //delete old photo if exist
             if(newPhotoURI != null) {
                 new File(newPhotoURI.getPath()).delete();
             }
 
             ChangeImage image = new ChangeImage(getContext(), photoUriMain);
+            //crop and rotate image
             newPhotoURI = image.getImage300x300();
             imageView.setImageURI(newPhotoURI);
+            //delete photo from camera
             getActivity().getContentResolver().delete(photoUriMain, null, null);
         }
     }
 
-
+    //set address from camera
     public void SetEventAddress(Address address, LatLng latLng){
         addressEvent = address.getLocality() + ", " + address.getThoroughfare() + ", " + address.getFeatureName();
         latLngEvent = latLng;
@@ -316,18 +317,16 @@ public class CreateEventMainFragment extends Fragment implements OnClickListener
         }
         detachView();
     }
-
+    //if this is edit event
     @Override
     public void setCurrentEvent(Events event) {
         Log.d(TAG, "CreateEventMainFragment setCurrentEvent");
         latLngEvent = new LatLng(event.getLatitude(), event.getLongitude());
         photoURI = event.getPhotoEvent();
-        //photoURIFullSize = Uri.parse(event.getPhotoEventFullSize());
         dateEvent = event.getDateEvent();
 
         textViewCreateEvent.setText("Редактирование мероприятия");
 
-        //imageView.setImageURI(photoURI);
         Picasso.get().load(photoURI).placeholder(R.drawable.event_map_logo).error(R.drawable.event_map_logo).into(imageView);
         editNameEvent.setText(event.getNameEvent());
         editDescriptionEvent.setText(event.getDescriptionEvent());

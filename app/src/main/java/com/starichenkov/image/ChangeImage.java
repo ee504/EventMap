@@ -62,7 +62,7 @@ public class ChangeImage {
             int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_UNDEFINED);
             Log.d(TAG, "photoURI orientation: " + orientation);
-
+            //rotate image
             switch(orientation) {
 
                 case ExifInterface.ORIENTATION_ROTATE_90:
@@ -144,7 +144,7 @@ public class ChangeImage {
         return BitmapFactory.decodeStream(inputStream2, null, options);
 
     }
-
+    //calculate image size
     public int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
