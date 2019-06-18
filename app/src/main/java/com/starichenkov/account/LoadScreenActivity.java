@@ -1,20 +1,12 @@
 package com.starichenkov.account;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ProgressBar;
-
-import com.starichenkov.data.BookMarks;
-import com.starichenkov.data.Events;
-import com.starichenkov.data.Users;
-import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.R;
-import com.starichenkov.view.IView;
 
-import java.util.List;
 
-public class LoadScreenActivity extends Activity implements IView {
+public class LoadScreenActivity extends Activity {
 
     ProgressBar progressBar;
 
@@ -28,26 +20,5 @@ public class LoadScreenActivity extends Activity implements IView {
 
     }
 
-    @Override
-    public void sendEvents(List<Events> events){
-    }
-
-    @Override
-    public void sendBookMarks(List<BookMarks> bookMarks){
-    }
-
-    @Override
-    public void sendUser(Users user){
-    }
-
-    @Override
-    public void startMainActivity(){
-        Intent intentMainMapActivity = new Intent(this, MainMapActivity.class);
-        startActivity(intentMainMapActivity);
-    }
-
-    @Override
-    public void detachView(){
-    }
 
 }

@@ -26,7 +26,6 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
     private List<Events> eventsCopy;
     private Context mContext;
     private int mResourse;
-    private static final String TAG = "MyLog";
     int lastPosition = -1;
     TypeEvent typeEvent;
 
@@ -74,10 +73,11 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                //edit event
                 case R.id.buttonEdit:
                     onEventListener.onEditClick(getAdapterPosition());
                     break;
-
+                //delete event
                 case R.id.buttonDelete:
                     onEventListener.onDeleteClick(getAdapterPosition());
                     break;
@@ -119,29 +119,17 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
         holder.textNameEvent.setText(event.getNameEvent());
         holder.textTypeEvent.setText(event.getTypeEvent());
         holder.imageDot.setImageDrawable(typeEvent.getDrawable(mContext, event.getTypeEvent()));
-        //holder.textAddressEvent.setText(event.addressEvent);
-        //holder.imageEvent.setImageURI(Uri.parse(event.photoEvent));
-        //Picasso.with(mContext).load(event.photoEvent).into(imageView);
-        //Log.d(TAG, "event.nameEvent: " + event.nameEvent);
         holder.loadImage(event.getPhotoEvent());
         setAnimation(holder.llBookMark, position);
 
     }
 
     private void setAnimation(View itemView, int position) {
-        //Log.d(TAG, "position: " + position);
-        //Log.d(TAG, "lastPosition: " + lastPosition);
         if (position > lastPosition){
-            //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.load_down_anim);
             Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left);
-            //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.layout_animation_fall_down);
             itemView.startAnimation(animation);
             lastPosition = position;
-        }/*else{
-            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.load_up_anim);
-            itemView.startAnimation(animation);
-            lastPosition = position;
-        }*/
+        }
 
     }
 

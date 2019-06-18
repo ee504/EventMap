@@ -1,10 +1,9 @@
-package com.starichenkov.presenter.myPresenters;
+package com.starichenkov.presenter;
 
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.contracts.ContractEnterAccount;
-import com.starichenkov.model.myModel.ModelEnterAccount;
+import com.starichenkov.model.ModelEnterAccount;
 import com.starichenkov.presenter.CallBacks.CallBackEnterAccount;
-import com.starichenkov.view.interfaces.IViewMain;
 
 public class PresenterEnterAccount extends PresenterMain implements ContractEnterAccount.Presenter, CallBackEnterAccount {
 

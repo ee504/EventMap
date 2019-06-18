@@ -17,9 +17,6 @@ import com.starichenkov.data.Users;
 import com.starichenkov.account.AccountActivity;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.R;
-import com.starichenkov.presenter.IPresenter;
-import com.starichenkov.presenter.Presenter;
-import com.starichenkov.view.IView;
 
 import java.util.List;
 

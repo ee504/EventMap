@@ -11,29 +11,25 @@ public class AccountAuthorization {
 
     private SharedPreferences sPref;
     private String namePreference = "Authorization";
-    private final String TAG = "MyLog";
 
-    //private int idUser;
-    //private String mailUser;
-
+    //class for authorization
     public AccountAuthorization(Context con){
 
         sPref = con.getSharedPreferences("AccountPreference", MODE_PRIVATE);
-       // sPref = con.getSharedPreferences(App.getAppContext(), MODE_PRIVATE);
 
     }
 
+    //log in
     public void saveAuthorization(String idUser){
 
-        //this.idUser = idUser;
         Editor ed = sPref.edit();
         ed.putString(namePreference, idUser);
         ed.commit();
 
     }
 
+    //log out
     public void deleteAuthorization(){
-        Log.e(TAG, "deleteAuthorization");
         Editor ed = sPref.edit();
         ed.putString(namePreference, "0");
         ed.commit();
@@ -41,12 +37,9 @@ public class AccountAuthorization {
     }
 
     public boolean checkAuthorization(){
-        Log.e(TAG, "sPref.getString(namePreference, \"0\") " + sPref.getString(namePreference, "0"));
         if (!sPref.getString(namePreference, "0").equals("0")){
-            Log.e(TAG, "AccountAuthorization return true");
             return true;
         }else{
-            Log.e(TAG, "AccountAuthorization return false");
             return false;
         }
 

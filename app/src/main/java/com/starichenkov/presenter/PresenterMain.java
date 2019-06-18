@@ -1,4 +1,4 @@
-package com.starichenkov.presenter.myPresenters;
+package com.starichenkov.presenter;
 
 import com.starichenkov.presenter.interfaces.IPresenterMain;
 import com.starichenkov.view.interfaces.IViewMain;

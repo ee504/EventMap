@@ -1,29 +1,27 @@
 package com.starichenkov.presenter;
 
-import android.content.Context;
-
+import com.starichenkov.contracts.ContractEventsList;
 import com.starichenkov.account.AccountAuthorization;
-import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
-import com.starichenkov.data.Users;
-import com.starichenkov.model.mModel;
-import com.starichenkov.presenter.interfaces1.IPresenterEventsList;
-import com.starichenkov.view.interfaces1.IViewEvents;
+import com.starichenkov.presenter.CallBacks.CallBackEventsList;
+import com.starichenkov.model.ModelEventsList;
 
 import java.util.List;
 
-public class PresenterEventsList implements IPresenterEventsList, CallBackModel {
+public class PresenterEventsList extends PresenterMain implements ContractEventsList.Presenter, CallBackEventsList {
 
-    private IViewEvents iView;
-    private mModel model;
+    private ContractEventsList.View iView;
+    private ModelEventsList model;
     private AccountAuthorization account;
     private List<Events> events;
 
-    public PresenterEventsList(IViewEvents iView){
-        this.iView = iView;
-        model = new mModel(this);
-        account = new AccountAuthorization((Context)iView);
 
+
+    public PresenterEventsList(ContractEventsList.View iView, AccountAuthorization account){
+        super(iView);
+        this.iView = iView;
+        model = new ModelEventsList(this);
+        this.account = account;
     }
 
     @Override
@@ -32,57 +30,23 @@ public class PresenterEventsList implements IPresenterEventsList, CallBackModel 
     }
 
     @Override
-    public void getAllBookmarks() {
-    }
-
-    @Override
     public void getEventsFromBookmarks() {
         model.getEventsByBookmarks(account.getIdUser());
     }
 
     @Override
-    public void getCurrentUser() {
-
-    }
-
-    @Override
-    public void detachView() {
-        iView = null;
-    }
-
-    @Override
-    public void setEvents(List<Events> events) {
-        this.events = events;
-        iView.setEvents(events);
-    }
-
-    @Override
-    public void setBookMarks(List<BookMarks> bookMarks) {
-
-    }
-
-    @Override
-    public void setUser(Users user) {
-
-    }
-
-    @Override
-    public void setEvent(Events event) {
-
-    }
-
-    @Override
-    public void updateEvent(Events value) {
-
-    }
-
-    @Override
-    public void deleteEvent(String id) {
-
-    }
-
-
     public String getIdEventByPosition(int position) {
         return events.get(position).getId();
     }
+
+    @Override
+    public void setEvents(List<Events> listEvents) {
+        this.events = listEvents;
+        iView.setEvents(this.events);
+    }
+
+    //@Override
+    //public void detachView() {
+        //iView = null;
+    //}
 }

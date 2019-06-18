@@ -1,8 +1,7 @@
-package com.starichenkov.presenter.myPresenters;
+package com.starichenkov.presenter;
 
 import com.starichenkov.contracts.ContractRegistration;
-import com.starichenkov.model.myModel.ModelRegistration;
-import com.starichenkov.view.interfaces.IViewMain;
+import com.starichenkov.model.ModelRegistration;
 
 public class PresenterRegistration extends PresenterMain implements ContractRegistration.Presenter{
 

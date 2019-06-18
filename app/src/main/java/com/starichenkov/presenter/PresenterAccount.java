@@ -1,29 +1,25 @@
 package com.starichenkov.presenter;
 
-import android.content.Context;
-
+import com.starichenkov.contracts.ContractAccount;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.Events;
-import com.starichenkov.data.Users;
 import com.starichenkov.model.ModelAccount;
-import com.starichenkov.presenter.interfaces1.IPresenterAccount;
-import com.starichenkov.view.interfaces1.IViewEvents;
+import com.starichenkov.presenter.CallBacks.CallBackAccount;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PresenterAccount implements IPresenterAccount, CallBackAccount {
+public class PresenterAccount extends PresenterAuthorization implements ContractAccount.Presenter, CallBackAccount {
 
-    private IViewEvents iView;
-    private AccountAuthorization accountAuthorization;
+    private ContractAccount.View iView;
+    private AccountAuthorization account;
     private ModelAccount model;
     private List<Events> events;
 
-    public PresenterAccount(IViewEvents iView, AccountAuthorization accountAuthorization){
+    public PresenterAccount(ContractAccount.View iView, AccountAuthorization account) {
+        super(iView, account);
         this.iView = iView;
-        this.accountAuthorization = accountAuthorization;
+        this.account = account;
         model = new ModelAccount(this);
-        events = new ArrayList<>();
     }
 
     @Override
@@ -33,12 +29,7 @@ public class PresenterAccount implements IPresenterAccount, CallBackAccount {
 
     @Override
     public void getUsersEvents() {
-        model.getUserEvents(accountAuthorization.getIdUser());
-    }
-
-    @Override
-    public void deleteAuthorization() {
-        accountAuthorization.deleteAuthorization();
+        model.getUserEvents(account.getIdUser());
     }
 
     @Override
@@ -47,28 +38,8 @@ public class PresenterAccount implements IPresenterAccount, CallBackAccount {
     }
 
     @Override
-    public void updateUser(Users user) {
-        model.updateUser(accountAuthorization.getIdUser(), user);
-    }
-
-    @Override
-    public void getCurrentUser() {
-        model.getCurrentUser(accountAuthorization.getIdUser());
-    }
-
-    @Override
-    public void setUser(Users user){
-        iView.setUser(user);
-    }
-
-    @Override
-    public void setEvents(List<Events> listEvents) {
-        this.events = listEvents;
-        iView.setEvents(listEvents);
-    }
-
-    @Override
-    public void detachView() {
-        iView = null;
+    public void setEvents(List<Events> events) {
+        this.events = events;
+        iView.setEvents(this.events);
     }
 }

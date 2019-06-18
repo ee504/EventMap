@@ -21,7 +21,7 @@ import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.R;
-import com.starichenkov.presenter.myPresenters.PresenterAccount;
+import com.starichenkov.presenter.PresenterAccount;
 
 import java.util.List;
 
@@ -36,11 +36,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener, E
     private RecyclerView.LayoutManager layoutManager;
     private EventsListInAccountAdapter adapter;
 
-    private static final String TAG = "MyLog";
+    private String TAG;
 
     private CallBackInterfaceAccount mListener;
-
-    //private String nameFragment = "AccountFragment";
 
     private PresenterAccount presenterAccount;
 
@@ -48,14 +46,16 @@ public class AccountFragment extends Fragment implements View.OnClickListener, E
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         View view = inflater.inflate(R.layout.account_fragment, null);
+        TAG = getResources().getString(R.string.TAG);
 
         presenterAccount = new PresenterAccount(this, new AccountAuthorization(getActivity()));
 
         initView(view);
 
+        //get all events created by current user
         presenterAccount.getUsersEvents();
+        //get data about current user
         presenterAccount.getCurrentUser();
 
         return view;
@@ -70,17 +70,17 @@ public class AccountFragment extends Fragment implements View.OnClickListener, E
         textMail = (TextView) view.findViewById(R.id.textMail);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
     }
 
-
+    //set events to recyclerView adapter
     @Override
     public void setEvents(List<Events> events) {
         adapter = new EventsListInAccountAdapter(getActivity(), R.layout.item_event_in_account, this, events);
         recyclerView.setAdapter(adapter);
     }
+
 
     @Override
     public void onClick(View v){
@@ -91,7 +91,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener, E
                 break;
         }
     }
-
+    //open popup menu
     private void showPopupMenu(View v) {
         PopupMenu popupMenu = new PopupMenu(getActivity(), v);
         popupMenu.inflate(R.menu.account_menu);
@@ -100,14 +100,15 @@ public class AccountFragment extends Fragment implements View.OnClickListener, E
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
+                            //edit profile
                             case R.id.itemMenuEdit:
                                 Log.d(TAG, "onClick() Редактировать профиль");
                                 mListener.openChangeAccountFragment();
                                 return true;
+                                //log out
                             case R.id.itemMenuExit:
                                 Log.d(TAG, "Click btnExit");
                                 presenterAccount.deleteAuthorization();
-                                //new AccountAuthorization().deleteAuthorization();
                                 Intent intentExit = new Intent(getActivity(), MainMapActivity.class);
                                 startActivity(intentExit);
                                 return true;
@@ -124,7 +125,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener, E
         super.onAttach(context);
         try {
             mListener = (CallBackInterfaceAccount) context;
-            //mListener.setCurrentFragment(nameFragment);
             Log.d(TAG, "AccountFragment onAttach()");
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement CallBackInterfaceMap");
@@ -137,14 +137,14 @@ public class AccountFragment extends Fragment implements View.OnClickListener, E
         textMail.setText(user.getMail());
     }
 
+    //edit selected event
     @Override
     public void onEditClick(int position) {
         Intent intent = new Intent(getActivity(), CreateEventActivity.class);
         intent.putExtra("idEvent", presenterAccount.getEventByPosition(position).getId());
-        //intent.putExtra("idEvent", events.get(position).getId());
         this.startActivity(intent);
     }
-
+    //delete selected event
     @Override
     public void onDeleteClick(int position) {
         presenterAccount.deleteEvent(presenterAccount.getEventByPosition(position));

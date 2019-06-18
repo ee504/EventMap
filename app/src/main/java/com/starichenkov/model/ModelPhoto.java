@@ -1,4 +1,4 @@
-package com.starichenkov.model.myModel;
+package com.starichenkov.model;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;

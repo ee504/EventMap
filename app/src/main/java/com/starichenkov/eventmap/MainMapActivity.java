@@ -10,8 +10,6 @@ import android.util.Log;
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
-import com.starichenkov.presenter.Presenter;
-import com.starichenkov.view.IView;
 
 import java.util.ArrayList;
 import java.util.List;

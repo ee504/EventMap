@@ -10,50 +10,46 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.starichenkov.createEvent.CallBackCreateEvent;
+import com.starichenkov.contracts.ContractCreateEvent;
 import com.starichenkov.data.Events;
-import com.starichenkov.presenter.CallBackModel;
+import com.starichenkov.presenter.CallBacks.CallBackCreateEvent;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-public class CreateEventModel {
+public class ModelCreateEvent extends ModelPhoto implements ContractCreateEvent.Model {
 
-    private final String TAG = "MyLog";
+    CallBackCreateEvent callBackCreateEvent;
 
-    private CallBackCreateEvent callBack;
-
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
-    private DatabaseReference userRef;
-    private DatabaseReference eventRef;
-    private DatabaseReference bookMarkRef;
-
+    protected DatabaseReference eventRef;
     private StorageReference mStorageRef;
 
-    public CreateEventModel(CallBackCreateEvent callBack) {
-
-        this.callBack = callBack;
-
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
+    public ModelCreateEvent(CallBackCreateEvent callBackCreateEvent) {
+        super(callBackCreateEvent);
+        this.callBackCreateEvent = callBackCreateEvent;
         eventRef = myRef.child("events");
-
         mStorageRef = FirebaseStorage.getInstance().getReference("photo");
-
     }
 
-    public void createEvent(final Events event) {
+    @Override
+    public void updateEvent(Events event) {
+        Log.e(TAG, "Model updateEvent()");
 
+        if(event.getPhotoEvent().startsWith("https")) {
+            Log.e(TAG, "true");
+            eventRef.child(event.getId()).setValue(event);
+        }else{
+            Log.e(TAG, "false");
+            createEvent(event);
+        }
+    }
+
+    @Override
+    public void createEvent(final Events event) {
         Log.e(TAG, "Model createEvent()");
-        Log.e(TAG, "event.getPhotoEvent().startsWith(\"https\")" + event.getPhotoEvent().startsWith("https"));
-        Log.e(TAG, "event.getPhotoEvent()" + event.getPhotoEvent());
 
         final StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                 + "." + "jpg");
@@ -83,63 +79,27 @@ public class CreateEventModel {
                         pushedEventRef.setValue(event);
                     }
 
-                    //getAllEvents();
-                    //callBack.startMainActivity();
-
                 } else {
                     Log.d(TAG, "task.getException().getMessage(): " + task.getException().getMessage());
-                    //Toast.makeText(MainActivity.this, "upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 
-    public void updateEvent(final Events event) {
-
-        Log.e(TAG, "Model updateEvent()");
-        Log.e(TAG, "event.getPhotoEvent().startsWith(\"https\")" + event.getPhotoEvent().startsWith("https"));
-        Log.e(TAG, "event.getPhotoEvent()" + event.getPhotoEvent());
-
-        if(event.getPhotoEvent().startsWith("https")) {
-            Log.e(TAG, "true");
-            eventRef.child(event.getId()).setValue(event);
-            //callBack.startMainActivity();
-        }else{
-            Log.e(TAG, "false");
-            createEvent(event);
-        }
-
-
-    }
-
-    public void getEventById(String idEvent) {
+    @Override
+    public void getEventById(final String IdEvent) {
 
         Log.e(TAG, "Model getEventById()");
 
-        eventRef.orderByKey().equalTo(idEvent).addListenerForSingleValueEvent(new ValueEventListener() {
-
+        eventRef.orderByKey().equalTo(IdEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Events> listEvents = new ArrayList<Events>();
-                for(DataSnapshot dat : dataSnapshot.getChildren()) {
-                    listEvents.add(dat.getValue(Events.class));
-                }
-                //callBack.setEvent(dataSnapshot.getChildren().iterator().next().getValue(Events.class));
-                callBack.setEvents(listEvents);
+                callBackCreateEvent.setCurrentEvent(dataSnapshot.getChildren().iterator().next().getValue(Events.class));
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
             }
         });
-
-    }
-
-    public void deletePhoto(String photo) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference photoRef = storage.getReferenceFromUrl(photo);
-        photoRef.delete();
     }
 }

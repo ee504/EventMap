@@ -46,7 +46,7 @@ import com.starichenkov.account.RegistrationActivity;
 import com.starichenkov.createEvent.CreateEventActivity;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.createEvent.TypeEvent;
-import com.starichenkov.presenter.myPresenters.PresenterMap;
+import com.starichenkov.presenter.PresenterMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +55,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     private GoogleMap mMap;
     private MapView mapView;
-    private static final String TAG = "MyLog";
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private String TAG;
+    private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private ImageButton ibtnZoomIn;
     private ImageButton ibtnZoomOut;
     private ImageButton ibtnLocation;
@@ -88,13 +88,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     private CallBackInterfaceMap mListener;
 
-    //private AccountAuthorization account = new AccountAuthorization();
-
     private View locationButton;
 
     private PresenterMap presenterMap;
 
     private MyGoogleMap myGoogleMap;
+
     private MToast mToast;
 
     private List<Marker> markers;
@@ -106,13 +105,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //View view = inflater.inflate(R.layout.activity_main_view, container, false);
         View view = inflater.inflate(R.layout.activity_main_view, null);
+
+        TAG = getResources().getString(R.string.TAG);
 
         Log.d(TAG, "------------------------------------");
         Log.d(TAG, "MapFragment onCreateView()");
         Log.d(TAG, "------------------------------------");
 
+        //create google map
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -127,6 +128,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     }
 
+    //layout initialization
     private void initView(View view) {
 
         ibtnZoomIn = (ImageButton) view.findViewById(R.id.ibtnZoomIn);
@@ -137,7 +139,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
         ibtnLocation = (ImageButton) view.findViewById(R.id.ibtnLocation);
         ibtnLocation.setOnClickListener(this);
-        //ibtnLocation.setVisibility(View.GONE);
 
         btnUsersData = (Button) view.findViewById(R.id.btnUsersData);
         btnUsersData.setOnClickListener(this);
@@ -213,22 +214,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         textDescriptionEvent = (TextView) view.findViewById(R.id.textDescriptionEvent);
         imageDot = (ImageView) view.findViewById(R.id.imageDot);
 
+        //check user authorization
+        //set right header
         if(presenterMap.checkAuthorization()) {
-            Log.d(TAG, "Click checkAuthorization() true");
             navigationView.addHeaderView(header_authorized);
             presenterMap.getCurrentUser();
             presenterMap.getAllBookmarks();
 
         }else{
-            Log.d(TAG, "Click checkAuthorization() false");
             navigationView.addHeaderView(header_not_authorized);
             ibtnBookMark.setEnabled(false);
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.nav_exit).setVisible(false);
         }
 
+        //class with event types
         typeEvent = new TypeEvent();
+        //make Toast easier
         mToast = new MToast(getActivity());
+        //google map marker list
         markers = new ArrayList<Marker>();
 
     }
@@ -236,22 +240,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
+            //zoom google map
             case R.id.ibtnZoomIn:
                 mMap.animateCamera(CameraUpdateFactory.zoomIn());
                 break;
-
+            //zoom out google map
             case R.id.ibtnZoomOut:
                 mMap.animateCamera(CameraUpdateFactory.zoomOut());
                 break;
-
+            //geo location
             case R.id.ibtnLocation:
                 locationButton.callOnClick();
                 break;
-
+            //for tests
             case R.id.btnUsersData:
                 break;
-
+            //create new event(if user is logged in)
             case R.id.btnFloatingAction:
                 if(presenterMap.checkAuthorization()) {
                     Intent intentCreateEvent = new Intent(getActivity(), CreateEventActivity.class);
@@ -260,7 +264,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
                     mToast.showLongCenterMessage("Требуется регистрация");
                 }
                 break;
-
+            //authorization
             case R.id.btnEnterAccount:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 Intent intentEnterAccount = new Intent(getActivity(), EnterAccountActivity.class);
@@ -272,13 +276,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
                 Intent intentRegistration = new Intent(getActivity(), RegistrationActivity.class);
                 startActivity(intentRegistration);
                 break;
-
+            //login account
             case R.id.btnAccount:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 Intent intentAccountSecond = new Intent(getActivity(), AccountActivity.class);
                 startActivity(intentAccountSecond);
                 break;
-
+            //save or delete bookmark(if user is logged in)
             case R.id.ibtnBookMark:
                 if(ibtnBookMark.getTag() == this.getString(R.string.ic_bookmark_border_black_24dp)){
                     ibtnBookMark.setImageDrawable(getActivity().getDrawable(R.drawable.ic_bookmark_black_24dp));
@@ -315,6 +319,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
         mMap.setOnMarkerClickListener(this);
 
+        //check permission ACCESS_FINE_LOCATION
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
@@ -324,6 +329,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
                     MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
         }else{
+            //make the location button visible
             mMap.setMyLocationEnabled(true);
         }
 
@@ -338,12 +344,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
+        //change color
         if(currentMarker != null){
             currentMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         }
+        //save current marker
         currentMarker = marker;
         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         String idEvent = (String)marker.getTag();
+        //is it a bookmark?
         if(presenterMap.checkBookMark(idEvent)){
             ibtnBookMark.setImageDrawable(getActivity().getDrawable(R.drawable.ic_bookmark_black_24dp));
             ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_black_24dp));
@@ -352,12 +361,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
             ibtnBookMark.setTag(this.getString(R.string.ic_bookmark_border_black_24dp));
         }
 
+        //get selected event data
         presenterMap.onClickMarker(idEvent);
-
-
         return false;
     }
 
+    //show information about the selected event
     @Override
     public void setCurrentEvent(Events currentEvent){
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -371,9 +380,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         textDescriptionEvent.setText(currentEvent.getDescriptionEvent());
     }
 
+    //add new event on map
     @Override
     public void setEvent(Events event) {
         Log.e(TAG, "Map fragment setEvents():");
+        //get data idEvent Activity
         String idSelectedEvent = mListener.getSelectedMarker();
 
         Marker marker = mMap.addMarker(new MarkerOptions()
@@ -382,25 +393,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         String idEvent = event.getId();
         marker.setTag(idEvent);
 
+        //open if it was selected in EventList or BookmarkList
         if(idSelectedEvent != null && idSelectedEvent.equals(idEvent)) {
             onMarkerClick(marker);
         }
     }
-
+    //find the marker by id and delete it
     @Override
     public void deleteMarker(String id) {
+        int i = 0;
         for(Marker mar : markers){
             if(id.equals(mar.getTag().toString())){
-                mar.remove();
+                //mar.remove();
+                markers.remove(i);
+                break;
             }
+            i++;
         }
     }
 
-    @Override
+    /*@Override
     public void setBookMarks(List<BookMarks> bookMarks){
         //this.bookMarks = bookMarks;
-    }
+    }*/
 
+    //set user fio in the navigationView header
     @Override
     public void setUser(Users user){
         tvNameUser.setText(user.getFio());
@@ -457,6 +474,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
+    //detach the view from the presenter
     @Override
     public void detachView() {
         presenterMap.detachView();

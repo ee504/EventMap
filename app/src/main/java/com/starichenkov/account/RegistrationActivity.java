@@ -10,19 +10,10 @@ import android.widget.EditText;
 import android.view.View.OnClickListener;
 
 import com.starichenkov.contracts.ContractRegistration;
-import com.starichenkov.data.BookMarks;
-import com.starichenkov.data.Events;
-import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.MainMapActivity;
-import com.starichenkov.presenter.myPresenters.PresenterRegistration;
-import com.starichenkov.view.IView;
+import com.starichenkov.presenter.PresenterRegistration;
 import com.starichenkov.eventmap.R;
-import com.starichenkov.presenter.IPresenter;
-import com.starichenkov.presenter.Presenter;
 
-import java.util.List;
-
-//import static com.google.android.gms.wearable.DataMap.TAG;
 
 public class RegistrationActivity extends Activity implements ContractRegistration.View, OnClickListener {
 
@@ -32,14 +23,14 @@ public class RegistrationActivity extends Activity implements ContractRegistrati
     private EditText editPassword;
     private Button buttonCreateAcc;
 
-    private final String TAG = "MyLog";
+    private String TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_registration);
-
+        TAG = getResources().getString(R.string.TAG);
         initView();
         iPresenter = new PresenterRegistration(this);
     }
@@ -55,10 +46,8 @@ public class RegistrationActivity extends Activity implements ContractRegistrati
 
     @Override
     public void onClick(View v) {
-        // по id определяем кнопку, вызвавшую этот обработчик
-        Log.d(TAG, "по id определяем кнопку, вызвавшую этот обработчик");
         switch (v.getId()) {
-
+            //create account
             case R.id.buttonCreateAcc:
                 Log.d(TAG, "Create account");
                 iPresenter.createUser(editFIO.getText().toString(), editMail.getText().toString(), editPassword.getText().toString());

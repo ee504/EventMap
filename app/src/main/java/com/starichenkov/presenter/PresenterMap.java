@@ -1,24 +1,21 @@
 package com.starichenkov.presenter;
 
-import android.content.Context;
-
+import com.starichenkov.contracts.ContractMap;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
-import com.starichenkov.data.Users;
-import com.starichenkov.model.mModel;
-import com.starichenkov.presenter.interfaces1.IPresenterMap;
-import com.starichenkov.view.interfaces1.IViewMap;
+import com.starichenkov.model.ModelMap;
+import com.starichenkov.presenter.CallBacks.CallBackMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PresenterMap implements IPresenterMap, CallBackModel {
+public class PresenterMap extends PresenterAuthorization implements ContractMap.Presenter, CallBackMap {
 
-    private IViewMap iView;
-    private mModel model;
+    private ContractMap.View iView;
+    private ModelMap model;
     private AccountAuthorization account;
 
     private List<Events> events;
@@ -26,28 +23,13 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
     private Map<String, String> bookMarksMap;
     private Events currentEvent;
 
-    public PresenterMap(IViewMap iView){
+    public PresenterMap(ContractMap.View iView, AccountAuthorization account){
+        super(iView, account);
         this.iView = iView;
-        account = new AccountAuthorization((Context)iView);
-        model = new mModel(this);
+        this.account = account;
+        model = new ModelMap(this);
         bookMarksMap = new HashMap<String, String>();
         events = new ArrayList<Events>();
-    }
-
-
-    @Override
-    public void getAllEvents(){
-        model.getAllEvents();
-    }
-
-    @Override
-    public void getAllBookmarks() {
-        model.getAllBookmarks(account.getIdUser());
-    }
-
-    @Override
-    public void getEventsFromBookmarks() {
-
     }
 
     @Override
@@ -66,43 +48,28 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
     }
 
     @Override
-    public boolean checkAuthorization() {
-        return account.checkAuthorization();
+    public void getAllBookmarks() {
+        model.getAllBookmarks(account.getIdUser());
     }
 
     @Override
-    public void deleteAuthorization(){
-        account.deleteAuthorization();
+    public boolean checkBookMark(String idEvent) {
+        return bookMarksMap.containsValue(idEvent);
     }
 
     @Override
-    public void getCurrentUser() {
-        model.getCurrentUser(account.getIdUser());
+    public void onClickMarker(String idEvent) {
+        for(Events event : events){
+            if(event.getId().equals(idEvent)){
+                currentEvent = event;
+            }
+        }
+        iView.setCurrentEvent(currentEvent);
     }
 
     @Override
     public void detachView() {
         iView = null;
-    }
-
-    @Override
-    public void setEvents(List<Events> events){
-        this.events = events;
-        iView.setEvents(events);
-        //model.setValueEventListener();
-    }
-
-    @Override
-    public void setBookMarks(List<BookMarks> bookMarks){
-        for (BookMarks bm: bookMarks) {
-            bookMarksMap.put(bm.getId(), bm.getIdEvent());
-        }
-        iView.setBookMarks(bookMarks);
-    }
-
-    @Override
-    public void setUser(Users user){
-        iView.setCurrentUser(user);
     }
 
     @Override
@@ -136,20 +103,11 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
         iView.deleteMarker(id);
     }
 
-
-    public void onClickMarker(String idEvent) {
-        for(Events event : events){
-            if(event.getId().equals(idEvent)){
-                currentEvent = event;
-                //return currentEvent;
-            }
+    @Override
+    public void setBookMarks(List<BookMarks> bookMarks) {
+        for (BookMarks bm: bookMarks) {
+            bookMarksMap.put(bm.getId(), bm.getIdEvent());
         }
-        //return null;
-        iView.setCurrentEvent(currentEvent);
+        //iView.setBookMarks(bookMarks);
     }
-
-    public boolean checkBookMark(String idEvent) {
-        return bookMarksMap.containsValue(idEvent);
-    }
-
 }

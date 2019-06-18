@@ -34,7 +34,7 @@ import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.image.ChangeImage;
 import com.starichenkov.image.CreateImageFile;
 import com.starichenkov.eventmap.R;
-import com.starichenkov.presenter.myPresenters.PresenterCreateEvent;
+import com.starichenkov.presenter.PresenterCreateEvent;
 
 import java.io.File;
 import java.io.IOException;

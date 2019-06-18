@@ -1,4 +1,4 @@
-package com.starichenkov.model.myModel;
+package com.starichenkov.model;
 
 import android.util.Log;
 
@@ -7,39 +7,43 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.starichenkov.contracts.ContractEnterAccount;
 import com.starichenkov.data.Users;
-import com.starichenkov.model.interfaces.IIModelCurrentUser;
-import com.starichenkov.presenter.CallBacks.CallBackCurrentUser;
+import com.starichenkov.presenter.CallBacks.CallBackEnterAccount;
 
-public class ModelCurrentUser implements IIModelCurrentUser {
+public class ModelEnterAccount implements ContractEnterAccount.Model {
 
-    protected final String TAG = "MyLog";
-    private CallBackCurrentUser callBackCurrentUser;
+    private CallBackEnterAccount callBackEnterAccount;
+
+    private final String TAG = "MyLog";
+
     protected FirebaseDatabase database;
     protected DatabaseReference myRef;
     protected DatabaseReference userRef;
 
-    public ModelCurrentUser(CallBackCurrentUser callBackCurrentUser){
-        this.callBackCurrentUser = callBackCurrentUser;
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+    public ModelEnterAccount(CallBackEnterAccount callBackEnterAccount){
+        this.callBackEnterAccount = callBackEnterAccount;
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         userRef = myRef.child("users");
-
     }
 
     @Override
-    public void getCurrentUser(String idUser) {
-        Log.e(TAG, "Model getCurrentUser()");
+    public void findUser(final String mail, final String password) {
+        Log.d(TAG, "Model findUser");
 
-        userRef.orderByKey().equalTo(idUser).addListenerForSingleValueEvent(new ValueEventListener() {
+        userRef.orderByChild("mail").equalTo(mail).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot dat : dataSnapshot.getChildren()) {
-                    Users user = dat.getValue(Users.class);
-                    callBackCurrentUser.setUser(dat.getValue(Users.class));
+                    if(dat.getValue(Users.class).getPassword().equals(password)){
+                        Log.d(TAG, "Авторизован");
+                        callBackEnterAccount.saveAuthorization(dat.getKey());
+                    }
+                    callBackEnterAccount.startMainActivity();
                 }
+
             }
 
             @Override

@@ -14,7 +14,7 @@ public interface ContractMap {
         void setEvent(Events event);
         void setCurrentEvent(Events currentEvent);
         void deleteMarker(String id);
-        void setBookMarks(List<BookMarks> bookMarks);
+        //void setBookMarks(List<BookMarks> bookMarks);
     }
 
     interface Presenter extends IPresenterAuthorization {

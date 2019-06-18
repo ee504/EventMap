@@ -1,9 +1,9 @@
-package com.starichenkov.presenter.myPresenters;
+package com.starichenkov.presenter;
 
 import com.starichenkov.contracts.ContractChangeAccount;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.Users;
-import com.starichenkov.model.myModel.ModelChangeAccount;
+import com.starichenkov.model.ModelChangeAccount;
 import com.starichenkov.view.interfaces.IViewCurrentUser;
 
 public class PresenterChangeAccount extends PresenterCurrentUser implements ContractChangeAccount.Presenter/*, CallBackCurrentUser*/ {

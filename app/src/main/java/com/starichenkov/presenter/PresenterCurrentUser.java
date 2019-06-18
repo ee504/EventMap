@@ -1,13 +1,11 @@
-package com.starichenkov.presenter.myPresenters;
+package com.starichenkov.presenter;
 
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.Users;
-import com.starichenkov.model.myModel.ModelCurrentUser;
+import com.starichenkov.model.ModelCurrentUser;
 import com.starichenkov.presenter.CallBacks.CallBackCurrentUser;
 import com.starichenkov.presenter.interfaces.IPresenterCurrentUser;
-import com.starichenkov.presenter.interfaces.IPresenterMain;
 import com.starichenkov.view.interfaces.IViewCurrentUser;
-import com.starichenkov.view.interfaces.IViewMain;
 
 public class PresenterCurrentUser extends PresenterMain implements IPresenterCurrentUser, CallBackCurrentUser {
 

@@ -1,4 +1,4 @@
-package com.starichenkov.model.myModel;
+package com.starichenkov.model;
 
 import com.starichenkov.contracts.ContractChangeAccount;
 import com.starichenkov.data.Users;

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.starichenkov.contracts.ContractEventsList;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.Events;
-import com.starichenkov.presenter.myPresenters.PresenterEventsList;
+import com.starichenkov.presenter.PresenterEventsList;
 
 import java.util.List;
 
