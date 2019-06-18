@@ -1,4 +1,4 @@
-package com.starichenkov.view.interfaces;
+package com.starichenkov.view.interfaces1;
 
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;

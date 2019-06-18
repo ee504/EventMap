@@ -1,11 +1,13 @@
 package com.starichenkov.presenter;
 
+import android.content.Context;
+
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
 import com.starichenkov.model.ModelAccount;
 import com.starichenkov.presenter.interfaces1.IPresenterAccount;
-import com.starichenkov.view.interfaces.IViewEvents;
+import com.starichenkov.view.interfaces1.IViewEvents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +19,9 @@ public class PresenterAccount implements IPresenterAccount, CallBackAccount {
     private ModelAccount model;
     private List<Events> events;
 
-    public PresenterAccount(IViewEvents iView){
+    public PresenterAccount(IViewEvents iView, AccountAuthorization accountAuthorization){
         this.iView = iView;
-        this.accountAuthorization = new AccountAuthorization();
+        this.accountAuthorization = accountAuthorization;
         model = new ModelAccount(this);
         events = new ArrayList<>();
     }

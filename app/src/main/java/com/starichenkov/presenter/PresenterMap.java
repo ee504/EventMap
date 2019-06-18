@@ -1,12 +1,14 @@
 package com.starichenkov.presenter;
 
+import android.content.Context;
+
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
 import com.starichenkov.model.mModel;
 import com.starichenkov.presenter.interfaces1.IPresenterMap;
-import com.starichenkov.view.interfaces.IViewMap;
+import com.starichenkov.view.interfaces1.IViewMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,9 +26,9 @@ public class PresenterMap implements IPresenterMap, CallBackModel {
     private Map<String, String> bookMarksMap;
     private Events currentEvent;
 
-    public PresenterMap(IViewMap iViewMain){
-        this.iView = iViewMain;
-        account = new AccountAuthorization();
+    public PresenterMap(IViewMap iView){
+        this.iView = iView;
+        account = new AccountAuthorization((Context)iView);
         model = new mModel(this);
         bookMarksMap = new HashMap<String, String>();
         events = new ArrayList<Events>();

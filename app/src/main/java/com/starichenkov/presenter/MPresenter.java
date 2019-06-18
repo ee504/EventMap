@@ -1,7 +1,7 @@
 package com.starichenkov.presenter;
 
 import com.starichenkov.data.BookMarks;
-import com.starichenkov.view.interfaces.IViewMain;
+import com.starichenkov.view.interfaces1.IViewMain;
 
 public class MPresenter {
 

@@ -6,7 +6,7 @@ import com.starichenkov.createEvent.CallBackCreateEvent;
 import com.starichenkov.data.Events;
 import com.starichenkov.model.CreateEventModel;
 import com.starichenkov.presenter.interfaces1.IPresenterEvent;
-import com.starichenkov.view.interfaces.IViewCreateEvent;
+import com.starichenkov.view.interfaces1.IViewCreateEvent;
 
 import java.util.List;
 

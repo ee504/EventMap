@@ -10,11 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.starichenkov.Contracts.ContractEventsList;
+import com.starichenkov.contracts.ContractEventsList;
+import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.Events;
-import com.starichenkov.data.Users;
 import com.starichenkov.presenter.myPresenters.PresenterEventsList;
-import com.starichenkov.view.interfaces.IViewEvents;
 
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class BookMarksListFragment extends Fragment implements ContractEventsLis
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        presenterEventsList = new PresenterEventsList(this);
+        presenterEventsList = new PresenterEventsList(this, new AccountAuthorization(getActivity()));
         if(getParentFragment() != null){
             presenterEventsList.getAllEvents();
         }else{
@@ -57,7 +56,7 @@ public class BookMarksListFragment extends Fragment implements ContractEventsLis
     @Override
     public void onDestroy(){
         super.onDestroy();
-        presenterEventsList.detachView();
+        detachView();
     }
 
     @Override
@@ -85,5 +84,10 @@ public class BookMarksListFragment extends Fragment implements ContractEventsLis
         Log.d(TAG, "BookMarksListFragment setEvents()");
         adapter = new EventsListAdapter(getActivity(), this, R.layout.item_event, events);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void detachView() {
+        presenterEventsList.detachView();
     }
 }

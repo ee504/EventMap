@@ -1,6 +1,6 @@
 package com.starichenkov.presenter.myPresenters;
 
-import com.starichenkov.Contracts.ContractEventsList;
+import com.starichenkov.contracts.ContractEventsList;
 import com.starichenkov.account.AccountAuthorization;
 import com.starichenkov.data.Events;
 import com.starichenkov.presenter.CallBacks.CallBackEventsList;
@@ -8,7 +8,7 @@ import com.starichenkov.model.myModel.ModelEventsList;
 
 import java.util.List;
 
-public class PresenterEventsList implements ContractEventsList.Presenter, CallBackEventsList {
+public class PresenterEventsList extends PresenterMain implements ContractEventsList.Presenter, CallBackEventsList {
 
     private ContractEventsList.View iView;
     private ModelEventsList model;
@@ -17,10 +17,11 @@ public class PresenterEventsList implements ContractEventsList.Presenter, CallBa
 
 
 
-    public PresenterEventsList(ContractEventsList.View iViewMain){
-        this.iView = iViewMain;
+    public PresenterEventsList(ContractEventsList.View iView, AccountAuthorization account){
+        super(iView);
+        this.iView = iView;
         model = new ModelEventsList(this);
-        account = new AccountAuthorization();
+        this.account = account;
     }
 
     @Override
@@ -40,12 +41,12 @@ public class PresenterEventsList implements ContractEventsList.Presenter, CallBa
 
     @Override
     public void setEvents(List<Events> listEvents) {
-        this.events = events;
-        iView.setEvents(events);
+        this.events = listEvents;
+        iView.setEvents(this.events);
     }
 
-    @Override
-    public void detachView() {
-        iView = null;
-    }
+    //@Override
+    //public void detachView() {
+        //iView = null;
+    //}
 }

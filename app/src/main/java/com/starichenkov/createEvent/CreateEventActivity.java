@@ -66,6 +66,7 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
 
         fTrans = getSupportFragmentManager().beginTransaction();
         fTrans.add(R.id.frgmCreateEvent, createEventPlaceFragment)
+                .addToBackStack(null)
                 .hide(createEventMainFragment)
                 .show(createEventPlaceFragment)
                 .commit();
@@ -81,6 +82,7 @@ public class CreateEventActivity extends FragmentActivity implements CallBackInt
         fTrans.remove(createEventPlaceFragment)
                 .show(createEventMainFragment)
                 .commit();
+        getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().executePendingTransactions();
         //fTrans.replace(R.id.frgmCreateEvent, createEventMainFragment).commit();
         //getFragmentManager().popBackStack();

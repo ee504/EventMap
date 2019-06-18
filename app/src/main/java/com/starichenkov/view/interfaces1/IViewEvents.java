@@ -1,9 +1,7 @@
-package com.starichenkov.view.interfaces;
+package com.starichenkov.view.interfaces1;
 
-import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
-import com.starichenkov.view.interfaces.IViewMain;
 
 import java.util.List;
 

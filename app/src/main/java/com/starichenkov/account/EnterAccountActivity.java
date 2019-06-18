@@ -9,10 +9,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.starichenkov.contracts.ContractEnterAccount;
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.MainMapActivity;
+import com.starichenkov.presenter.myPresenters.PresenterEnterAccount;
 import com.starichenkov.view.IView;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
@@ -20,9 +22,9 @@ import com.starichenkov.presenter.Presenter;
 
 import java.util.List;
 
-public class EnterAccountActivity extends Activity implements IView, OnClickListener {
+public class EnterAccountActivity extends Activity implements ContractEnterAccount.View, OnClickListener {
 
-    private IPresenter iPresenter;
+    private PresenterEnterAccount iPresenter;
     private static final String TAG = "MyLog";
     private EditText editMailEnter;
     private EditText editPasswordEnter;
@@ -35,7 +37,7 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
         setContentView(R.layout.activity_enter_account);
 
         initView();
-        iPresenter = new Presenter(this);
+        iPresenter = new PresenterEnterAccount(this, new AccountAuthorization(this));
     }
 
     private void initView() {
@@ -52,28 +54,13 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
 
         switch (v.getId()) {
             case R.id.buttonEnterAcc:
-
-                boolean test = iPresenter.findUser(editMailEnter.getText().toString(), editPasswordEnter.getText().toString());
-
                 Log.d(TAG, "Click buttonEnterAcc");
-                Log.d(TAG, "authorized = " + test);
+                iPresenter.findUser(editMailEnter.getText().toString(), editPasswordEnter.getText().toString());
                 Intent intentLoadScreenActivity = new Intent(this, LoadScreenActivity.class);
                 startActivity(intentLoadScreenActivity);
                 break;
 
         }
-    }
-
-    @Override
-    public void sendEvents(List<Events> events){
-    }
-
-    @Override
-    public void sendBookMarks(List<BookMarks> bookMarks){
-    }
-
-    @Override
-    public void sendUser(Users user){
     }
 
     @Override
@@ -84,12 +71,13 @@ public class EnterAccountActivity extends Activity implements IView, OnClickList
 
     @Override
     public void detachView(){
+        iPresenter.detachView();
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        iPresenter.detachView();
+        detachView();
     }
 
 }

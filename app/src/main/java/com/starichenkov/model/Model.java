@@ -46,7 +46,7 @@ public class Model implements IModel {
         //userDao = db.usersDao();
         //eventsDao = db.eventsDao();
         //bookMarksDao = db.bookMarksDao();
-        accountAuthorization = new AccountAuthorization();
+        //accountAuthorization = new AccountAuthorization();
         this.presenter = presenter;
         //this.iView = iView;
 

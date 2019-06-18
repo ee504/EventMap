@@ -114,6 +114,17 @@ public class Events {
         this.longitude = longitude;
     }
 
+    public Events(String photoEvent, String nameEvent, String descriptionEvent, String dateEvent, String typeEvent, String addressEvent, double latitude, double longitude){
+        this.photoEvent = photoEvent;
+        this.nameEvent = nameEvent;
+        this.descriptionEvent = descriptionEvent;
+        this.dateEvent = dateEvent;
+        this.typeEvent = typeEvent;
+        this.addressEvent = addressEvent;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public Events(Events event){
         this.idOrganizer = event.idOrganizer;
         this.photoEvent = event.photoEvent;

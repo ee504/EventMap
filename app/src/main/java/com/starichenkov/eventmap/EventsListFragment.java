@@ -1,18 +1,11 @@
 package com.starichenkov.eventmap;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.starichenkov.data.Events;
-import com.starichenkov.presenter.PresenterEventsList;
-import com.starichenkov.view.interfaces.IViewEvents;
-
-import java.util.List;
 
 public class EventsListFragment extends Fragment implements FilterCallback{
 

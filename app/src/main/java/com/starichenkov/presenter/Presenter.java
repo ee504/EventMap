@@ -1,5 +1,6 @@
 package com.starichenkov.presenter;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.starichenkov.data.BookMarks;
@@ -39,7 +40,7 @@ public class Presenter implements IPresenter{
     public boolean findUser(String mail, String password){
 
         iModel.findUser(mail, password);
-        return new AccountAuthorization().checkAuthorization();
+        return new AccountAuthorization((Context)iView).checkAuthorization();
 
     }
 

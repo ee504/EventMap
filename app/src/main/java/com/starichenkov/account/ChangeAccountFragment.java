@@ -17,11 +17,13 @@ import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.PresenterAccount;
-import com.starichenkov.view.interfaces.IViewEvents;
+import com.starichenkov.presenter.myPresenters.PresenterChangeAccount;
+import com.starichenkov.view.interfaces.IViewCurrentUser;
+import com.starichenkov.view.interfaces1.IViewEvents;
 
 import java.util.List;
 
-public class ChangeAccountFragment extends Fragment implements View.OnClickListener, IViewEvents {
+public class ChangeAccountFragment extends Fragment implements View.OnClickListener, IViewCurrentUser {
 
     private TextView textViewRegistration;
     private EditText editFIO;
@@ -34,7 +36,7 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
 
     private CallBackInterfaceAccount mListener;
 
-    private PresenterAccount presenterAccount;
+    private PresenterChangeAccount presenterAccount;
 
     //private String nameFragment = "ChangeAccountFragment";
 
@@ -44,7 +46,7 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
 
         View view = inflater.inflate(R.layout.activity_registration, null);
         initView(view);
-        presenterAccount = new PresenterAccount(this);
+        presenterAccount = new PresenterChangeAccount(this, new AccountAuthorization(getContext()));
         presenterAccount.getCurrentUser();
 
         //mListener.setCurrentFragment(nameFragment);
@@ -92,11 +94,6 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
-    public void setEvents(List<Events> events) {
-
-    }
-
-    @Override
     public void setUser(Users user) {
 
         editFIO.setText(user.getFio());
@@ -106,13 +103,13 @@ public class ChangeAccountFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
-    public void startMainActivity() {
-
+    public void onDestroy(){
+        super.onDestroy();
+        detachView();
     }
 
     @Override
-    public void onDestroy(){
-        super.onDestroy();
+    public void detachView() {
         presenterAccount.detachView();
     }
 }

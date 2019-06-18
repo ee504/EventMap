@@ -91,12 +91,12 @@ public class EventsListInAccountAdapter extends RecyclerView.Adapter<EventsListI
     }
 
     //Constructor
-    public EventsListInAccountAdapter(Context mContext, int resource, List<Events> events){
+    public EventsListInAccountAdapter(Context mContext, int resource, EventsListInAccountAdapter.OnEventListener listener, List<Events> events){
         this.mContext = mContext;
         this.mResourse = resource;
         this.events = events;
         this.eventsCopy = new ArrayList<Events>(events);
-        this.mOnEventListener = (OnEventListener)mContext;
+        this.mOnEventListener = listener;
         this.typeEvent = new TypeEvent();
     }
 

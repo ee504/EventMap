@@ -15,17 +15,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.starichenkov.contracts.ContractAccount;
 import com.starichenkov.createEvent.CreateEventActivity;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.MainMapActivity;
 import com.starichenkov.eventmap.R;
-import com.starichenkov.presenter.PresenterAccount;
-import com.starichenkov.view.interfaces.IViewEvents;
+import com.starichenkov.presenter.myPresenters.PresenterAccount;
 
 import java.util.List;
 
-public class AccountFragment extends Fragment implements View.OnClickListener, IViewEvents, EventsListInAccountAdapter.OnEventListener {
+public class AccountFragment extends Fragment implements View.OnClickListener, EventsListInAccountAdapter.OnEventListener, ContractAccount.View {
 
     private ImageView imagePhoto;
     private ImageView imageMore;
@@ -48,16 +48,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener, I
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //View view = inflater.inflate(R.layout.activity_main_view, container, false);
+
         View view = inflater.inflate(R.layout.account_fragment, null);
 
+        presenterAccount = new PresenterAccount(this, new AccountAuthorization(getActivity()));
+
         initView(view);
-
-        presenterAccount = new PresenterAccount(this);
-
-        //mListener.setCurrentFragment(nameFragment);
-        //mListener.getUserEvents();
-        //mListener.getAccountData();
 
         presenterAccount.getUsersEvents();
         presenterAccount.getCurrentUser();
@@ -82,7 +78,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener, I
 
     @Override
     public void setEvents(List<Events> events) {
-        adapter = new EventsListInAccountAdapter(getActivity(), R.layout.item_event_in_account, events);
+        adapter = new EventsListInAccountAdapter(getActivity(), R.layout.item_event_in_account, this, events);
         recyclerView.setAdapter(adapter);
     }
 
@@ -157,13 +153,13 @@ public class AccountFragment extends Fragment implements View.OnClickListener, I
     }
 
     @Override
-    public void startMainActivity() {
-
+    public void onDestroy(){
+        super.onDestroy();
+        detachView();
     }
 
     @Override
-    public void onDestroy(){
-        super.onDestroy();
+    public void detachView() {
         presenterAccount.detachView();
     }
 }

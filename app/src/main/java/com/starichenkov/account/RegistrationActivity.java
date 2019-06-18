@@ -9,10 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.view.View.OnClickListener;
 
+import com.starichenkov.contracts.ContractRegistration;
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
 import com.starichenkov.eventmap.MainMapActivity;
+import com.starichenkov.presenter.myPresenters.PresenterRegistration;
 import com.starichenkov.view.IView;
 import com.starichenkov.eventmap.R;
 import com.starichenkov.presenter.IPresenter;
@@ -22,14 +24,15 @@ import java.util.List;
 
 //import static com.google.android.gms.wearable.DataMap.TAG;
 
-public class RegistrationActivity extends Activity implements IView, OnClickListener {
+public class RegistrationActivity extends Activity implements ContractRegistration.View, OnClickListener {
 
-    private IPresenter iPresenter;
+    private PresenterRegistration iPresenter;
     private EditText editFIO;
     private EditText editMail;
     private EditText editPassword;
     private Button buttonCreateAcc;
-    private static final String TAG = "MyLog";
+
+    private final String TAG = "MyLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,7 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
         setContentView(R.layout.activity_registration);
 
         initView();
-        iPresenter = new Presenter(this);
+        iPresenter = new PresenterRegistration(this);
     }
 
     private void initView() {
@@ -66,29 +69,13 @@ public class RegistrationActivity extends Activity implements IView, OnClickList
     }
 
     @Override
-    public void sendEvents(List<Events> events){
-    }
-
-    @Override
-    public void sendBookMarks(List<BookMarks> bookMarks){
-    }
-
-    @Override
-    public void sendUser(Users user){
-    }
-
-    @Override
-    public void startMainActivity(){
-    }
-
-    @Override
     public void detachView(){
-
+        iPresenter.detachView();
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        iPresenter.detachView();
+        detachView();
     }
 }

@@ -4,6 +4,6 @@ import com.starichenkov.data.Events;
 
 import java.util.List;
 
-public interface CallBackEventsList{
-    void setEvents(List<Events> listEvents);
+public interface CallBackAccount extends CallBackCurrentUser {
+    void setEvents(List<Events> events);
 }

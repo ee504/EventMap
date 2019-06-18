@@ -7,7 +7,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.starichenkov.Contracts.ContractEventsList;
+import com.starichenkov.contracts.ContractEventsList;
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
 import com.starichenkov.presenter.CallBacks.CallBackEventsList;
@@ -29,8 +29,8 @@ public class ModelEventsList implements ContractEventsList.Model {
     private List<Events> eventsFromBookMark;
 
     public ModelEventsList(CallBackEventsList callBackEventsList){
-
         this.callBackEventsList = callBackEventsList;
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         eventRef = myRef.child("events");
@@ -73,11 +73,13 @@ public class ModelEventsList implements ContractEventsList.Model {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final int sizeDataSnapshot = (int) dataSnapshot.getChildrenCount();
+                Log.d(TAG, "sizeDataSnapshot: " + sizeDataSnapshot);
                 for(DataSnapshot dat : dataSnapshot.getChildren()) {
                     eventRef.orderByKey().equalTo(dat.getValue(BookMarks.class).getIdEvent()).addListenerForSingleValueEvent(new ValueEventListener() {
 
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.d(TAG, "dataSnapshot: " + dataSnapshot);
                             for(DataSnapshot dat : dataSnapshot.getChildren()) {
                                 eventsFromBookMark.add(dat.getValue(Events.class));
                                 if(eventsFromBookMark.size() == sizeDataSnapshot){
