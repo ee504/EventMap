@@ -114,6 +114,5 @@ public class PresenterMap extends PresenterAuthorization implements ContractMap.
         for (BookMarks bm: bookMarks) {
             bookMarksMap.put(bm.getId(), bm.getIdEvent());
         }
-        //iView.setBookMarks(bookMarks);
     }
 }

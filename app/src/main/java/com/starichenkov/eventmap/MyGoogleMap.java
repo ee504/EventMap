@@ -88,7 +88,6 @@ public class MyGoogleMap {
         //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
         mMap.setMinZoomPreference(mMap.getCameraPosition().zoom);
 
-        Log.d(TAG, "MapFragment mListener.getAllEvents()");
     }
 
     public GoogleMap getmMap() {

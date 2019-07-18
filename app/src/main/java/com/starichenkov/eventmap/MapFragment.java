@@ -1,6 +1,7 @@
 package com.starichenkov.eventmap;
 
 import android.Manifest;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -36,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
+import com.starichenkov.app.ExampleService;
 import com.starichenkov.contracts.ContractMap;
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
@@ -60,9 +63,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
     private ImageButton ibtnZoomIn;
     private ImageButton ibtnZoomOut;
     private ImageButton ibtnLocation;
-    private Button btnUsersData;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+
+    private Button btnStartService;
+    private Button btnStopService;
 
     private Button btnRegistration;
     private Button btnEnterAccount;
@@ -140,9 +145,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         ibtnLocation = (ImageButton) view.findViewById(R.id.ibtnLocation);
         ibtnLocation.setOnClickListener(this);
 
-        btnUsersData = (Button) view.findViewById(R.id.btnUsersData);
-        btnUsersData.setOnClickListener(this);
-        btnUsersData.setVisibility(View.GONE);
+        btnStartService = (Button) view.findViewById(R.id.btnStartService);
+        btnStartService.setOnClickListener(this);
+        //btnStopService.setVisibility(View.GONE);
+
+        btnStopService = (Button) view.findViewById(R.id.btnStopService);
+        btnStopService.setOnClickListener(this);
+        //btnStartService.setVisibility(View.GONE);
 
         btnFloatingAction = (FloatingActionButton) view.findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
@@ -253,7 +262,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
                 locationButton.callOnClick();
                 break;
             //for tests
-            case R.id.btnUsersData:
+            case R.id.btnStartService:
+                Log.d(TAG, "btnStartService");
+                Intent startServiceIntent = new Intent(getActivity(), ExampleService.class);
+                startServiceIntent.putExtra("exampleService", "test");
+                getActivity().startService(startServiceIntent);
+                break;
+            case R.id.btnStopService:
+                Log.d(TAG, "btnStartService");
+                Intent stopServiceIntent = new Intent(getActivity(), ExampleService.class);
+                getActivity().stopService(stopServiceIntent);
                 break;
             //create new event(if user is logged in)
             case R.id.btnFloatingAction:
@@ -384,6 +402,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
     @Override
     public void setEvent(Events event) {
         Log.e(TAG, "Map fragment setEvents():");
+        ///////////////////////////////////////////////////
+        MyNotification myNotification = new MyNotification(getActivity(), getString(R.string.CHANNEL_ID), getString(R.string.channel_name), getString(R.string.channel_description));
+        NotificationCompat.Builder nb = myNotification.
+                getNotification("Новое мероприятие", "Посмотри");
+
+        myNotification.getManager().notify(101, nb.build());
+        //////////////////////////////////////////////////////
         //get data idEvent Activity
         String idSelectedEvent = mListener.getSelectedMarker();
 
@@ -397,6 +422,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
         if(idSelectedEvent != null && idSelectedEvent.equals(idEvent)) {
             onMarkerClick(marker);
         }
+
+        /*MyNotification myNotification = new MyNotification(getActivity(), getString(R.string.CHANNEL_ID), getString(R.string.channel_name), getString(R.string.channel_description));
+        NotificationCompat.Builder nb = myNotification.
+                getNotification("Новое мероприятие", event.getNameEvent());
+        myNotification.getManager().notify(101, nb.build());*/
     }
     //find the marker by id and delete it
     @Override

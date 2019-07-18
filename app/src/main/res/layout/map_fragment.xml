@@ -28,13 +28,23 @@
             android:layout_marginTop="20dp"/>
 
         <Button
-            android:id="@+id/btnUsersData"
+            android:id="@+id/btnStartService"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|top"
-            android:text="Usersdata"
+            android:text="StartService"
             android:padding="10dp"
             android:layout_marginTop="150dp"
+            android:paddingRight="10dp"/>
+
+        <Button
+            android:id="@+id/btnStopService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:text="StopService"
+            android:padding="10dp"
+            android:layout_marginTop="200dp"
             android:paddingRight="10dp"/>
 
         <android.support.design.widget.FloatingActionButton

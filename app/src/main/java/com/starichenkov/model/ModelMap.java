@@ -33,14 +33,18 @@ public class ModelMap extends ModelCurrentUser implements ContractMap.Model{
 
         setChildListener(eventRef);
 
+
+
     }
 
     private void setChildListener(DatabaseReference eventRef) {
-        eventRef.addChildEventListener(new ChildEventListener() { //attach listener
+        eventRef.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                callBackMap.setEvent(dataSnapshot.getValue(Events.class));
+                //callBackMap.setEvent(dataSnapshot.getValue(Events.class));
+
+                callBackMap.setEvent(new Events());
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
@@ -54,7 +58,9 @@ public class ModelMap extends ModelCurrentUser implements ContractMap.Model{
             public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "databaseError.getMessage(): " + databaseError.getMessage());
+            }
         });
     }
 

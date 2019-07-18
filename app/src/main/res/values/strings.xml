@@ -8,4 +8,7 @@
     <string name="ic_bookmark_border_black_24dp">ic_bookmark_border_black_24dp</string>
     <string name="ic_bookmark_black_24dp">ic_bookmark_black_24dp</string>
     <string name="TAG">MyLog</string>
+    <string name="CHANNEL_ID">com.starichenkov.eventmap.eventNotification</string>
+    <string name="channel_name">Event notification</string>
+    <string name="channel_description">New event notification</string>
 </resources>

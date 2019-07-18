@@ -37,6 +37,7 @@ public class ModelEventsList implements ContractEventsList.Model {
         bookMarkRef = myRef.child("bookmarks");
         eventsFromBookMark = new ArrayList<Events>();
 
+
     }
 
     @Override
