@@ -147,11 +147,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
         btnStartService = (Button) view.findViewById(R.id.btnStartService);
         btnStartService.setOnClickListener(this);
-        //btnStopService.setVisibility(View.GONE);
+        btnStopService.setVisibility(View.GONE);
 
         btnStopService = (Button) view.findViewById(R.id.btnStopService);
         btnStopService.setOnClickListener(this);
-        //btnStartService.setVisibility(View.GONE);
+        btnStartService.setVisibility(View.GONE);
 
         btnFloatingAction = (FloatingActionButton) view.findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
