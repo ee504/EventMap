@@ -11,12 +11,12 @@ Users can view events as markers on a map or as a list. To get all the features,
 The app is based on the MVP design pattern.
  
 MODEL
-![alt text](https://github.com/egor-starichenkov/images/blob/master/Model.png) 
+![alt text](https://github.com/egor-starichenkov/images/blob/master/Model.PNG) 
  
 VIEW
 ![alt text](https://github.com/egor-starichenkov/images/blob/master/image.png) 
  
 PRESENTER
-![alt text](https://github.com/egor-starichenkov/images/blob/master/Presenter2.png) 
+![alt text](https://github.com/egor-starichenkov/images/blob/master/Presenter2.PNG) 
  
 
