@@ -2,11 +2,15 @@ package com.starichenkov.eventmap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.starichenkov.data.BookMarks;
 import com.starichenkov.data.Events;
 import com.starichenkov.data.Users;
@@ -32,6 +36,18 @@ public class MainMapActivity extends FragmentActivity implements CallBackInterfa
         mapFragment = new MapFragment();
         bookMarksListFragment = new BookMarksListFragment();
         eventsListFragment = new EventsListFragment();
+
+        FirebaseMessaging.getInstance().subscribeToTopic("updates")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (!task.isSuccessful()) {
+                            Log.d(TAG,"SUBSCRIPTION FAILURE");
+                        }else{
+                            Log.d(TAG," SUBSCRIPTION SUCCESS");
+                        }
+                    }
+                });
 
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         fTrans.add(R.id.frgmCreateEvent, mapFragment)

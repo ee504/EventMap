@@ -147,11 +147,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
 
         btnStartService = (Button) view.findViewById(R.id.btnStartService);
         btnStartService.setOnClickListener(this);
-        btnStopService.setVisibility(View.GONE);
+        btnStartService.setVisibility(View.GONE);
 
         btnStopService = (Button) view.findViewById(R.id.btnStopService);
         btnStopService.setOnClickListener(this);
-        btnStartService.setVisibility(View.GONE);
+        btnStopService.setVisibility(View.GONE);
 
         btnFloatingAction = (FloatingActionButton) view.findViewById(R.id.btnFloatingAction);
         btnFloatingAction.setOnClickListener(this);
@@ -261,7 +261,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
             case R.id.ibtnLocation:
                 locationButton.callOnClick();
                 break;
-            //for tests
+            //open and close service
             case R.id.btnStartService:
                 Log.d(TAG, "btnStartService");
                 Intent startServiceIntent = new Intent(getActivity(), ExampleService.class);
@@ -403,11 +403,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
     public void setEvent(Events event) {
         Log.e(TAG, "Map fragment setEvents():");
         ///////////////////////////////////////////////////
-        MyNotification myNotification = new MyNotification(getActivity(), getString(R.string.CHANNEL_ID), getString(R.string.channel_name), getString(R.string.channel_description));
+        /*MyNotification myNotification = new MyNotification(getActivity(), getString(R.string.CHANNEL_ID), getString(R.string.channel_name), getString(R.string.channel_description));
         NotificationCompat.Builder nb = myNotification.
                 getNotification("Новое мероприятие", "Посмотри");
 
-        myNotification.getManager().notify(101, nb.build());
+        myNotification.getManager().notify(101, nb.build());*/
         //////////////////////////////////////////////////////
         //get data idEvent Activity
         String idSelectedEvent = mListener.getSelectedMarker();
@@ -423,10 +423,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnClick
             onMarkerClick(marker);
         }
 
-        /*MyNotification myNotification = new MyNotification(getActivity(), getString(R.string.CHANNEL_ID), getString(R.string.channel_name), getString(R.string.channel_description));
-        NotificationCompat.Builder nb = myNotification.
-                getNotification("Новое мероприятие", event.getNameEvent());
-        myNotification.getManager().notify(101, nb.build());*/
     }
     //find the marker by id and delete it
     @Override

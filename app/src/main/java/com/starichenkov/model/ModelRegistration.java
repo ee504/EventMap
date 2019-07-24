@@ -1,7 +1,13 @@
 package com.starichenkov.model;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.starichenkov.contracts.ContractRegistration;
 import com.starichenkov.data.Users;
 
@@ -12,6 +18,7 @@ public class ModelRegistration implements ContractRegistration.Model {
     protected FirebaseDatabase database;
     protected DatabaseReference myRef;
     protected DatabaseReference userRef;
+    //protected FirebaseMessaging fMessaging;
 
     public ModelRegistration(){
         database = FirebaseDatabase.getInstance();

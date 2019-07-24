@@ -42,9 +42,9 @@ public class ModelMap extends ModelCurrentUser implements ContractMap.Model{
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                //callBackMap.setEvent(dataSnapshot.getValue(Events.class));
+                callBackMap.setEvent(dataSnapshot.getValue(Events.class));
 
-                callBackMap.setEvent(new Events());
+                //callBackMap.setEvent(new Events());
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
